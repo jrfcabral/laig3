@@ -5,7 +5,34 @@ function MySceneGraph(filename, scene) {
 	// Establish bidirectional references between scene and graph
 	this.scene = scene;
 	scene.graph=this;
-		
+
+	//List of drawable primitives
+	this.allowedPrimitives = ['rectangle', 'sphere', 'cylinder','triangle'];
+
+	/*
+	* Queue of errors detected while loading the lsx file
+	* On size > 0, abort drawing
+	*/
+	this.errors = [];
+
+	/*
+	* Queue of warnings detected while loading the lsx files
+	* On size > 0 keep drawing but behaviour can be unexpected
+	*/
+	this.warnings = [];
+
+	/*
+	* Dictionary containing all the nodes of the scene graph
+	* Care must be taken that all the ids are unique and that no cycles are present
+	*/
+	this.nodes = [];
+
+	/*
+	* Dictionary containing all the leaves of the scene graph
+	* Care must be taken that all the ids are unique and that no cycles are present
+	*/
+	this.leaves = [];
+
 	// File reading 
 	this.reader = new CGFXMLreader();
 
@@ -16,6 +43,50 @@ function MySceneGraph(filename, scene) {
 	 */
 	 
 	this.reader.open('scenes/'+filename, this);  
+
+}
+
+MySceneGraph.prototype.ParseLeaves= function(rootElement) {
+	console.log("Parsing leaves");
+
+	var elems = rootElement.getElementsByTagName('LEAVES');
+
+	if (elems == null){
+		this.errors.push("LEAVES element is missing");
+	}
+	if (elems.length != 1){
+		this.warnings.push("more than one LEAVES element present");
+	}
+
+	var numberLeaves = elems[0].children.length;
+	for(var i=0;i<numberLeaves;i++){
+		var leaf = elems[0].children[i];
+
+		console.log(leaf);
+
+		if(this.leaves[leaf.id] != null){
+			this.errors.push("there are leaves with repeated id \"" + id +"\"");
+			return;
+		}
+		
+		var strargs = this.reader.getString(leaf, "args").split(" ");
+		var args = [];
+		for (var j = 0; j < args.length; j++){
+			args[j] = Float.parseFloat(strargs[j]);
+			if (args[j] == NaN){
+				this.errors.push("no conversion to float for argument no."+j+" of leaf with id " + leaf.id);
+				return;
+			}
+
+		}
+		this.leaves[leaf.id] = {id: leaf.id, 
+								type: this.reader.getItem(leaf, "type", this.allowedPrimitives),
+								args: args};
+
+		console.log("Parsed leaf with id " + leaf.id);
+		
+	}
+	console.log("Leaves parsed");
 }
 
 /*
@@ -27,19 +98,14 @@ MySceneGraph.prototype.onXMLReady=function()
 	var rootElement = this.reader.xmlDoc.documentElement;
 	
 	// Here should go the calls for different functions to parse the various blocks
-	var error = this.parseGlobalsExample(rootElement);
-
-	if (error != null) {
-		this.onXMLError(error);
-		return;
-	}	
+	//var error = this.parseGlobalsExample(rootElement);
+	this.ParseLeaves(rootElement);
 
 	this.loadedOk=true;
 	
 	// As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
 	this.scene.onGraphLoaded();
 };
-
 
 
 /*
