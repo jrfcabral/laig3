@@ -13,7 +13,7 @@
     <ILLUMINATION>
         <ambient r="1" g="1" b="1" a="1"/>
         <doubleside value="1" />
-        <background r="0" g="0.5" b="0" a="1"/>
+        <background r="0.7" g="0.4" b="0" a="1"/>
     </ILLUMINATION>
 
 
@@ -21,27 +21,27 @@
         <LIGHT id="l01">
             <enable value ="1" />
             <position x="2.0" y="1.0" z="-1.0" w="1.0" />
-            <ambient r="0.5" g="0.0" b="0.5" a="1.0" />
-            <diffuse r="0.5" g="0.0" b="0.5" a="1.0" />
-            <specular r="0.5" g="0.0" b="0.5" a="1.0" />
+             <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
         </LIGHT>
 
         <LIGHT id="l02">
             <enable value ="1" />
-            <position x="2.0" y="1.0" z="1.0" w="1.0" />
-            <ambient r="0.5" g="0.0" b="0.5" a="1.0" />
-            <diffuse r="0.5" g="0.0" b="0.5" a="1.0" />
-            <specular r="0.5" g="0.0" b="0.5" a="1.0" />
+            <position x="-2.0" y="1.0" z="1.0" w="1.0" />
+             <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="0" g="0" b="0" a="1.0" />
+            <specular r="0" g="0" b="0" a="1.0" />
         </LIGHT>
 
         <LIGHT id="l03">
             <enable value ="1" />
             <position x="2.0" y="2.0" z="1.0" w="1.0" />
-            <ambient r="0.5" g="0.0" b="0.5" a="1.0" />
-            <diffuse r="0.5" g="0.0" b="0.5" a="1.0" />
-            <specular r="0.5" g="0.0" b="0.5" a="1.0" />
-        </LIGHT>
-
+             <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="0" g="0" b="0" a="1.0" />
+            <specular r="0" g="0" b="0" a="1.0" />
+        </LIGHT> 
+        
     </LIGHTS>   
 
     <LEAVES>

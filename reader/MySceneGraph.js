@@ -38,6 +38,7 @@ function MySceneGraph(filename, scene) {
 	* Care must be taken that all the ids are unique
 	*/
 	this.lightsDic = [];
+	this.lightsNum;
 
 	// File reading
 	this.reader = new CGFXMLreader();
@@ -216,8 +217,9 @@ MySceneGraph.prototype.parseLSX=function(rootElement){
 
 	this.ParseLeaves(rootElement);
 
-	console.log(this.lightsDic["l01"]);
-	console.log(this.lightsDic["l03"]);
+	//console.log(this.lightsDic[0]);
+	//console.log(this.lightsDic[1]);
+
 
 }
 
@@ -330,6 +332,11 @@ MySceneGraph.prototype.parseIllum=function(illum){
 MySceneGraph.prototype.parseLights=function(lights){
 
 	var numberLights = lights.children.length;
+	if(numberLights > 8){
+		this.warnings.push('WebGL only supports 8 lights. Only the first 8 lights will be taken into account.');
+	}
+
+	this.lightsNum = numberLights;
 	console.log(numberLights);
 	for(var i=0;i<numberLights;i++){
 		var light = lights.children[i];
@@ -403,7 +410,7 @@ MySceneGraph.prototype.parseLights=function(lights){
 		this.specB = this.reader.getFloat(specularLight, 'b', ['r', 'g', 'b', 'a']);
 		this.specA = this.reader.getFloat(specularLight, 'a', ['r', 'g', 'b', 'a']);
 
-		this.lightsDic[light.id] = {
+		this.lightsDic[i] = {
 			id: light.id,
 			enable: this.enableVal,
 			position: [this.posX, this.posY, this.posZ, this.posW],

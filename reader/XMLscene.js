@@ -53,8 +53,22 @@ XMLscene.prototype.onGraphLoaded = function ()
 	
 	this.gl.clearColor(this.graph.bgLightR,this.graph.bgLightG,this.graph.bgLightB,this.graph.bgLightA);
 	
-	this.lights[0].setVisible(true);
-    this.lights[0].enable();
+	for(var i = 0; i < this.graph.lightsNum; i++){
+		this.lights[i].setPosition(this.graph.lightsDic[i].position[0], this.graph.lightsDic[i].position[1], this.graph.lightsDic[i].position[2], this.graph.lightsDic[i].position[3]);
+		this.lights[i].setAmbient(this.graph.lightsDic[i].ambient[0], this.graph.lightsDic[i].ambient[1], this.graph.lightsDic[i].ambient[2], this.graph.lightsDic[i].ambient[3]);
+		this.lights[i].setDiffuse(this.graph.lightsDic[i].diffuse[0], this.graph.lightsDic[i].diffuse[1], this.graph.lightsDic[i].diffuse[2], this.graph.lightsDic[i].diffuse[3]);
+		this.lights[i].setSpecular(this.graph.lightsDic[i].specular[0], this.graph.lightsDic[i].specular[1], this.graph.lightsDic[i].specular[2], this.graph.lightsDic[i].specular[3]);
+		if(this.graph.lightsDic[i].enable == 1){
+			this.lights[i].enable();
+		}
+		this.lights[i].setVisible(true);
+		
+	}
+
+	
+
+	//this.lights[0].setVisible(true);
+    //this.lights[0].enable();
 };
 
 XMLscene.prototype.display = function () {
@@ -84,9 +98,13 @@ XMLscene.prototype.display = function () {
 	// This is one possible way to do it
 	if (this.graph.loadedOk)
 	{
-		this.lights[0].update();
+		
+		for(i = 0; i < this.graph.lightsNum; i++){
+			this.lights[i].update();
+		}
+		
 	};	
-
+	
     this.shader.unbind();
 };
 
