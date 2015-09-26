@@ -33,6 +33,12 @@ function MySceneGraph(filename, scene) {
 	*/
 	this.leaves = [];
 
+	/*
+	* Dictionary containing all the lights of the scene
+	* Care must be taken that all the ids are unique
+	*/
+	this.lightsDic = [];
+
 	// File reading
 	this.reader = new CGFXMLreader();
 
@@ -65,7 +71,7 @@ MySceneGraph.prototype.ParseLeaves= function(rootElement) {
 		console.log(leaf);
 
 		if(this.leaves[leaf.id] != null){
-			this.errors.push("there are leaves with repeated id \"" + id +"\"");
+			this.errors.push("there are two or more leaves with the same id \"" + id +"\"");
 			return;
 		}
 
@@ -163,11 +169,13 @@ MySceneGraph.prototype.onXMLError=function (message) {
 
 //Needs to consider the case of multilpe tag definition
 MySceneGraph.prototype.parseLSX=function(rootElement){
+	
 	var elems =  rootElement.getElementsByTagName('INITIALS');
-		if(elems.length == 0){
-			this.errors.push('Missing INITIALS TAG');
-			return "Missing INITIALS tag.";
-		}
+	if(elems.length == 0){
+		this.errors.push('Missing INITIALS TAG');
+		return "Missing INITIALS tag.";
+	}
+
 	console.log('Starting INITIALS parsing');
 	var initials = elems[0];
 	var initRet = this.parseInitials(initials);
@@ -176,16 +184,40 @@ MySceneGraph.prototype.parseLSX=function(rootElement){
 	}
 	console.log('Done INITIALS parsing');
 	
+
 	elems = rootElement.getElementsByTagName('ILLUMINATION');
 	if(elems.length == 0){
-			this.errors.push('Missing ILLUMINATION TAG');
-			return "Missing ILLUMINATION tag.";
-		}
+		this.errors.push('Missing ILLUMINATION TAG');
+		return "Missing ILLUMINATION tag.";
+	}
+
 	console.log('Starting ILLUMINATION parsing');
 	var illum = elems[0];
 	var illumRet = this.parseIllum(illum);
+	if(illumRet != null){
+		return "Something went wrong there :/";
+	}
+	console.log('Done ILLUMINATION parsing');
+
+
+	elems = rootElement.getElementsByTagName('LIGHTS');
+	if(elems.length == 0){
+		this.errors.push('Missing LIGHTS TAG');
+		return "Missing LIGHTS tag.";
+	}
+	
+	console.log('Starting LIGHTS parsing');
+	var lights = elems[0];
+	var lightsRet = this.parseLights(lights);
+	if(illumRet != null){
+		return "Something went wrong there :/";
+	}
+	console.log('Done LIGHTS parsing');
 
 	this.ParseLeaves(rootElement);
+
+	console.log(this.lightsDic["l01"]);
+	console.log(this.lightsDic["l03"]);
 
 }
 
@@ -293,4 +325,91 @@ MySceneGraph.prototype.parseIllum=function(illum){
 	this.bgLightB = this.reader.getFloat(backgrd[0], 'b', ['r', 'g', 'b', 'a']);
 	this.bgLightA = this.reader.getFloat(backgrd[0], 'a', ['r', 'g', 'b', 'a']);
 
+}
+
+MySceneGraph.prototype.parseLights=function(lights){
+
+	var numberLights = lights.children.length;
+	console.log(numberLights);
+	for(var i=0;i<numberLights;i++){
+		var light = lights.children[i];
+		
+		var enable = light.getElementsByTagName('enable');
+		if(enable == null || enable.length != 1){
+			this.errors.push('Missing enable tag or multiple enable tags on light', light.id);
+			return -1;
+		}
+		enable = enable[0]; 
+
+		
+		this.enableVal = this.reader.getInteger(enable, 'value', ['0', '1']);
+		if(this.enableVal != 0 && this.enableVal != 1){
+			this.errors.push('Illegal value for enable tag on light', light.id);
+			return -1;
+		}
+
+
+		var position = light.getElementsByTagName('position');
+		if(position == null || position.length != 1){
+			this.errors.push('Missing position tag or multiple position tags on light', light.id);
+			return -1;
+		}
+		position = position[0];
+
+		this.posX = this.reader.getFloat(position, 'x', ['x', 'y', 'z', 'w']);
+		this.posY = this.reader.getFloat(position, 'y', ['x', 'y', 'z', 'w']); 
+		this.posZ = this.reader.getFloat(position, 'z', ['x', 'y', 'z', 'w']);
+		this.posW = this.reader.getFloat(position, 'w', ['x', 'y', 'z', 'w']);
+
+
+		var ambientLight = light.getElementsByTagName('ambient');
+		if(ambientLight == null || ambientLight.length != 1){
+			this.errors.push('Missing ambient tag or multiple ambient tags on light', light.id);
+			return -1;
+		}
+
+		ambientLight = ambientLight[0];
+
+		this.ambR = this.reader.getFloat(ambientLight, 'r', ['r', 'g', 'b', 'a']);
+		this.ambG = this.reader.getFloat(ambientLight, 'g', ['r', 'g', 'b', 'a']); 
+		this.ambB = this.reader.getFloat(ambientLight, 'b', ['r', 'g', 'b', 'a']);
+		this.ambA = this.reader.getFloat(ambientLight, 'a', ['r', 'g', 'b', 'a']);
+
+
+		var diffuseLight = light.getElementsByTagName('diffuse');
+		if(diffuseLight == null || diffuseLight.length != 1){
+			this.errors.push('Missing diffuse tag or multiple diffuse tags on light', light.id);
+			return -1;
+		}
+
+		diffuseLight = diffuseLight[0];
+
+		this.diffR = this.reader.getFloat(diffuseLight, 'r', ['r', 'g', 'b', 'a']);
+		this.diffG = this.reader.getFloat(diffuseLight, 'g', ['r', 'g', 'b', 'a']);
+		this.diffB = this.reader.getFloat(diffuseLight, 'b', ['r', 'g', 'b', 'a']);
+		this.diffA = this.reader.getFloat(diffuseLight, 'a', ['r', 'g', 'b', 'a']);
+
+
+		var specularLight = light.getElementsByTagName('specular');
+		if(specularLight == null || specularLight.length != 1){
+			this.errors.push('Missing specular tag or multiple specular tags on light', light.id);
+			return -1;
+		}
+
+		specularLight = specularLight[0];
+
+		this.specR = this.reader.getFloat(specularLight, 'r', ['r', 'g', 'b', 'a']);
+		this.specG = this.reader.getFloat(specularLight, 'g', ['r', 'g', 'b', 'a']);
+		this.specB = this.reader.getFloat(specularLight, 'b', ['r', 'g', 'b', 'a']);
+		this.specA = this.reader.getFloat(specularLight, 'a', ['r', 'g', 'b', 'a']);
+
+		this.lightsDic[light.id] = {
+			id: light.id,
+			enable: this.enableVal,
+			position: [this.posX, this.posY, this.posZ, this.posW],
+			ambient: [this.ambR, this.ambG, this.ambB, this.ambA],
+			diffuse: [this.diffR, this.diffG, this.diffB, this.diffA],
+			specular: [this.specR, this.specG, this.specB, this.specA]
+		};
+	}
 }
