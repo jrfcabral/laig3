@@ -1,7 +1,7 @@
 
 function MySceneGraph(filename, scene) {
 	this.loadedOk = null;
-	
+
 	// Establish bidirectional references between scene and graph
 	this.scene = scene;
 	scene.graph=this;
@@ -33,7 +33,7 @@ function MySceneGraph(filename, scene) {
 	*/
 	this.leaves = [];
 
-	// File reading 
+	// File reading
 	this.reader = new CGFXMLreader();
 
 	/*
@@ -41,8 +41,8 @@ function MySceneGraph(filename, scene) {
 	 * After the file is read, the reader calls onXMLReady on this object.
 	 * If any error occurs, the reader calls onXMLError on this object, with an error message
 	 */
-	 
-	this.reader.open('scenes/'+filename, this);  
+
+	this.reader.open('scenes/'+filename, this);
 
 }
 
@@ -68,7 +68,7 @@ MySceneGraph.prototype.ParseLeaves= function(rootElement) {
 			this.errors.push("there are leaves with repeated id \"" + id +"\"");
 			return;
 		}
-		
+
 		var strargs = this.reader.getString(leaf, "args").split(" ");
 		var args = [];
 		for (var j = 0; j < args.length; j++){
@@ -79,12 +79,12 @@ MySceneGraph.prototype.ParseLeaves= function(rootElement) {
 			}
 
 		}
-		this.leaves[leaf.id] = {id: leaf.id, 
+		this.leaves[leaf.id] = {id: leaf.id,
 								type: this.reader.getItem(leaf, "type", this.allowedPrimitives),
 								args: args};
 
 		console.log("Parsed leaf with id " + leaf.id);
-		
+
 	}
 	console.log("Leaves parsed");
 }
@@ -92,17 +92,18 @@ MySceneGraph.prototype.ParseLeaves= function(rootElement) {
 /*
  * Callback to be executed after successful reading
  */
-MySceneGraph.prototype.onXMLReady=function() 
+MySceneGraph.prototype.onXMLReady=function()
 {
 	console.log("XML Loading finished.");
 	var rootElement = this.reader.xmlDoc.documentElement;
-	
+
 	// Here should go the calls for different functions to parse the various blocks
 	//var error = this.parseGlobalsExample(rootElement);
-	this.ParseLeaves(rootElement);
+	this.parseLSX(rootElement);
+	
 
 	this.loadedOk=true;
-	
+
 	// As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
 	this.scene.onGraphLoaded();
 };
@@ -112,7 +113,7 @@ MySceneGraph.prototype.onXMLReady=function()
  * Example of method that parses elements of one block and stores information in a specific data structure
  */
 MySceneGraph.prototype.parseGlobalsExample= function(rootElement) {
-	
+
 	var elems =  rootElement.getElementsByTagName('globals');
 	if (elems == null) {
 		return "globals element is missing.";
@@ -136,7 +137,7 @@ MySceneGraph.prototype.parseGlobalsExample= function(rootElement) {
 	if (tempList == null  || tempList.length==0) {
 		return "list element is missing.";
 	}
-	
+
 	this.list=[];
 	// iterate over every element
 	var nnodes=tempList[0].children.length;
@@ -150,14 +151,92 @@ MySceneGraph.prototype.parseGlobalsExample= function(rootElement) {
 	};
 
 };
-	
+
 /*
  * Callback to be executed on any read error
  */
- 
+
 MySceneGraph.prototype.onXMLError=function (message) {
-	console.error("XML Loading Error: "+message);	
+	console.error("XML Loading Error: "+message);
 	this.loadedOk=false;
 };
 
+MySceneGraph.prototype.parseLSX=function(rootElement){
+	var elems =  rootElement.getElementsByTagName('INITIALS');
+	if(elems.length == 0){
+		console.log('Missing INITIALS tag.');
+		return "Missing INITIALS tag.";
+	}
 
+	var initials = elems[0];
+	var initRet = this.parseInitials(initials);
+	if(initRet != null){
+		return "Something went wrong there :/";
+	}
+
+	this.ParseLeaves(rootElement);
+
+}
+
+MySceneGraph.prototype.parseInitials=function(initials){
+	//frustum processing
+	var frustum = initials.getElementsByTagName('frustum');
+	if(frustum == null || frustum.length != 1){
+		console.log('Missing frustum tag or multiple frustum tags found.');
+		return "Missing frustum tag or multiple frustum tags found.";
+	}
+
+	this.frustumNear = this.reader.getFloat(frustum[0], 'near', 'near');
+	this.frustumFar = this.reader.getFloat(frustum[0], 'far', 'far');
+
+	//initial translate processing
+	var initTrans = initials.getElementsByTagName('translate');
+	if(initTrans == null || initTrans.length != 1){
+		console.log('Missing translate tag or multiple frustum tags found.');
+		return "Missing translate tag or multiple frustum tags found.";
+	}
+
+	this.initTransx = this.reader.getFloat(initTrans[0], 'x', ['x', 'y', 'z']);
+	this.initTransy = this.reader.getFloat(initTrans[0], 'y', ['x', 'y', 'z']);
+	this.initTransz = this.reader.getFloat(initTrans[0], 'z', ['x', 'y', 'z']);
+
+	//initial rotations processing
+	var initRot = initials.getElementsByTagName('rotation');
+	if(initRot == null || initRot.length != 2){
+		console.log('Missing 1 or both rotation tags on the INITIALS tag');
+		return "Missing 1 or both rotation tags on the INITIALS tag";
+	}
+
+	var initRot1 = initRot[0];
+
+	this.initRot1Axis = this.reader.getString(initRot1, 'axis', ['axis', 'angle']);
+	this.initRot1Axis = this.reader.getString(initRot1, 'angle', ['axis', 'angle']);
+
+	var initRot2 = initRot[1];
+
+	this.initRot2Axis = this.reader.getString(initRot2, 'axis', ['axis', 'angle']);
+	this.initRot2Axis = this.reader.getString(initRot2, 'angle', ['axis', 'angle']);
+
+	//inital scaling processing
+
+	var initScale = initials.getElementsByTagName('scale');
+	if(initScale == null || initScale.length != 1){
+		console.log('Missing scale tag on the INITIALS tag');
+		return "Missing sacle tag on the INITIALS tag";
+	}
+
+	this.initScalex = this.reader.getFloat(initScale[0], 'sx', ['sx', 'sy', 'sz']);
+	this.initScaley = this.reader.getFloat(initScale[0], 'sy', ['sx', 'sy', 'sz']);
+	this.initScalez = this.reader.getFloat(initScale[0], 'sz', ['sx', 'sy', 'sz']);
+
+	//reference length processing
+
+	var ref = initials.getElementsByTagName('reference');
+	if(ref == null || ref.length != 1){
+		console.log('Missing reference tag on the INITIALS tag');
+		return "Missing reference tag on the INITIALS tag";
+	}
+
+	this.refLength = this.reader.getFloat(ref[0], 'length', 'length');
+
+}

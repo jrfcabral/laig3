@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
+<SCENE>
+    <INITIALS>
+        <frustum near="0.05" far="10.00"/>                    
+        <translate  x="0.0" y="0.0" z="5.0" />                 
+        <rotation axis="y" angle="45" />                  
+        <rotation axis="x" angle="45" />
+        <scale sx="1.0" sy="1.0" sz="1.0"/>    
+        <reference length="5.0" />
+    </INITIALS>
+</SCENE>
