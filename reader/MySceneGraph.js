@@ -161,28 +161,40 @@ MySceneGraph.prototype.onXMLError=function (message) {
 	this.loadedOk=false;
 };
 
+//Needs to consider the case of multilpe tag definition
 MySceneGraph.prototype.parseLSX=function(rootElement){
 	var elems =  rootElement.getElementsByTagName('INITIALS');
-	if(elems.length == 0){
-		console.log('Missing INITIALS tag.');
-		return "Missing INITIALS tag.";
-	}
-
+		if(elems.length == 0){
+			this.errors.push('Missing INITIALS TAG');
+			return "Missing INITIALS tag.";
+		}
+	console.log('Starting INITIALS parsing');
 	var initials = elems[0];
 	var initRet = this.parseInitials(initials);
 	if(initRet != null){
 		return "Something went wrong there :/";
 	}
+	console.log('Done INITIALS parsing');
+	
+	elems = rootElement.getElementsByTagName('ILLUMINATION');
+	if(elems.length == 0){
+			this.errors.push('Missing ILLUMINATION TAG');
+			return "Missing ILLUMINATION tag.";
+		}
+	console.log('Starting ILLUMINATION parsing');
+	var illum = elems[0];
+	var illumRet = this.parseIllum(illum);
 
 	this.ParseLeaves(rootElement);
 
 }
 
+//Everything is an error until default values are selected
 MySceneGraph.prototype.parseInitials=function(initials){
 	//frustum processing
 	var frustum = initials.getElementsByTagName('frustum');
 	if(frustum == null || frustum.length != 1){
-		console.log('Missing frustum tag or multiple frustum tags found.');
+		this.errors.push('Missing frustum tag or multiple frustum tags found.');
 		return "Missing frustum tag or multiple frustum tags found.";
 	}
 
@@ -192,7 +204,7 @@ MySceneGraph.prototype.parseInitials=function(initials){
 	//initial translate processing
 	var initTrans = initials.getElementsByTagName('translate');
 	if(initTrans == null || initTrans.length != 1){
-		console.log('Missing translate tag or multiple frustum tags found.');
+		this.errors.push('Missing translate tag or multiple translate tags found.');
 		return "Missing translate tag or multiple frustum tags found.";
 	}
 
@@ -202,11 +214,11 @@ MySceneGraph.prototype.parseInitials=function(initials){
 
 	//initial rotations processing
 	var initRot = initials.getElementsByTagName('rotation');
-	if(initRot == null || initRot.length != 2){
-		console.log('Missing 1 or both rotation tags on the INITIALS tag');
+	if(initRot == null || initRot.length != 3){
+		this.errors.push('Missing 1 or both rotation tags on the INITIALS tag');
 		return "Missing 1 or both rotation tags on the INITIALS tag";
 	}
-
+	
 	var initRot1 = initRot[0];
 
 	this.initRot1Axis = this.reader.getString(initRot1, 'axis', ['axis', 'angle']);
@@ -217,11 +229,16 @@ MySceneGraph.prototype.parseInitials=function(initials){
 	this.initRot2Axis = this.reader.getString(initRot2, 'axis', ['axis', 'angle']);
 	this.initRot2Axis = this.reader.getString(initRot2, 'angle', ['axis', 'angle']);
 
+	var initRot3 = initRot[2];
+
+	this.initRot3Axis = this.reader.getString(initRot3, 'axis', ['axis', 'angle']);
+	this.initRot3Axis = this.reader.getString(initRot3, 'angle', ['axis', 'angle']);
+
 	//inital scaling processing
 
 	var initScale = initials.getElementsByTagName('scale');
 	if(initScale == null || initScale.length != 1){
-		console.log('Missing scale tag on the INITIALS tag');
+		this.errors.push('Missing scale tag on the INITIALS tag');
 		return "Missing sacle tag on the INITIALS tag";
 	}
 
@@ -229,14 +246,51 @@ MySceneGraph.prototype.parseInitials=function(initials){
 	this.initScaley = this.reader.getFloat(initScale[0], 'sy', ['sx', 'sy', 'sz']);
 	this.initScalez = this.reader.getFloat(initScale[0], 'sz', ['sx', 'sy', 'sz']);
 
-	//reference length processing
+	//reference length processing 
 
 	var ref = initials.getElementsByTagName('reference');
 	if(ref == null || ref.length != 1){
-		console.log('Missing reference tag on the INITIALS tag');
+		this.errors.push('Missing reference tag on the INITIALS tag');
 		return "Missing reference tag on the INITIALS tag";
 	}
 
 	this.refLength = this.reader.getFloat(ref[0], 'length', 'length');
+
+}
+
+MySceneGraph.prototype.parseIllum=function(illum){
+	var ambient = illum.getElementsByTagName('ambient');
+	if(ambient == null || ambient.length != 1){
+		this.errors.push('Missing abient tag on the ILLUMINATION tag');
+		return "Missing abient tag on the ILLUMINATION tag";
+	}
+
+	//BEM Q ME LIXARAM AQUI CRL
+	//A getRGBA e pra valores declarados juntos (rgb="1 1 1 1")
+	//this.ambLight = this.reader.getRGBA(ambient, '')
+	this.ambLightR = this.reader.getFloat(ambient[0], 'r', ['r', 'g', 'b', 'a']);
+	this.ambLightG = this.reader.getFloat(ambient[0], 'g', ['r', 'g', 'b', 'a']);
+	this.ambLightB = this.reader.getFloat(ambient[0], 'b', ['r', 'g', 'b', 'a']);
+	this.ambLightA = this.reader.getFloat(ambient[0], 'a', ['r', 'g', 'b', 'a']);
+	
+
+	var doubleside = illum.getElementsByTagName('doubleside');
+	if(ambient == null || ambient.length != 1){
+		this.errors.push('Missing doubleside tag on the ILLUMINATION tag');
+		return "Missing doubleside tag on the ILLUMINATION tag";   
+	}
+
+	this.doubleside = this.reader.getInteger(doubleside[0], 'value', 'value');
+	
+	var backgrd = illum.getElementsByTagName('background');
+	if(ambient == null || ambient.length != 1){
+		this.errors.push('Missing background tag on the ILLUMINATION tag');
+		return "Missing background tag on the ILLUMINATION tag";
+	}
+
+	this.bgLightR = this.reader.getFloat(backgrd[0], 'r', ['r', 'g', 'b', 'a']);
+	this.bgLightG = this.reader.getFloat(backgrd[0], 'g', ['r', 'g', 'b', 'a']);
+	this.bgLightB = this.reader.getFloat(backgrd[0], 'b', ['r', 'g', 'b', 'a']);
+	this.bgLightA = this.reader.getFloat(backgrd[0], 'a', ['r', 'g', 'b', 'a']);
 
 }

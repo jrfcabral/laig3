@@ -50,6 +50,9 @@ XMLscene.prototype.setDefaultAppearance = function () {
 XMLscene.prototype.onGraphLoaded = function () 
 {
 	//this.gl.clearColor(this.graph.background[0],this.graph.background[1],this.graph.background[2],this.graph.background[3]);
+	
+	this.gl.clearColor(this.graph.bgLightR,this.graph.bgLightG,this.graph.bgLightB,this.graph.bgLightA);
+	
 	this.lights[0].setVisible(true);
     this.lights[0].enable();
 };

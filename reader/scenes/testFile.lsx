@@ -3,9 +3,21 @@
     <INITIALS>
         <frustum near="0.05" far="10.00"/>                    
         <translate  x="0.0" y="0.0" z="5.0" />                 
-        <rotation axis="y" angle="45" />                  
+        <rotation axis="y" angle="45" />
+        <rotation axis="z" angle="20" />                   
         <rotation axis="x" angle="45" />
         <scale sx="1.0" sy="1.0" sz="1.0"/>    
         <reference length="5.0" />
     </INITIALS>
+
+    <ILLUMINATION>
+        <ambient r="1" g="1" b="1" a="1"/>
+        <doubleside value="1" />
+        <background r="0" g="0.5" b="0" a="1"/>
+    </ILLUMINATION>
+
+    <LEAVES>
+        <LEAF id="01" type="rectangle" args="0.0 0.0 2.0 2.0"/>
+        <LEAF id="02" type="rectangle" args="0.0 0.0 2.0 2.0"/>
+    </LEAVES>
 </SCENE>
