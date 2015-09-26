@@ -24,7 +24,7 @@ XMLscene.prototype.init = function (application) {
 };
 
 XMLscene.prototype.initLights = function () {
-
+	
     this.shader.bind();
 
 	this.lights[0].setPosition(2, 3, 3, 1);
@@ -52,8 +52,10 @@ XMLscene.prototype.onGraphLoaded = function ()
 	//this.gl.clearColor(this.graph.background[0],this.graph.background[1],this.graph.background[2],this.graph.background[3]);
 	
 	this.gl.clearColor(this.graph.bgLightR,this.graph.bgLightG,this.graph.bgLightB,this.graph.bgLightA);
-	
-	for(var i = 0; i < this.graph.lightsNum; i++){
+
+	console.log((this.graph.lightsNum > 8)? 8:this.graph.lightsNum);
+
+	for(var i = 0; i < ((this.graph.lightsNum > 8)? 8:this.graph.lightsNum); i++){
 		this.lights[i].setPosition(this.graph.lightsDic[i].position[0], this.graph.lightsDic[i].position[1], this.graph.lightsDic[i].position[2], this.graph.lightsDic[i].position[3]);
 		this.lights[i].setAmbient(this.graph.lightsDic[i].ambient[0], this.graph.lightsDic[i].ambient[1], this.graph.lightsDic[i].ambient[2], this.graph.lightsDic[i].ambient[3]);
 		this.lights[i].setDiffuse(this.graph.lightsDic[i].diffuse[0], this.graph.lightsDic[i].diffuse[1], this.graph.lightsDic[i].diffuse[2], this.graph.lightsDic[i].diffuse[3]);
@@ -99,7 +101,7 @@ XMLscene.prototype.display = function () {
 	if (this.graph.loadedOk)
 	{
 		
-		for(i = 0; i < this.graph.lightsNum; i++){
+		for(i = 0; i < ((this.graph.lightsNum > 8)? 8:this.graph.lightsNum); i++){
 			this.lights[i].update();
 		}
 		

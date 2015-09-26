@@ -40,6 +40,13 @@ function MySceneGraph(filename, scene) {
 	this.lightsDic = [];
 	this.lightsNum;
 
+	/*
+	* Dictionary containing all textures specified in the LSX file
+	* Care must be taken that all the ids are unique
+	* Need to check what best identifiers would be
+	*/
+	this.textures = []
+
 	// File reading
 	this.reader = new CGFXMLreader();
 
@@ -214,6 +221,24 @@ MySceneGraph.prototype.parseLSX=function(rootElement){
 		return "Something went wrong there :/";
 	}
 	console.log('Done LIGHTS parsing');
+
+
+	elems = rootElement.getElementsByTagName('TEXTURES');
+	if(elems.length == 0){
+		this.errors.push('Missing TEXTURES tag.');
+		return "Missing textures tag";
+	}
+
+
+	console.log('Starting TEXTURES parsing');
+	var tex = elems[0];
+	var texRet = this.parseTex(tex);
+	if(texRet != null){
+		return "Something went wrong there :/";
+	}
+	console.log('Done TEXTURES parsing');
+
+	console.log(this.textures);
 
 	this.ParseLeaves(rootElement);
 
@@ -410,6 +435,7 @@ MySceneGraph.prototype.parseLights=function(lights){
 		this.specB = this.reader.getFloat(specularLight, 'b', ['r', 'g', 'b', 'a']);
 		this.specA = this.reader.getFloat(specularLight, 'a', ['r', 'g', 'b', 'a']);
 
+		//Can't see why lights need IDs and it's easier to just go with numbers here
 		this.lightsDic[i] = {
 			id: light.id,
 			enable: this.enableVal,
@@ -419,4 +445,44 @@ MySceneGraph.prototype.parseLights=function(lights){
 			specular: [this.specR, this.specG, this.specB, this.specA]
 		};
 	}
+}
+
+MySceneGraph.prototype.parseTex=function(tex){
+	
+	var numberTex = tex.children.length;
+	
+	for(var i = 0; i < numberTex; i++){
+		var texture = tex.children[i];
+
+		var filePath = texture.getElementsByTagName('file');
+		if(filePath == null ||filePath.length != 1){
+			this.errors.push('Missing file tag or multiple file tags on texture', texture.id);
+			return -1;
+		}
+
+		filePath = filePath[0];
+
+		this.file = this.reader.getString(filePath, 'path', 'path');
+
+
+		var ampFactor = texture.getElementsByTagName('amplif_factor');
+		if(ampFactor == null || ampFactor.length != 1){
+			this.errors.push('Missing amplif_factor tag or multiple amplif_factor tags on texture', texture.id);
+			return -1;
+		}
+
+		ampFactor = ampFactor[0];
+
+		this.amplifS = this.reader.getFloat(ampFactor, 's', ['s', 't']);
+		this.amplifT = this.reader.getFloat(ampFactor, 't', ['s', 't']);
+
+
+		this.textures[texture.id] = {
+			id: texture.id, 
+			path: this.file,
+			ampFactor: [this.amplifS, this.amplifT]
+		};
+	}
+
+
 }

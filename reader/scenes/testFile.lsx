@@ -21,7 +21,7 @@
         <LIGHT id="l01">
             <enable value ="1" />
             <position x="2.0" y="1.0" z="-1.0" w="1.0" />
-             <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+             <ambient r="0.5" g="0.5" b="0.0" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
             <specular r="0.5" g="0.5" b="0.5" a="1.0" />
         </LIGHT>
@@ -29,7 +29,7 @@
         <LIGHT id="l02">
             <enable value ="1" />
             <position x="-2.0" y="1.0" z="1.0" w="1.0" />
-             <ambient r="0" g="0" b="0" a="1.0" />
+             <ambient r="0" g="0.5" b="0.5" a="1.0" />
             <diffuse r="0" g="0" b="0" a="1.0" />
             <specular r="0" g="0" b="0" a="1.0" />
         </LIGHT>
@@ -43,6 +43,13 @@
         </LIGHT> 
         
     </LIGHTS>   
+
+    <TEXTURES>
+        <TEXTURE id="t01">
+            <file path="../textures/board.png"/>
+            <amplif_factor s="1" t="1"/>
+        </TEXTURE>
+    </TEXTURES>
 
     <LEAVES>
         <LEAF id="01" type="rectangle" args="0.0 0.0 2.0 2.0"/>
