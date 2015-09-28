@@ -51,6 +51,19 @@
         </TEXTURE>
     </TEXTURES>
 
+    <NODES>
+        <ROOT id="00"/>
+        <NODE id= "02">
+            <MATERIAL id="madeira"/>
+            <TEXTURE  id="wood"/>
+            <ROTATION axis="x" angle="120.0"/>
+            <DESCENDANTS>
+                <DESCENDENT id="01"/>
+                <DESCENDENT id="02"/>
+            </DESCENDANTS>
+        </NODE>
+    </NODES>    
+
     <LEAVES>
         <LEAF id="01" type="rectangle" args="0.0 0.0 2.0 2.0"/>
         <LEAF id="02" type="rectangle" args="0.0 0.0 2.0 2.0"/>

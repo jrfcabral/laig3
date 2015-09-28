@@ -104,9 +104,49 @@ XMLscene.prototype.display = function () {
 		for(i = 0; i < ((this.graph.lightsNum > 8)? 8:this.graph.lightsNum); i++){
 			this.lights[i].update();
 		}
-		
+		//this.traverseGraph(this.graph.nodes[this.graph.root]);
 	};	
 	
     this.shader.unbind();
 };
 
+XMLscene.prototype.traverseGraph = function(elem){
+
+
+	//we have reached a leaf
+	if (!elem.descendants){
+		console.log("Reached leaf with id " + elem.id);
+
+	}
+
+	//this is a node
+	else{
+		console.log("Traversal: reached node with id "+elem.id);
+
+		//apply transformations
+		var transformations = elem.transformations.slice();
+		this.pushMatrix();
+		for(var i = 0; i < transformations.length; i++){
+			transformations[i].Apply();
+		}
+
+		//TODO apply materials and textures
+
+		//traverse the tree forwards
+		var descendants = elem.descendants.slice();
+		for(var i = 0; i < elem.descendants.length; i++){
+			if(this.graph.nodes[descendants[i]])
+				this.traverseGraph(this.graph.nodes[descendants[i]]);
+			else if (this.graph.leaves[descendants[i]]){
+				this.traverseGraph(this.graph.leaves[descendants[i]]);
+			}
+			else{
+				console.log("ERROR: Non-existant descendant");
+			}
+		}
+		
+		//restore previous state
+		this.popMatrix();
+
+	}
+};

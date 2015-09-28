@@ -60,6 +60,88 @@ function MySceneGraph(filename, scene) {
 
 }
 
+/*
+* Loops through the list of nodes declared on the Graph Scene file
+* Since a node is more complicated than a leave the processing into internal representation has been delegate to the encodeNode function.
+* See ProcessNode documentation for details on the node's interal representation.
+*/
+MySceneGraph.prototype.ParseNodes= function(rootElement){
+		console.log("Parsing nodes");
+
+		elems = rootElement.getElementsByTagName('NODES');
+
+		if (elems == null)
+			this.errors.push("NODES element is missing");
+		if (elems.length != 1)
+			this.warnings.push("more than one NODES element is present");
+
+		this.root = elems[0].getElementsByTagName('ROOT')[0].id;
+		if(!this.root){
+			this.errors.push("No ROOT element in NODES");
+			return;
+		}
+
+		console.log(this.root);
+		
+		var nodes = elems[0].getElementsByTagName('NODE');
+		var numberNodes = nodes.length;
+		for(var i = 0; i < numberNodes; i++){
+				console.log("Parsing node with id " + nodes[i].id);
+				this.EncodeNode(nodes[i]);
+		}
+	console.log("Nodes parsed");
+
+};
+
+
+/*
+* Internal representation of a node as an object with the fields:
+* id: the unique id of the node
+* material: the unique id of a material
+* texture: the unique id of a texture
+* transformations: stack of transformations to be applied when this node is processed
+* descendants: array of the ids of nodes or leaves that descend from this node
+*/
+MySceneGraph.prototype.EncodeNode= function(node){
+	var material = node.getElementsByTagName('MATERIAL')[0];
+	var texture = node.getElementsByTagName('TEXTURE');
+
+	if (!material || !texture){
+		this.errors.push("node with id \""+node.id+"\" did not have a material or a texture");
+		return;
+	}
+
+	var transformations = [];
+	var descendant_ids = [];
+
+	//process all transformations, which should occupy indexes between 2 until a node with tag descendents is found
+	var i;
+	for(i = 2;node.children[i].tagName != 'DESCENDANTS';i++){
+		transformations.push(Transformation(node.children[i], this.scene));
+	}
+
+	var descendants = node.getElementsByTagName('DESCENDANTS')[0];
+
+	for(var j = 0; j < descendants.children.length; j++){
+		descendant_ids[j] = descendants.children[j].id;
+	}
+
+	this.nodes[node.id] = {
+		id: node.id,
+		material: material.id,
+		texture: texture.id,
+		transformations: transformations,
+		descendants: descendant_ids
+	};
+
+}
+
+/*
+* Internal representation of a leaf as an object with the fields:
+* id: the unique id of the leaf
+* type: one of the identifiers of the drawable primitives. Allowed primitves are on the array allowedPrimitives of MySceneGraph.
+* args: array of the float arguments of the primitives
+*/
 MySceneGraph.prototype.ParseLeaves= function(rootElement) {
 	console.log("Parsing leaves");
 
@@ -76,23 +158,24 @@ MySceneGraph.prototype.ParseLeaves= function(rootElement) {
 	for(var i=0;i<numberLeaves;i++){
 		var leaf = elems[0].children[i];
 
-		console.log(leaf);
-
 		if(this.leaves[leaf.id] != null){
-			this.errors.push("there are two or more leaves with the same id \"" + id +"\"");
+			this.errors.push("there are leaves with repeated id \"" + id +"\"");
 			return;
 		}
 
+		//tokenize args value and convert it into a list of floats
 		var strargs = this.reader.getString(leaf, "args").split(" ");
 		var args = [];
-		for (var j = 0; j < args.length; j++){
-			args[j] = Float.parseFloat(strargs[j]);
+
+		for (var j = 0; j < strargs.length; j++){
+			args[j] = parseFloat(strargs[j]);
+			//check for values that can't be converted into floats
 			if (args[j] == NaN){
 				this.errors.push("no conversion to float for argument no."+j+" of leaf with id " + leaf.id);
 				return;
 			}
-
 		}
+		//store values in leaves hashmap, key is the unique id
 		this.leaves[leaf.id] = {id: leaf.id,
 								type: this.reader.getItem(leaf, "type", this.allowedPrimitives),
 								args: args};
@@ -241,7 +324,7 @@ MySceneGraph.prototype.parseLSX=function(rootElement){
 	console.log(this.textures);
 
 	this.ParseLeaves(rootElement);
-
+	this.ParseNodes(rootElement);
 	//console.log(this.lightsDic[0]);
 	//console.log(this.lightsDic[1]);
 
