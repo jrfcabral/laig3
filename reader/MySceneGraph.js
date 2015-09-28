@@ -47,6 +47,13 @@ function MySceneGraph(filename, scene) {
 	*/
 	this.textures = []
 
+	/*
+	* Dictionary containing all materials specified in the LSX file
+	* Care must be taken that all the ids are unique
+	* Need to check what best identifiers would be
+	*/
+	this.materials = []
+
 	// File reading
 	this.reader = new CGFXMLreader();
 
@@ -309,7 +316,7 @@ MySceneGraph.prototype.parseLSX=function(rootElement){
 	elems = rootElement.getElementsByTagName('TEXTURES');
 	if(elems.length == 0){
 		this.errors.push('Missing TEXTURES tag.');
-		return "Missing textures tag";
+		return "Missing TEXTURES tag";
 	}
 
 
@@ -321,7 +328,21 @@ MySceneGraph.prototype.parseLSX=function(rootElement){
 	}
 	console.log('Done TEXTURES parsing');
 
-	console.log(this.textures);
+	elems = rootElement.getElementsByTagName('MATERIALS');
+	if(elems.length == 0){
+		this.errors.push('Missing MATERIALS tag.');
+		return "Missing MATERIALS tag";
+	}
+
+	console.log('Starting MATERIALS parsing');
+	var mat = elems[0];
+	var matRet = this.parseMaterials(mat);
+	if(matRet != null){
+		return "Something went wrong there :/";
+	}
+	console.log('Done MATERIALS parsing');
+
+	console.log(this.materials);
 
 	this.ParseLeaves(rootElement);
 	this.ParseNodes(rootElement);
@@ -568,4 +589,81 @@ MySceneGraph.prototype.parseTex=function(tex){
 	}
 
 
+}
+
+MySceneGraph.prototype.parseMaterials=function(mat){
+	var numberMat = mat.children.length;
+	
+	for(var i = 0; i < numberMat; i++){
+		var material = mat.children[i];
+	
+		var shininess = material.getElementsByTagName('shininess');
+		if(shininess == null ||shininess.length != 1){
+			this.errors.push('Missing shininess tag or multiple shininess tags on material', texture.id);
+			return -1;
+		}
+		
+		var ambientLightMat = material.getElementsByTagName('ambient');
+		if(ambientLightMat == null || ambientLightMat.length != 1){
+			this.errors.push('Missing ambient tag or multiple ambient tags on material', light.id);
+			return -1;
+		}
+
+		ambientLightMat = ambientLightMat[0];
+
+		this.ambMR = this.reader.getFloat(ambientLightMat, 'r', ['r', 'g', 'b', 'a']);
+		this.ambMG = this.reader.getFloat(ambientLightMat, 'g', ['r', 'g', 'b', 'a']); 
+		this.ambMB = this.reader.getFloat(ambientLightMat, 'b', ['r', 'g', 'b', 'a']);
+		this.ambMA = this.reader.getFloat(ambientLightMat, 'a', ['r', 'g', 'b', 'a']);
+
+
+		var diffuseLightMat = material.getElementsByTagName('diffuse');
+		if(diffuseLightMat == null || diffuseLightMat.length != 1){
+			this.errors.push('Missing diffuse tag or multiple diffuse tags on material', light.id);
+			return -1;
+		}
+
+		diffuseLightMat = diffuseLightMat[0];
+
+		this.diffMR = this.reader.getFloat(diffuseLightMat, 'r', ['r', 'g', 'b', 'a']);
+		this.diffMG = this.reader.getFloat(diffuseLightMat, 'g', ['r', 'g', 'b', 'a']);
+		this.diffMB = this.reader.getFloat(diffuseLightMat, 'b', ['r', 'g', 'b', 'a']);
+		this.diffMA = this.reader.getFloat(diffuseLightMat, 'a', ['r', 'g', 'b', 'a']);
+
+
+		var specularLightMat = material.getElementsByTagName('specular');
+		if(specularLightMat == null || specularLightMat.length != 1){
+			this.errors.push('Missing specular tag or multiple specular tags on material', light.id);
+			return -1;
+		}
+
+		specularLightMat = specularLightMat[0];
+
+		this.specMR = this.reader.getFloat(specularLightMat, 'r', ['r', 'g', 'b', 'a']);
+		this.specMG = this.reader.getFloat(specularLightMat, 'g', ['r', 'g', 'b', 'a']);
+		this.specMB = this.reader.getFloat(specularLightMat, 'b', ['r', 'g', 'b', 'a']);
+		this.specMA = this.reader.getFloat(specularLightMat, 'a', ['r', 'g', 'b', 'a']);
+
+
+		var emissionLightMat = material.getElementsByTagName('emission');
+		if(emissionLightMat == null || emissionLightMat.length != 1){
+			this.errors.push('Missing emission tag or multiple specular tags on material', light.id);
+			return -1;
+		}
+
+		emissionLightMat = emissionLightMat[0];
+
+		this.emiMR = this.reader.getFloat(emissionLightMat, 'r', ['r', 'g', 'b', 'a']);
+		this.emiMG = this.reader.getFloat(emissionLightMat, 'g', ['r', 'g', 'b', 'a']);
+		this.emiMB = this.reader.getFloat(emissionLightMat, 'b', ['r', 'g', 'b', 'a']);
+		this.emiMA = this.reader.getFloat(emissionLightMat, 'a', ['r', 'g', 'b', 'a']);
+
+		this.materials[material.id] = {
+			id: material.id,
+			ambient: [this.ambMR, this.ambMG, this.ambMB, this.ambMA],
+			diffuse: [this.diffMR, this.diffMG, this.diffMB, this.diffMA],
+			specular: [this.specMR, this.specMG, this.specMB, this.specMA],
+			emission: [this.emiMR, this.emiMG, this.emiMB, this.emiMA]
+		};
+	}
 }

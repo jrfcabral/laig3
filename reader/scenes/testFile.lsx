@@ -51,6 +51,17 @@
         </TEXTURE>
     </TEXTURES>
 
+    <MATERIALS>
+        <MATERIAL id="m01">                                  
+            <shininess value="10.0" />
+            <specular r="1.0" g="0.9" b="0.8" a="1.0" />
+            <diffuse r="1.0" g="0.9" b="0.8" a="1.0" />
+            <ambient r="1.0" g="0.9" b="0.8" a="1.0" />
+            <emission r="1.0" g="0.3" b="0.8" a="1.0" />
+        </MATERIAL>
+    </MATERIALS>
+
+
     <NODES>
         <ROOT id="00"/>
         <NODE id= "02">
