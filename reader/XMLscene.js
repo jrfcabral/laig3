@@ -51,7 +51,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 {
 	//this.gl.clearColor(this.graph.background[0],this.graph.background[1],this.graph.background[2],this.graph.background[3]);
 	
-	this.gl.clearColor(this.graph.bgLightR,this.graph.bgLightG,this.graph.bgLightB,this.graph.bgLightA);
+	this.gl.clearColor(this.graph.bgLight[0],this.graph.bgLight[1],this.graph.bgLight[2],this.graph.bgLight[3]);
 
 	console.log((this.graph.lightsNum > 8)? 8:this.graph.lightsNum);
 

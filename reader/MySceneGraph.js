@@ -342,12 +342,12 @@ MySceneGraph.prototype.parseLSX=function(rootElement){
 	}
 	console.log('Done MATERIALS parsing');
 
+	console.log(this.lightsDic);
 	console.log(this.materials);
 
 	this.ParseLeaves(rootElement);
 	this.ParseNodes(rootElement);
-	//console.log(this.lightsDic[0]);
-	//console.log(this.lightsDic[1]);
+	
 
 
 }
@@ -428,13 +428,8 @@ MySceneGraph.prototype.parseIllum=function(illum){
 		return "Missing abient tag on the ILLUMINATION tag";
 	}
 
-	//BEM Q ME LIXARAM AQUI CRL
-	//A getRGBA e pra valores declarados juntos (rgb="1 1 1 1")
-	//this.ambLight = this.reader.getRGBA(ambient, '')
-	this.ambLightR = this.reader.getFloat(ambient[0], 'r', ['r', 'g', 'b', 'a']);
-	this.ambLightG = this.reader.getFloat(ambient[0], 'g', ['r', 'g', 'b', 'a']);
-	this.ambLightB = this.reader.getFloat(ambient[0], 'b', ['r', 'g', 'b', 'a']);
-	this.ambLightA = this.reader.getFloat(ambient[0], 'a', ['r', 'g', 'b', 'a']);
+	var globalAmbLight = this.getRGBAProper(ambient[0]);
+	
 	
 
 	var doubleside = illum.getElementsByTagName('doubleside');
@@ -451,10 +446,7 @@ MySceneGraph.prototype.parseIllum=function(illum){
 		return "Missing background tag on the ILLUMINATION tag";
 	}
 
-	this.bgLightR = this.reader.getFloat(backgrd[0], 'r', ['r', 'g', 'b', 'a']);
-	this.bgLightG = this.reader.getFloat(backgrd[0], 'g', ['r', 'g', 'b', 'a']);
-	this.bgLightB = this.reader.getFloat(backgrd[0], 'b', ['r', 'g', 'b', 'a']);
-	this.bgLightA = this.reader.getFloat(backgrd[0], 'a', ['r', 'g', 'b', 'a']);
+	this.bgLight = this.getRGBAProper(backgrd[0]);
 
 }
 
@@ -466,7 +458,7 @@ MySceneGraph.prototype.parseLights=function(lights){
 	}
 
 	this.lightsNum = numberLights;
-	console.log(numberLights);
+	
 	for(var i=0;i<numberLights;i++){
 		var light = lights.children[i];
 		
@@ -497,56 +489,19 @@ MySceneGraph.prototype.parseLights=function(lights){
 		this.posZ = this.reader.getFloat(position, 'z', ['x', 'y', 'z', 'w']);
 		this.posW = this.reader.getFloat(position, 'w', ['x', 'y', 'z', 'w']);
 
-
-		var ambientLight = light.getElementsByTagName('ambient');
-		if(ambientLight == null || ambientLight.length != 1){
-			this.errors.push('Missing ambient tag or multiple ambient tags on light', light.id);
+		var illum = this.getIllumination(light, 'LIGHT');
+		if(illum == -1){
 			return -1;
 		}
-
-		ambientLight = ambientLight[0];
-
-		this.ambR = this.reader.getFloat(ambientLight, 'r', ['r', 'g', 'b', 'a']);
-		this.ambG = this.reader.getFloat(ambientLight, 'g', ['r', 'g', 'b', 'a']); 
-		this.ambB = this.reader.getFloat(ambientLight, 'b', ['r', 'g', 'b', 'a']);
-		this.ambA = this.reader.getFloat(ambientLight, 'a', ['r', 'g', 'b', 'a']);
-
-
-		var diffuseLight = light.getElementsByTagName('diffuse');
-		if(diffuseLight == null || diffuseLight.length != 1){
-			this.errors.push('Missing diffuse tag or multiple diffuse tags on light', light.id);
-			return -1;
-		}
-
-		diffuseLight = diffuseLight[0];
-
-		this.diffR = this.reader.getFloat(diffuseLight, 'r', ['r', 'g', 'b', 'a']);
-		this.diffG = this.reader.getFloat(diffuseLight, 'g', ['r', 'g', 'b', 'a']);
-		this.diffB = this.reader.getFloat(diffuseLight, 'b', ['r', 'g', 'b', 'a']);
-		this.diffA = this.reader.getFloat(diffuseLight, 'a', ['r', 'g', 'b', 'a']);
-
-
-		var specularLight = light.getElementsByTagName('specular');
-		if(specularLight == null || specularLight.length != 1){
-			this.errors.push('Missing specular tag or multiple specular tags on light', light.id);
-			return -1;
-		}
-
-		specularLight = specularLight[0];
-
-		this.specR = this.reader.getFloat(specularLight, 'r', ['r', 'g', 'b', 'a']);
-		this.specG = this.reader.getFloat(specularLight, 'g', ['r', 'g', 'b', 'a']);
-		this.specB = this.reader.getFloat(specularLight, 'b', ['r', 'g', 'b', 'a']);
-		this.specA = this.reader.getFloat(specularLight, 'a', ['r', 'g', 'b', 'a']);
 
 		//Can't see why lights need IDs and it's easier to just go with numbers here
 		this.lightsDic[i] = {
 			id: light.id,
 			enable: this.enableVal,
 			position: [this.posX, this.posY, this.posZ, this.posW],
-			ambient: [this.ambR, this.ambG, this.ambB, this.ambA],
-			diffuse: [this.diffR, this.diffG, this.diffB, this.diffA],
-			specular: [this.specR, this.specG, this.specB, this.specA]
+			ambient: illum[0],
+			diffuse: illum[1],
+			specular: illum[2]
 		};
 	}
 }
@@ -602,48 +557,11 @@ MySceneGraph.prototype.parseMaterials=function(mat){
 			this.errors.push('Missing shininess tag or multiple shininess tags on material', texture.id);
 			return -1;
 		}
-		
-		var ambientLightMat = material.getElementsByTagName('ambient');
-		if(ambientLightMat == null || ambientLightMat.length != 1){
-			this.errors.push('Missing ambient tag or multiple ambient tags on material', light.id);
+
+		var illum = this.getIllumination(material, 'MATERIAL');
+		if(illum == -1){
 			return -1;
 		}
-
-		ambientLightMat = ambientLightMat[0];
-
-		this.ambMR = this.reader.getFloat(ambientLightMat, 'r', ['r', 'g', 'b', 'a']);
-		this.ambMG = this.reader.getFloat(ambientLightMat, 'g', ['r', 'g', 'b', 'a']); 
-		this.ambMB = this.reader.getFloat(ambientLightMat, 'b', ['r', 'g', 'b', 'a']);
-		this.ambMA = this.reader.getFloat(ambientLightMat, 'a', ['r', 'g', 'b', 'a']);
-
-
-		var diffuseLightMat = material.getElementsByTagName('diffuse');
-		if(diffuseLightMat == null || diffuseLightMat.length != 1){
-			this.errors.push('Missing diffuse tag or multiple diffuse tags on material', light.id);
-			return -1;
-		}
-
-		diffuseLightMat = diffuseLightMat[0];
-
-		this.diffMR = this.reader.getFloat(diffuseLightMat, 'r', ['r', 'g', 'b', 'a']);
-		this.diffMG = this.reader.getFloat(diffuseLightMat, 'g', ['r', 'g', 'b', 'a']);
-		this.diffMB = this.reader.getFloat(diffuseLightMat, 'b', ['r', 'g', 'b', 'a']);
-		this.diffMA = this.reader.getFloat(diffuseLightMat, 'a', ['r', 'g', 'b', 'a']);
-
-
-		var specularLightMat = material.getElementsByTagName('specular');
-		if(specularLightMat == null || specularLightMat.length != 1){
-			this.errors.push('Missing specular tag or multiple specular tags on material', light.id);
-			return -1;
-		}
-
-		specularLightMat = specularLightMat[0];
-
-		this.specMR = this.reader.getFloat(specularLightMat, 'r', ['r', 'g', 'b', 'a']);
-		this.specMG = this.reader.getFloat(specularLightMat, 'g', ['r', 'g', 'b', 'a']);
-		this.specMB = this.reader.getFloat(specularLightMat, 'b', ['r', 'g', 'b', 'a']);
-		this.specMA = this.reader.getFloat(specularLightMat, 'a', ['r', 'g', 'b', 'a']);
-
 
 		var emissionLightMat = material.getElementsByTagName('emission');
 		if(emissionLightMat == null || emissionLightMat.length != 1){
@@ -653,17 +571,59 @@ MySceneGraph.prototype.parseMaterials=function(mat){
 
 		emissionLightMat = emissionLightMat[0];
 
-		this.emiMR = this.reader.getFloat(emissionLightMat, 'r', ['r', 'g', 'b', 'a']);
-		this.emiMG = this.reader.getFloat(emissionLightMat, 'g', ['r', 'g', 'b', 'a']);
-		this.emiMB = this.reader.getFloat(emissionLightMat, 'b', ['r', 'g', 'b', 'a']);
-		this.emiMA = this.reader.getFloat(emissionLightMat, 'a', ['r', 'g', 'b', 'a']);
+		this.emi = this.getRGBAProper(emissionLightMat);
+
 
 		this.materials[material.id] = {
 			id: material.id,
-			ambient: [this.ambMR, this.ambMG, this.ambMB, this.ambMA],
-			diffuse: [this.diffMR, this.diffMG, this.diffMB, this.diffMA],
-			specular: [this.specMR, this.specMG, this.specMB, this.specMA],
-			emission: [this.emiMR, this.emiMG, this.emiMB, this.emiMA]
+			ambient: illum[0],
+			diffuse: illum[1],
+			specular: illum[2],
+			emission: this.emi
 		};
 	}
+}
+
+/* Gets all the color components */
+MySceneGraph.prototype.getRGBAProper=function(elem){
+	this.R = this.reader.getFloat(elem, 'r', ['r', 'g', 'b', 'a']);
+	this.G = this.reader.getFloat(elem, 'g', ['r', 'g', 'b', 'a']);
+	this.B = this.reader.getFloat(elem, 'b', ['r', 'g', 'b', 'a']);
+	this.A = this.reader.getFloat(elem, 'a', ['r', 'g', 'b', 'a']);
+
+	return [this.R, this.G, this.B, this.A];
+}
+
+
+/*  Gets ambient, diffuse and specular light components*/
+MySceneGraph.prototype.getIllumination=function(obj, tag){
+
+	var ambientLight = obj.getElementsByTagName('ambient');
+	if(ambientLight == null || ambientLight.length != 1){
+		this.errors.push('Missing ambient tag or multiple ambient tags on', tag, obj.id);
+		return -1;
+	}
+
+	ambientLight = ambientLight[0];	
+	this.ambient = this.getRGBAProper(ambientLight);
+
+	var diffuseLight = obj.getElementsByTagName('diffuse');
+	if(diffuseLight == null || diffuseLight.length != 1){
+		this.errors.push('Missing diffuse tag or multiple ambient tags on', tag, obj.id);
+		return -1;
+	}
+
+	diffuseLight = diffuseLight[0];	
+	this.diffuse = this.getRGBAProper(diffuseLight);
+
+	var specularLight = obj.getElementsByTagName('specular');
+	if(specularLight == null || specularLight.length != 1){
+		this.errors.push('Missing specular tag or multiple ambient tags on', tag, obj.id);
+		return -1;
+	}
+
+	specularLight = specularLight[0];	
+	this.specular = this.getRGBAProper(specularLight);
+
+	return [this.ambient, this.diffuse, this.specular];
 }
