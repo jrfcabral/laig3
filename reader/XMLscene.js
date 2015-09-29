@@ -21,6 +21,10 @@ XMLscene.prototype.init = function (application) {
     this.gl.depthFunc(this.gl.LEQUAL);
 
 	this.axis=new CGFaxis(this);
+
+
+	//testing primitives
+	this.testRect = new rectangle(this, [0, 2], [4, 0]);
 };
 
 XMLscene.prototype.initLights = function () {
@@ -66,6 +70,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 		this.lights[i].setVisible(true);
 		
 	}
+	
 
 	
 
@@ -92,8 +97,13 @@ XMLscene.prototype.display = function () {
 	this.axis.display();
 
 	this.setDefaultAppearance();
-	
+
 	// ---- END Background, camera and axis setup
+
+
+	//testing primitives display
+	this.testRect.display();
+
 
 	// it is important that things depending on the proper loading of the graph
 	// only get executed after the graph has loaded correctly.
@@ -145,8 +155,10 @@ XMLscene.prototype.traverseGraph = function(elem){
 			}
 		}
 		
+
+		
 		//restore previous state
 		this.popMatrix();
-
+		
 	}
 };

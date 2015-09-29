@@ -40,7 +40,7 @@
              <ambient r="0" g="0" b="0" a="1.0" />
             <diffuse r="0" g="0" b="0" a="1.0" />
             <specular r="0" g="0" b="0" a="1.0" />
-        </LIGHT> 
+        </LIGHT>
         
     </LIGHTS>   
 
