@@ -26,16 +26,17 @@ XMLscene.prototype.init = function (application) {
 	//testing primitives
 	this.testRect = new rectangle(this, [0, 2], [4, 0]);
 	this.testTri = new triangle(this, [0, 0, 0], [4, 0, 0], [2, 2, 0]);
+	this.testCyl = new cylinder(this, 4, 2, 0.5, 4, 8);
 };
 
 XMLscene.prototype.initLights = function () {
-	
+
     this.shader.bind();
 
 	this.lights[0].setPosition(2, 3, 3, 1);
     this.lights[0].setDiffuse(1.0,1.0,1.0,1.0);
     this.lights[0].update();
- 	
+
     this.shader.unbind();
 };
 
@@ -47,15 +48,15 @@ XMLscene.prototype.setDefaultAppearance = function () {
     this.setAmbient(0.2, 0.4, 0.8, 1.0);
     this.setDiffuse(0.2, 0.4, 0.8, 1.0);
     this.setSpecular(0.2, 0.4, 0.8, 1.0);
-    this.setShininess(10.0);	
+    this.setShininess(10.0);
 };
 
-// Handler called when the graph is finally loaded. 
+// Handler called when the graph is finally loaded.
 // As loading is asynchronous, this may be called already after the application has started the run loop
-XMLscene.prototype.onGraphLoaded = function () 
+XMLscene.prototype.onGraphLoaded = function ()
 {
 	//this.gl.clearColor(this.graph.background[0],this.graph.background[1],this.graph.background[2],this.graph.background[3]);
-	
+
 	this.gl.clearColor(this.graph.bgLight[0],this.graph.bgLight[1],this.graph.bgLight[2],this.graph.bgLight[3]);
 
 	console.log((this.graph.lightsNum > 8)? 8:this.graph.lightsNum);
@@ -69,11 +70,11 @@ XMLscene.prototype.onGraphLoaded = function ()
 			this.lights[i].enable();
 		}
 		this.lights[i].setVisible(true);
-		
-	}
-	
 
-	
+	}
+
+
+
 
 	//this.lights[0].setVisible(true);
     //this.lights[0].enable();
@@ -82,7 +83,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 XMLscene.prototype.display = function () {
 	// ---- BEGIN Background, camera and axis setup
     this.shader.bind();
-	
+
 	// Clear image and depth buffer everytime we update the scene
     this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
@@ -104,7 +105,8 @@ XMLscene.prototype.display = function () {
 
 	//testing primitives display
 	//this.testRect.display();
-	this.testTri.display();
+	//this.testTri.display();
+	this.testCyl.display();
 
 
 	// it is important that things depending on the proper loading of the graph
@@ -112,13 +114,13 @@ XMLscene.prototype.display = function () {
 	// This is one possible way to do it
 	if (this.graph.loadedOk)
 	{
-		
+
 		for(i = 0; i < ((this.graph.lightsNum > 8)? 8:this.graph.lightsNum); i++){
 			this.lights[i].update();
 		}
 		//this.traverseGraph(this.graph.nodes[this.graph.root]);
-	};	
-	
+	};
+
     this.shader.unbind();
 };
 
@@ -156,11 +158,11 @@ XMLscene.prototype.traverseGraph = function(elem){
 				console.log("ERROR: Non-existant descendant");
 			}
 		}
-		
 
-		
+
+
 		//restore previous state
 		this.popMatrix();
-		
+
 	}
 };
