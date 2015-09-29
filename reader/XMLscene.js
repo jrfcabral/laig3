@@ -25,6 +25,7 @@ XMLscene.prototype.init = function (application) {
 
 	//testing primitives
 	this.testRect = new rectangle(this, [0, 2], [4, 0]);
+	this.testTri = new triangle(this, [0, 0, 0], [4, 0, 0], [2, 2, 0]);
 };
 
 XMLscene.prototype.initLights = function () {
@@ -102,7 +103,8 @@ XMLscene.prototype.display = function () {
 
 
 	//testing primitives display
-	this.testRect.display();
+	//this.testRect.display();
+	this.testTri.display();
 
 
 	// it is important that things depending on the proper loading of the graph
