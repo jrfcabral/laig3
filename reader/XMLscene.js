@@ -27,7 +27,7 @@ XMLscene.prototype.init = function (application) {
 	this.testRect = new rectangle(this, [0, 2], [4, 0]);
 	this.testTri = new triangle(this, [0, 0, 0], [4, 0, 0], [2, 2, 0]);
 	//this.testCyl = new cylinder(this, 4, 0.5, 0.5, 4, 8);
-	this.testSphere = new sphere(this, 1, 40,40);
+	this.testSphere = new sphere(this, 1, 4,4);
 };
 
 XMLscene.prototype.initLights = function () {

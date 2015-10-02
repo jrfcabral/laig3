@@ -214,49 +214,6 @@ MySceneGraph.prototype.onXMLReady=function()
 
 
 /*
- * Example of method that parses elements of one block and stores information in a specific data structure
- */
-MySceneGraph.prototype.parseGlobalsExample= function(rootElement) {
-
-	var elems =  rootElement.getElementsByTagName('globals');
-	if (elems == null) {
-		return "globals element is missing.";
-	}
-
-	if (elems.length != 1) {
-		return "either zero or more than one 'globals' element found.";
-	}
-
-	// various examples of different types of access
-	var globals = elems[0];
-	this.background = this.reader.getRGBA(globals, 'background');
-	this.drawmode = this.reader.getItem(globals, 'drawmode', ["fill","line","point"]);
-	this.cullface = this.reader.getItem(globals, 'cullface', ["back","front","none", "frontandback"]);
-	this.cullorder = this.reader.getItem(globals, 'cullorder', ["ccw","cw"]);
-
-	console.log("Globals read from file: {background=" + this.background + ", drawmode=" + this.drawmode + ", cullface=" + this.cullface + ", cullorder=" + this.cullorder + "}");
-
-	var tempList=rootElement.getElementsByTagName('list');
-
-	if (tempList == null  || tempList.length==0) {
-		return "list element is missing.";
-	}
-
-	this.list=[];
-	// iterate over every element
-	var nnodes=tempList[0].children.length;
-	for (var i=0; i< nnodes; i++)
-	{
-		var e=tempList[0].children[i];
-
-		// process each element and store its information
-		this.list[e.id]=e.attributes.getNamedItem("coords").value;
-		console.log("Read list item id "+ e.id+" with value "+this.list[e.id]);
-	};
-
-};
-
-/*
  * Callback to be executed on any read error
  */
 
@@ -348,7 +305,11 @@ MySceneGraph.prototype.parseLSX=function(rootElement){
 	this.ParseLeaves(rootElement);
 	this.ParseNodes(rootElement);
 	
-
+	if(this.errors != null){
+		for(var i = 0; i < this.errors.length; i++){
+			this.onXMLError(this.errors[i]);
+		}
+	}
 
 }
 
@@ -358,7 +319,6 @@ MySceneGraph.prototype.parseInitials=function(initials){
 	var frustum = initials.getElementsByTagName('frustum');
 	if(frustum == null || frustum.length != 1){
 		this.errors.push('Missing frustum tag or multiple frustum tags found.');
-		return "Missing frustum tag or multiple frustum tags found.";
 	}
 
 	this.frustumNear = this.reader.getFloat(frustum[0], 'near', 'near');
@@ -368,7 +328,6 @@ MySceneGraph.prototype.parseInitials=function(initials){
 	var initTrans = initials.getElementsByTagName('translate');
 	if(initTrans == null || initTrans.length != 1){
 		this.errors.push('Missing translate tag or multiple translate tags found.');
-		return "Missing translate tag or multiple frustum tags found.";
 	}
 
 	this.initTransx = this.reader.getFloat(initTrans[0], 'x', ['x', 'y', 'z']);
@@ -379,7 +338,6 @@ MySceneGraph.prototype.parseInitials=function(initials){
 	var initRot = initials.getElementsByTagName('rotation');
 	if(initRot == null || initRot.length != 3){
 		this.errors.push('Missing 1 or both rotation tags on the INITIALS tag');
-		return "Missing 1 or both rotation tags on the INITIALS tag";
 	}
 	
 	var initRot1 = initRot[0];
@@ -402,7 +360,6 @@ MySceneGraph.prototype.parseInitials=function(initials){
 	var initScale = initials.getElementsByTagName('scale');
 	if(initScale == null || initScale.length != 1){
 		this.errors.push('Missing scale tag on the INITIALS tag');
-		return "Missing sacle tag on the INITIALS tag";
 	}
 
 	this.initScalex = this.reader.getFloat(initScale[0], 'sx', ['sx', 'sy', 'sz']);
@@ -414,7 +371,6 @@ MySceneGraph.prototype.parseInitials=function(initials){
 	var ref = initials.getElementsByTagName('reference');
 	if(ref == null || ref.length != 1){
 		this.errors.push('Missing reference tag on the INITIALS tag');
-		return "Missing reference tag on the INITIALS tag";
 	}
 
 	this.refLength = this.reader.getFloat(ref[0], 'length', 'length');
@@ -425,7 +381,6 @@ MySceneGraph.prototype.parseIllum=function(illum){
 	var ambient = illum.getElementsByTagName('ambient');
 	if(ambient == null || ambient.length != 1){
 		this.errors.push('Missing abient tag on the ILLUMINATION tag');
-		return "Missing abient tag on the ILLUMINATION tag";
 	}
 
 	var globalAmbLight = this.getRGBAProper(ambient[0]);
@@ -435,7 +390,6 @@ MySceneGraph.prototype.parseIllum=function(illum){
 	var doubleside = illum.getElementsByTagName('doubleside');
 	if(ambient == null || ambient.length != 1){
 		this.errors.push('Missing doubleside tag on the ILLUMINATION tag');
-		return "Missing doubleside tag on the ILLUMINATION tag";   
 	}
 
 	this.doubleside = this.reader.getInteger(doubleside[0], 'value', 'value');
@@ -443,7 +397,6 @@ MySceneGraph.prototype.parseIllum=function(illum){
 	var backgrd = illum.getElementsByTagName('background');
 	if(ambient == null || ambient.length != 1){
 		this.errors.push('Missing background tag on the ILLUMINATION tag');
-		return "Missing background tag on the ILLUMINATION tag";
 	}
 
 	this.bgLight = this.getRGBAProper(backgrd[0]);
@@ -465,7 +418,6 @@ MySceneGraph.prototype.parseLights=function(lights){
 		var enable = light.getElementsByTagName('enable');
 		if(enable == null || enable.length != 1){
 			this.errors.push('Missing enable tag or multiple enable tags on light', light.id);
-			return -1;
 		}
 		enable = enable[0]; 
 
@@ -473,14 +425,14 @@ MySceneGraph.prototype.parseLights=function(lights){
 		this.enableVal = this.reader.getInteger(enable, 'value', ['0', '1']);
 		if(this.enableVal != 0 && this.enableVal != 1){
 			this.errors.push('Illegal value for enable tag on light', light.id);
-			return -1;
+			
 		}
 
 
 		var position = light.getElementsByTagName('position');
 		if(position == null || position.length != 1){
 			this.errors.push('Missing position tag or multiple position tags on light', light.id);
-			return -1;
+			
 		}
 		position = position[0];
 
@@ -491,7 +443,7 @@ MySceneGraph.prototype.parseLights=function(lights){
 
 		var illum = this.getIllumination(light, 'LIGHT');
 		if(illum == -1){
-			return -1;
+			this.errors.push("Something went wrong parsing the illumination values for light", light.id);
 		}
 
 		//Can't see why lights need IDs and it's easier to just go with numbers here
@@ -516,7 +468,7 @@ MySceneGraph.prototype.parseTex=function(tex){
 		var filePath = texture.getElementsByTagName('file');
 		if(filePath == null ||filePath.length != 1){
 			this.errors.push('Missing file tag or multiple file tags on texture', texture.id);
-			return -1;
+			
 		}
 
 		filePath = filePath[0];
@@ -527,7 +479,7 @@ MySceneGraph.prototype.parseTex=function(tex){
 		var ampFactor = texture.getElementsByTagName('amplif_factor');
 		if(ampFactor == null || ampFactor.length != 1){
 			this.errors.push('Missing amplif_factor tag or multiple amplif_factor tags on texture', texture.id);
-			return -1;
+			
 		}
 
 		ampFactor = ampFactor[0];
@@ -554,18 +506,18 @@ MySceneGraph.prototype.parseMaterials=function(mat){
 	
 		var shininess = material.getElementsByTagName('shininess');
 		if(shininess == null ||shininess.length != 1){
-			this.errors.push('Missing shininess tag or multiple shininess tags on material', texture.id);
-			return -1;
+			this.errors.push('Missing shininess tag or multiple shininess tags on material', material.id);
+			
 		}
 
 		var illum = this.getIllumination(material, 'MATERIAL');
 		if(illum == -1){
-			return -1;
+			this.errors.push("Something went wrong parsing the illumination values for material", material.id);
 		}
 
 		var emissionLightMat = material.getElementsByTagName('emission');
 		if(emissionLightMat == null || emissionLightMat.length != 1){
-			this.errors.push('Missing emission tag or multiple specular tags on material', light.id);
+			this.errors.push('Missing emission tag or multiple specular tags on material', material.id);
 			return -1;
 		}
 
@@ -601,7 +553,7 @@ MySceneGraph.prototype.getIllumination=function(obj, tag){
 	var ambientLight = obj.getElementsByTagName('ambient');
 	if(ambientLight == null || ambientLight.length != 1){
 		this.errors.push('Missing ambient tag or multiple ambient tags on', tag, obj.id);
-		return -1;
+		
 	}
 
 	ambientLight = ambientLight[0];	
@@ -610,7 +562,7 @@ MySceneGraph.prototype.getIllumination=function(obj, tag){
 	var diffuseLight = obj.getElementsByTagName('diffuse');
 	if(diffuseLight == null || diffuseLight.length != 1){
 		this.errors.push('Missing diffuse tag or multiple ambient tags on', tag, obj.id);
-		return -1;
+		
 	}
 
 	diffuseLight = diffuseLight[0];	
@@ -619,7 +571,7 @@ MySceneGraph.prototype.getIllumination=function(obj, tag){
 	var specularLight = obj.getElementsByTagName('specular');
 	if(specularLight == null || specularLight.length != 1){
 		this.errors.push('Missing specular tag or multiple ambient tags on', tag, obj.id);
-		return -1;
+		
 	}
 
 	specularLight = specularLight[0];	
