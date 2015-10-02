@@ -134,6 +134,7 @@ XMLscene.prototype.traverseGraph = function(elem){
 	//we have reached a leaf
 	if (!elem.descendants){
 		console.log("Reached leaf with id " + elem.id);
+		console.log(mat3.create());
 
 		this.DrawPrimitive(elem);
 	}
@@ -143,13 +144,9 @@ XMLscene.prototype.traverseGraph = function(elem){
 		console.log("Traversal: reached node with id "+elem.id);
 
 		//apply transformations
-		var transformations = elem.transformations.slice();
 		this.pushMatrix();
-		for(var i = 0; i < transformations.length; i++){
-			transformations[i].Apply();
-			console.log(transformations[i]);
-
-		}
+		this.multMatrix(elem.matrix);
+	
 
 		//TODO apply materials and textures
 
