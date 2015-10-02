@@ -48,10 +48,7 @@ sphere.prototype.initBuffers = function() {
 
         }
     }
-
-    console.log(this.indices);
-    console.log(this.vertices)
-
+      
 	this.primitiveType = this.scene.gl.TRIANGLES;
  	this.initGLBuffers();
 

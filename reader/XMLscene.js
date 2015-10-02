@@ -27,6 +27,7 @@ XMLscene.prototype.init = function (application) {
 	//this.testRect = new rectangle(this, [0, 2], [4, 0]);
 	//this.testTri = new triangle(this, [0, 0, 0], [4, 0, 0], [2, 2, 0]);
 	//this.testCyl = new cylinder(this, 4, 0.5, 0.5, 4, 8);
+
 	//this.testSphere = new sphere(this, 1, 4,4);
 };
 
@@ -121,7 +122,7 @@ XMLscene.prototype.display = function () {
 		for(i = 0; i < ((this.graph.lightsNum > 8)? 8:this.graph.lightsNum); i++){
 			this.lights[i].update();
 		}
-		//this.traverseGraph(this.graph.nodes[this.graph.root]);
+		this.traverseGraph(this.graph.nodes[this.graph.root]);
 	};
 
     this.shader.unbind();
@@ -134,6 +135,7 @@ XMLscene.prototype.traverseGraph = function(elem){
 	if (!elem.descendants){
 		console.log("Reached leaf with id " + elem.id);
 
+		this.DrawPrimitive(elem);
 	}
 
 	//this is a node
@@ -145,6 +147,8 @@ XMLscene.prototype.traverseGraph = function(elem){
 		this.pushMatrix();
 		for(var i = 0; i < transformations.length; i++){
 			transformations[i].Apply();
+			console.log(transformations[i]);
+
 		}
 
 		//TODO apply materials and textures
@@ -169,3 +173,22 @@ XMLscene.prototype.traverseGraph = function(elem){
 
 	}
 };
+
+XMLscene.prototype.DrawPrimitive = function(elem){
+	var object;
+	if(elem.type === "rectangle")
+		object = new rectangle(this,[elem.args[0],elem.args[1]],[elem.args[2],elem.args[3]]);
+	
+	else if (elem.type === "sphere")
+		object = new sphere(this, elem.args[0],elem.args[1],elem.args[2]);
+	
+	else if(elem.type === "triangle")
+		object = new triangle(this, [elem.args[0],elem.args[1],elem.args[2]],
+		 [elem.args[3],elem.args[4],elem.args[5]],
+		 [elem.args[6],elem.args[7],elem.args[8]]);
+	
+	else if (elem.type ==="cylinder")
+		object = new cylinder(this, elem.args[0], elem.args[1],elem.args[2], elem.args[3]);
+	
+	object.display();
+}
