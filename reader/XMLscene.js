@@ -56,7 +56,9 @@ XMLscene.prototype.setDefaultAppearance = function () {
 // As loading is asynchronous, this may be called already after the application has started the run loop
 XMLscene.prototype.onGraphLoaded = function ()
 {
-	//this.gl.clearColor(this.graph.background[0],this.graph.background[1],this.graph.background[2],this.graph.background[3]);
+	this.camera.near = this.graph.frustumNear;
+	this.camera.far = this.graph.frustumFar;
+	
 
 	this.gl.clearColor(this.graph.bgLight[0],this.graph.bgLight[1],this.graph.bgLight[2],this.graph.bgLight[3]);
 

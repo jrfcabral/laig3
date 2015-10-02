@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-16" standalone="yes"?>
 <SCENE>
     <INITIALS>
-        <frustum near="0.05" far="10.00"/>                    
+        <frustum near="0.05" far="1000.00"/>                    
         <translate  x="0.0" y="0.0" z="5.0" />                 
         <rotation axis="y" angle="45" />
         <rotation axis="z" angle="20" />                   

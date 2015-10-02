@@ -305,6 +305,14 @@ MySceneGraph.prototype.parseLSX=function(rootElement){
 	this.ParseLeaves(rootElement);
 	this.ParseNodes(rootElement);
 	
+	console.log('WARNINGS: ')
+	if(this.warnings != null){
+		for(var i = 0; i < this.warnings.length; i++){
+			console.warn(this.warnings[i]);
+		}
+	}
+
+	console.log('ERRORS: ')
 	if(this.errors != null){
 		for(var i = 0; i < this.errors.length; i++){
 			this.onXMLError(this.errors[i]);
@@ -320,40 +328,45 @@ MySceneGraph.prototype.parseInitials=function(initials){
 	if(frustum == null || frustum.length != 1){
 		this.errors.push('Missing frustum tag or multiple frustum tags found.');
 	}
-
-	this.frustumNear = this.reader.getFloat(frustum[0], 'near', 'near');
-	this.frustumFar = this.reader.getFloat(frustum[0], 'far', 'far');
+	else{
+		this.frustumNear = this.reader.getFloat(frustum[0], 'near', 'near');
+		this.frustumFar = this.reader.getFloat(frustum[0], 'far', 'far');
+	}
+	
 
 	//initial translate processing
 	var initTrans = initials.getElementsByTagName('translate');
 	if(initTrans == null || initTrans.length != 1){
 		this.errors.push('Missing translate tag or multiple translate tags found.');
 	}
-
-	this.initTransx = this.reader.getFloat(initTrans[0], 'x', ['x', 'y', 'z']);
-	this.initTransy = this.reader.getFloat(initTrans[0], 'y', ['x', 'y', 'z']);
-	this.initTransz = this.reader.getFloat(initTrans[0], 'z', ['x', 'y', 'z']);
+	else{
+		this.initTransx = this.reader.getFloat(initTrans[0], 'x', ['x', 'y', 'z']);
+		this.initTransy = this.reader.getFloat(initTrans[0], 'y', ['x', 'y', 'z']);
+		this.initTransz = this.reader.getFloat(initTrans[0], 'z', ['x', 'y', 'z']);
+	}
 
 	//initial rotations processing
 	var initRot = initials.getElementsByTagName('rotation');
 	if(initRot == null || initRot.length != 3){
-		this.errors.push('Missing 1 or both rotation tags on the INITIALS tag');
+		this.errors.push('Missing 1 of the rotation tags on the INITIALS tag');
+	}
+	else{
+		var initRot1 = initRot[0];
+
+		this.initRot1Axis = this.reader.getString(initRot1, 'axis', ['axis', 'angle']);
+		this.initRot1Axis = this.reader.getString(initRot1, 'angle', ['axis', 'angle']);
+
+		var initRot2 = initRot[1];
+
+		this.initRot2Axis = this.reader.getString(initRot2, 'axis', ['axis', 'angle']);
+		this.initRot2Axis = this.reader.getString(initRot2, 'angle', ['axis', 'angle']);
+
+		var initRot3 = initRot[2];
+
+		this.initRot3Axis = this.reader.getString(initRot3, 'axis', ['axis', 'angle']);
+		this.initRot3Axis = this.reader.getString(initRot3, 'angle', ['axis', 'angle']);
 	}
 	
-	var initRot1 = initRot[0];
-
-	this.initRot1Axis = this.reader.getString(initRot1, 'axis', ['axis', 'angle']);
-	this.initRot1Axis = this.reader.getString(initRot1, 'angle', ['axis', 'angle']);
-
-	var initRot2 = initRot[1];
-
-	this.initRot2Axis = this.reader.getString(initRot2, 'axis', ['axis', 'angle']);
-	this.initRot2Axis = this.reader.getString(initRot2, 'angle', ['axis', 'angle']);
-
-	var initRot3 = initRot[2];
-
-	this.initRot3Axis = this.reader.getString(initRot3, 'axis', ['axis', 'angle']);
-	this.initRot3Axis = this.reader.getString(initRot3, 'angle', ['axis', 'angle']);
 
 	//inital scaling processing
 
@@ -361,10 +374,11 @@ MySceneGraph.prototype.parseInitials=function(initials){
 	if(initScale == null || initScale.length != 1){
 		this.errors.push('Missing scale tag on the INITIALS tag');
 	}
-
-	this.initScalex = this.reader.getFloat(initScale[0], 'sx', ['sx', 'sy', 'sz']);
-	this.initScaley = this.reader.getFloat(initScale[0], 'sy', ['sx', 'sy', 'sz']);
-	this.initScalez = this.reader.getFloat(initScale[0], 'sz', ['sx', 'sy', 'sz']);
+	else{
+		this.initScalex = this.reader.getFloat(initScale[0], 'sx', ['sx', 'sy', 'sz']);
+		this.initScaley = this.reader.getFloat(initScale[0], 'sy', ['sx', 'sy', 'sz']);
+		this.initScalez = this.reader.getFloat(initScale[0], 'sz', ['sx', 'sy', 'sz']);
+	}	
 
 	//reference length processing 
 
@@ -372,8 +386,10 @@ MySceneGraph.prototype.parseInitials=function(initials){
 	if(ref == null || ref.length != 1){
 		this.errors.push('Missing reference tag on the INITIALS tag');
 	}
-
-	this.refLength = this.reader.getFloat(ref[0], 'length', 'length');
+	else{
+		this.refLength = this.reader.getFloat(ref[0], 'length', 'length');
+	}
+	
 
 }
 
@@ -382,24 +398,27 @@ MySceneGraph.prototype.parseIllum=function(illum){
 	if(ambient == null || ambient.length != 1){
 		this.errors.push('Missing abient tag on the ILLUMINATION tag');
 	}
-
-	var globalAmbLight = this.getRGBAProper(ambient[0]);
-	
-	
+	else{
+		var globalAmbLight = this.getRGBAProper(ambient[0]);
+	}
 
 	var doubleside = illum.getElementsByTagName('doubleside');
 	if(ambient == null || ambient.length != 1){
 		this.errors.push('Missing doubleside tag on the ILLUMINATION tag');
 	}
-
-	this.doubleside = this.reader.getInteger(doubleside[0], 'value', 'value');
+	else{
+		this.doubleside = this.reader.getInteger(doubleside[0], 'value', 'value');
+	}
+	
 	
 	var backgrd = illum.getElementsByTagName('background');
 	if(ambient == null || ambient.length != 1){
 		this.errors.push('Missing background tag on the ILLUMINATION tag');
 	}
-
-	this.bgLight = this.getRGBAProper(backgrd[0]);
+	else{
+		this.bgLight = this.getRGBAProper(backgrd[0]);	
+	}
+	
 
 }
 
@@ -419,27 +438,30 @@ MySceneGraph.prototype.parseLights=function(lights){
 		if(enable == null || enable.length != 1){
 			this.errors.push('Missing enable tag or multiple enable tags on light', light.id);
 		}
-		enable = enable[0]; 
-
+		else{
+			enable = enable[0]; 
 		
-		this.enableVal = this.reader.getInteger(enable, 'value', ['0', '1']);
-		if(this.enableVal != 0 && this.enableVal != 1){
-			this.errors.push('Illegal value for enable tag on light', light.id);
+			this.enableVal = this.reader.getInteger(enable, 'value', ['0', '1']);
+			if(this.enableVal != 0 && this.enableVal != 1){
+				this.errors.push('Illegal value for enable tag on light', light.id);
 			
+			}
 		}
-
 
 		var position = light.getElementsByTagName('position');
 		if(position == null || position.length != 1){
 			this.errors.push('Missing position tag or multiple position tags on light', light.id);
 			
 		}
-		position = position[0];
+		else{
+			position = position[0];
 
-		this.posX = this.reader.getFloat(position, 'x', ['x', 'y', 'z', 'w']);
-		this.posY = this.reader.getFloat(position, 'y', ['x', 'y', 'z', 'w']); 
-		this.posZ = this.reader.getFloat(position, 'z', ['x', 'y', 'z', 'w']);
-		this.posW = this.reader.getFloat(position, 'w', ['x', 'y', 'z', 'w']);
+			this.posX = this.reader.getFloat(position, 'x', ['x', 'y', 'z', 'w']);
+			this.posY = this.reader.getFloat(position, 'y', ['x', 'y', 'z', 'w']); 
+			this.posZ = this.reader.getFloat(position, 'z', ['x', 'y', 'z', 'w']);
+			this.posW = this.reader.getFloat(position, 'w', ['x', 'y', 'z', 'w']);
+		}
+		
 
 		var illum = this.getIllumination(light, 'LIGHT');
 		if(illum == -1){
@@ -470,10 +492,11 @@ MySceneGraph.prototype.parseTex=function(tex){
 			this.errors.push('Missing file tag or multiple file tags on texture', texture.id);
 			
 		}
-
-		filePath = filePath[0];
-
-		this.file = this.reader.getString(filePath, 'path', 'path');
+		else{
+			filePath = filePath[0];
+			this.file = this.reader.getString(filePath, 'path', 'path');
+		}
+		
 
 
 		var ampFactor = texture.getElementsByTagName('amplif_factor');
@@ -481,11 +504,12 @@ MySceneGraph.prototype.parseTex=function(tex){
 			this.errors.push('Missing amplif_factor tag or multiple amplif_factor tags on texture', texture.id);
 			
 		}
-
-		ampFactor = ampFactor[0];
-
-		this.amplifS = this.reader.getFloat(ampFactor, 's', ['s', 't']);
-		this.amplifT = this.reader.getFloat(ampFactor, 't', ['s', 't']);
+		else{
+			ampFactor = ampFactor[0];
+			this.amplifS = this.reader.getFloat(ampFactor, 's', ['s', 't']);
+			this.amplifT = this.reader.getFloat(ampFactor, 't', ['s', 't']);
+		}
+		
 
 
 		this.textures[texture.id] = {
@@ -509,6 +533,11 @@ MySceneGraph.prototype.parseMaterials=function(mat){
 			this.errors.push('Missing shininess tag or multiple shininess tags on material', material.id);
 			
 		}
+		else{
+			shininess = shininess[0];
+			this.shine = this.reader.getFloat(shininess, 'value', 'value');
+			
+		}
 
 		var illum = this.getIllumination(material, 'MATERIAL');
 		if(illum == -1){
@@ -528,6 +557,7 @@ MySceneGraph.prototype.parseMaterials=function(mat){
 
 		this.materials[material.id] = {
 			id: material.id,
+			shininess: this.shine,
 			ambient: illum[0],
 			diffuse: illum[1],
 			specular: illum[2],
@@ -552,30 +582,36 @@ MySceneGraph.prototype.getIllumination=function(obj, tag){
 
 	var ambientLight = obj.getElementsByTagName('ambient');
 	if(ambientLight == null || ambientLight.length != 1){
-		this.errors.push('Missing ambient tag or multiple ambient tags on', tag, obj.id);
+		this.warnings.push('Missing ambient tag on', tag, obj.id, 'default values will be used');
 		
 	}
-
-	ambientLight = ambientLight[0];	
-	this.ambient = this.getRGBAProper(ambientLight);
+	else{
+		ambientLight = ambientLight[0];	
+		this.ambient = this.getRGBAProper(ambientLight);
+	}
+	
 
 	var diffuseLight = obj.getElementsByTagName('diffuse');
 	if(diffuseLight == null || diffuseLight.length != 1){
-		this.errors.push('Missing diffuse tag or multiple ambient tags on', tag, obj.id);
+		this.warnings.push('Missing ambient tag on', tag, obj.id, 'default values will be used');
 		
 	}
-
-	diffuseLight = diffuseLight[0];	
-	this.diffuse = this.getRGBAProper(diffuseLight);
+	else{
+		diffuseLight = diffuseLight[0];	
+		this.diffuse = this.getRGBAProper(diffuseLight);
+	}
+	
 
 	var specularLight = obj.getElementsByTagName('specular');
 	if(specularLight == null || specularLight.length != 1){
-		this.errors.push('Missing specular tag or multiple ambient tags on', tag, obj.id);
+		this.warnings.push('Missing ambient tag on', tag, obj.id, 'default values will be used');
 		
 	}
-
-	specularLight = specularLight[0];	
-	this.specular = this.getRGBAProper(specularLight);
+	else{
+		specularLight = specularLight[0];	
+		this.specular = this.getRGBAProper(specularLight);
+	}
+	
 
 	return [this.ambient, this.diffuse, this.specular];
 }
