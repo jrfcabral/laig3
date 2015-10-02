@@ -24,13 +24,11 @@ XMLscene.prototype.init = function (application) {
 
 
 	//testing primitives
-	this.testRect = new rectangle(this, [0, 2], [4, 0]);
-	this.testTri = new triangle(this, [0, 0, 0], [4, 0, 0], [2, 2, 0]);
+	//this.testRect = new rectangle(this, [0, 2], [4, 0]);
+	//this.testTri = new triangle(this, [0, 0, 0], [4, 0, 0], [2, 2, 0]);
 	//this.testCyl = new cylinder(this, 4, 0.5, 0.5, 4, 8);
-	this.testSphere = new sphere(this, 1, 40,40);
 
-	//List of drawn primitives
-	this.drawn = [];
+	//this.testSphere = new sphere(this, 1, 4,4);
 };
 
 XMLscene.prototype.initLights = function () {
@@ -59,14 +57,15 @@ XMLscene.prototype.setDefaultAppearance = function () {
 // As loading is asynchronous, this may be called already after the application has started the run loop
 XMLscene.prototype.onGraphLoaded = function ()
 {
-	//this.gl.clearColor(this.graph.background[0],this.graph.background[1],this.graph.background[2],this.graph.background[3]);
+	this.camera.near = this.graph.frustumNear;
+	this.camera.far = this.graph.frustumFar;
+	
 
-	this.gl.clearColor(this.graph.bgLight[0],this.graph.bgLight[1],this.graph.bgLight[2],this.graph.bgLight[3]);
+	this.gl.clearColor(this.graph.bgLight[0] || 1.0,this.graph.bgLight[1] || 0.5, this.graph.bgLight[2],this.graph.bgLight[3] || 0.3);
 
-	console.log((this.graph.lightsNum > 8)? 8:this.graph.lightsNum);
 
 	for(var i = 0; i < ((this.graph.lightsNum > 8)? 8:this.graph.lightsNum); i++){
-		this.lights[i].setPosition(this.graph.lightsDic[i].position[0], this.graph.lightsDic[i].position[1], this.graph.lightsDic[i].position[2], this.graph.lightsDic[i].position[3]);
+		this.lights[i].setPosition(this.graph.lightsDic[i].position[0] , this.graph.lightsDic[i].position[1] , this.graph.lightsDic[i].position[2], this.graph.lightsDic[i].position[3] );
 		this.lights[i].setAmbient(this.graph.lightsDic[i].ambient[0], this.graph.lightsDic[i].ambient[1], this.graph.lightsDic[i].ambient[2], this.graph.lightsDic[i].ambient[3]);
 		this.lights[i].setDiffuse(this.graph.lightsDic[i].diffuse[0], this.graph.lightsDic[i].diffuse[1], this.graph.lightsDic[i].diffuse[2], this.graph.lightsDic[i].diffuse[3]);
 		this.lights[i].setSpecular(this.graph.lightsDic[i].specular[0], this.graph.lightsDic[i].specular[1], this.graph.lightsDic[i].specular[2], this.graph.lightsDic[i].specular[3]);
