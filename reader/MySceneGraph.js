@@ -384,15 +384,6 @@ MySceneGraph.prototype.parseIllum=function(illum){
 	else{
 		var globalAmbLight = this.getRGBAProper(ambient[0]);
 	}
-
-	var doubleside = illum.getElementsByTagName('doubleside');
-	if(ambient == null || ambient.length != 1){
-		this.errors.push('Missing doubleside tag on the ILLUMINATION tag');
-	}
-	else{
-		this.doubleside = this.reader.getInteger(doubleside[0], 'value', 'value');
-	}
-	
 	
 	var backgrd = illum.getElementsByTagName('background');
 	if(ambient == null || ambient.length != 1){
