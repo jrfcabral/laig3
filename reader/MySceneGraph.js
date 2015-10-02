@@ -228,95 +228,78 @@ MySceneGraph.prototype.parseLSX=function(rootElement){
 	var elems =  rootElement.getElementsByTagName('INITIALS');
 	if(elems.length == 0){
 		this.errors.push('Missing INITIALS TAG');
-		return "Missing INITIALS tag.";
 	}
 
 	console.log('Starting INITIALS parsing');
 	var initials = elems[0];
-	var initRet = this.parseInitials(initials);
-	if(initRet != null){
-		return "Something went wrong there :/";
-	}
+	this.parseInitials(initials);
 	console.log('Done INITIALS parsing');
 	
 
 	elems = rootElement.getElementsByTagName('ILLUMINATION');
 	if(elems.length == 0){
 		this.errors.push('Missing ILLUMINATION TAG');
-		return "Missing ILLUMINATION tag.";
 	}
 
 	console.log('Starting ILLUMINATION parsing');
 	var illum = elems[0];
-	var illumRet = this.parseIllum(illum);
-	if(illumRet != null){
-		return "Something went wrong there :/";
-	}
+	this.parseIllum(illum);
 	console.log('Done ILLUMINATION parsing');
 
 
 	elems = rootElement.getElementsByTagName('LIGHTS');
 	if(elems.length == 0){
 		this.errors.push('Missing LIGHTS TAG');
-		return "Missing LIGHTS tag.";
 	}
 	
 	console.log('Starting LIGHTS parsing');
 	var lights = elems[0];
-	var lightsRet = this.parseLights(lights);
-	if(illumRet != null){
-		return "Something went wrong there :/";
-	}
+	this.parseLights(lights);
 	console.log('Done LIGHTS parsing');
 
 
 	elems = rootElement.getElementsByTagName('TEXTURES');
 	if(elems.length == 0){
 		this.errors.push('Missing TEXTURES tag.');
-		return "Missing TEXTURES tag";
 	}
 
 
 	console.log('Starting TEXTURES parsing');
 	var tex = elems[0];
-	var texRet = this.parseTex(tex);
-	if(texRet != null){
-		return "Something went wrong there :/";
-	}
+	this.parseTex(tex);
 	console.log('Done TEXTURES parsing');
 
 	elems = rootElement.getElementsByTagName('MATERIALS');
 	if(elems.length == 0){
 		this.errors.push('Missing MATERIALS tag.');
-		return "Missing MATERIALS tag";
 	}
 
 	console.log('Starting MATERIALS parsing');
 	var mat = elems[0];
-	var matRet = this.parseMaterials(mat);
-	if(matRet != null){
-		return "Something went wrong there :/";
-	}
+	this.parseMaterials(mat);
 	console.log('Done MATERIALS parsing');
-
-	console.log(this.lightsDic);
-	console.log(this.materials);
 
 	this.ParseLeaves(rootElement);
 	this.ParseNodes(rootElement);
 	
 	console.log('WARNINGS: ')
-	if(this.warnings != null){
+	if(this.warnings.length != 0){
 		for(var i = 0; i < this.warnings.length; i++){
 			console.warn(this.warnings[i]);
 		}
 	}
+	else{
+		console.log('No warnings! :)');
+	}
 
 	console.log('ERRORS: ')
-	if(this.errors != null){
+	if(this.errors.length != 0){
 		for(var i = 0; i < this.errors.length; i++){
 			this.onXMLError(this.errors[i]);
 		}
+	}
+	else{
+		console.log('No errors! :D');
 	}
 
 }
@@ -536,7 +519,7 @@ MySceneGraph.prototype.parseMaterials=function(mat){
 		else{
 			shininess = shininess[0];
 			this.shine = this.reader.getFloat(shininess, 'value', 'value');
-			
+
 		}
 
 		var illum = this.getIllumination(material, 'MATERIAL');
