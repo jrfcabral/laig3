@@ -184,7 +184,9 @@ XMLscene.prototype.DrawPrimitive = function(elem){
 		object = new sphere(this, elem.args[0],elem.args[1],elem.args[2]);
 	
 	else if(elem.type === "triangle")
-		object = new triangle(this, elem.args[0], elem.args[1], elem.args[2]);
+		object = new triangle(this, [elem.args[0],elem.args[1],elem.args[2]],
+		 [elem.args[3],elem.args[4],elem.args[5]],
+		 [elem.args[6],elem.args[7],elem.args[8]]);
 	
 	else if (elem.type ==="cylinder")
 		object = new cylinder(this, elem.args[0], elem.args[1],elem.args[2], elem.args[3]);
