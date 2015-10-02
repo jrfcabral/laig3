@@ -28,6 +28,9 @@ XMLscene.prototype.init = function (application) {
 	this.testTri = new triangle(this, [0, 0, 0], [4, 0, 0], [2, 2, 0]);
 	//this.testCyl = new cylinder(this, 4, 0.5, 0.5, 4, 8);
 	this.testSphere = new sphere(this, 1, 40,40);
+
+	//List of drawn primitives
+	this.drawn = [];
 };
 
 XMLscene.prototype.initLights = function () {
@@ -108,7 +111,7 @@ XMLscene.prototype.display = function () {
 	//this.testRect.display();
 	//this.testTri.display();
 	//this.testCyl.display();
-	this.testSphere.display();
+	//this.testSphere.display();
 
 
 	// it is important that things depending on the proper loading of the graph
@@ -120,7 +123,7 @@ XMLscene.prototype.display = function () {
 		for(i = 0; i < ((this.graph.lightsNum > 8)? 8:this.graph.lightsNum); i++){
 			this.lights[i].update();
 		}
-		//this.traverseGraph(this.graph.nodes[this.graph.root]);
+		this.traverseGraph(this.graph.nodes[this.graph.root]);
 	};
 
     this.shader.unbind();
@@ -133,6 +136,7 @@ XMLscene.prototype.traverseGraph = function(elem){
 	if (!elem.descendants){
 		console.log("Reached leaf with id " + elem.id);
 
+		this.DrawPrimitive(elem);
 	}
 
 	//this is a node
@@ -144,6 +148,8 @@ XMLscene.prototype.traverseGraph = function(elem){
 		this.pushMatrix();
 		for(var i = 0; i < transformations.length; i++){
 			transformations[i].Apply();
+			console.log(transformations[i]);
+
 		}
 
 		//TODO apply materials and textures
@@ -168,3 +174,11 @@ XMLscene.prototype.traverseGraph = function(elem){
 
 	}
 };
+
+XMLscene.prototype.DrawPrimitive = function(elem){
+	var object;
+	if(elem.type === "rectangle"){
+		object = new rectangle(this,[elem.args[0],elem.args[1]],[elem.args[2],elem.args[3]]);
+		object.display();
+	}
+}

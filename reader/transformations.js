@@ -17,11 +17,11 @@ function Rotation(scene, axis, angle){
 
 Rotation.prototype.Apply = function(){
     if (this.axis == 'x')
-        this.scene.rotate(this.angle, 1, 0, 0);
+        this.scene.rotate((Math.PI*this.angle)/180.0, 1, 0, 0);
     else if (axis == 'y')
-        this.scene.rotate(this.angle, 0, 1, 0);
+        this.scene.rotate((Math.PI*this.angle)/180.0, 0, 1, 0);
     else if (axis == 'Z')
-        this.scene.rotate(this.angle, 0, 0, 1);
+        this.scene.rotate((Math.PI*this.angle)/180.0, 0, 0, 1);
 }
 
 function Scale(scene, x, y, z){
@@ -38,14 +38,14 @@ Scale.prototype.Apply = function(){
 function Transformation(transformation, scene){
 
     switch (transformation.tagName){
-        case 'TRANSLATION':
+        case 'translate':
             return new Translation(scene, parseFloat(transformation.getAttribute('x')),
                 parseFloat(transformation.getAttribute('y')),
                 parseFloat(transformation.getAttribute('z')));
             break;
-        case 'ROTATION':
+        case 'rotation':
             return new Rotation(scene, transformation.getAttribute('axis'), parseFloat(transformation.getAttribute('angle')));
-        case 'SCALE':
+        case 'scale':
             return new Scale(scene,  parseFloat(transformation.getAttribute('sx')),
                 parseFloat(transformation.getAttribute('sy')),
                 parseFloat(transformation.getAttribute('sz')));
