@@ -11,7 +11,7 @@
     </INITIALS>
 
     <ILLUMINATION>
-        <ambient r="1" g="1" b="1" a="1"/> <!--needs to be changed-->
+        <ambient r="0.5" g="0.5" b="0.5" a="0.5"/> <!--needs to be changed-->
         <background r="0" g="0" b="0" a="1"/>
     </ILLUMINATION>
 
@@ -20,7 +20,7 @@
         <LIGHT id="l01">
             <enable value = "1" />
             <position x="2.0" y="1.0" z="-1.0" w="1.0" />
-             <ambient r="1" g="0.5" b="0.0" a="1.0" />
+             <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
             <specular r="0.5" g="0.5" b="0.5" a="1.0" />
         </LIGHT>
@@ -28,7 +28,7 @@
         <LIGHT id="l02">
             <enable value ="1" />
             <position x="-2.0" y="1.0" z="-1.0" w="1.0" />
-             <ambient r="1" g="0.5" b="0.0" a="1.0" />
+             <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
             <specular r="0.5" g="0.5" b="0.5" a="1.0" />
         </LIGHT>
@@ -45,24 +45,32 @@
     <MATERIALS>
         <MATERIAL id="glass">                                  
             <shininess value="100.0" />
-            <specular r="1.0" g="1" b="1" a="1.0" />
-            <diffuse r="1.0" g="1" b="1" a="1.0" />
-            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="0.48" g="0.83" b="0.87" a="1.0" />
+            <diffuse r="0.48" g="0.83" b="0.87" a="1.0" />
+            <ambient r="0.48" g="0.83" b="0.87" a="1.0" />
             <emission r="0" g="0" b="0" a="1.0" />
         </MATERIAL>
          <MATERIAL id="floor">                                  
             <shininess value="10.0" />
-            <specular r="0.63" g="0.32" b="0.17" a="1.0" />
-            <diffuse r="0.63" g="0.32" b="0.17" a="1.0" />
-            <ambient r="0.63" g="0.32" b="0.17" a="1.0" />
+            <specular r="0.42" g="0.29" b="0.06" a="1.0" />
+            <diffuse r="0.42" g="0.29" b="0.06" a="1.0" />
+            <ambient r="0.42" g="0.29" b="0.06" a="1.0" />
             <emission r="0" g="0" b="0" a="1.0" />
         </MATERIAL>
 
          <MATERIAL id="olive">                                  
             <shininess value="10.0" />
-            <specular r="0.68" g="0.69" b="0.36" a="1.0" />
-            <diffuse r="0.68" g="0.69" b="0.36" a="1.0" />
-            <ambient r="0.68" g="0.69" b="0.36" a="1.0" />
+            <specular r="0.42" g="0.59" b="0.31" a="1.0" />
+            <diffuse r="0.3" g="0.4" b="0.25" a="1.0" />
+            <ambient r="0.3" g="0.4" b="0.25" a="1.0" />
+            <emission r="0" g="0" b="0" a="1.0" />
+        </MATERIAL>
+               
+        <MATERIAL id="redstuff">
+            <shininess value="10.0" />
+            <specular r="0.7" g="0.06" b="0.06" a="1.0" />
+            <diffuse r="0.7" g="0.06" b="0.06" a="1.0" />
+            <ambient r="0.7" g="0.06" b="0.06" a="1.0" />
             <emission r="0" g="0" b="0" a="1.0" />
         </MATERIAL>
     </MATERIALS>
@@ -74,23 +82,33 @@
             <MATERIAL id="glass"/>
             <TEXTURE id="glass"/>
              <DESCENDANTS>
-                <DESCENDENT id="10" />
-                <DESCENDENT id="09"/>
                 <DESCENDENT id="08"/>
                 <DESCENDENT id="07"/>
-                <DESCENDENT id ="06"/>                              
+                <DESCENDENT id ="06"/>
+                 <DESCENDENT id="09"/>   
+                 <DESCENDENT id="10" />
+               <!--  <DESCENDENT id="11" /> -->                         
             </DESCENDANTS>
         </NODE>
-        <NODE id="10">
+
+        <NODE id="11">
+            <MATERIAL id="redstuff" />
+            <TEXTURE id="clear" />
+            <DESCENDANTS>
+                <DESCENDENT id="01" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="09">
             <MATERIAL id="olive" />
             <TEXTURE id="idk" />
                <translation x="0" y="4.6" z="0"/>
-               <scale sx="0.5" sy="0.5" sz="0.5" />
+               <scale sx="0.5" sy="0.55" sz="0.5" />
             <DESCENDANTS>
                 <DESCENDENT id="05"/>
             </DESCENDANTS>
         </NODE>
-        <NODE id="09">
+        <NODE id="10">
             <MATERIAL id="floor"/>
             <TEXTURE id="wood"/>
             <scale sx="10.0" sy="1.0" sz="10.0"/>
