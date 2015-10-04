@@ -36,9 +36,14 @@
     </LIGHTS>   
 
     <TEXTURES>
-        <TEXTURE id="t01">
-            <file path="../textures/board.png"/>
+        <TEXTURE id="wood">
+            <file path="../textures/floor.png"/>
             <amplif_factor s="1" t="1"/>
+        </TEXTURE>
+
+        <TEXTURE id="glass">
+            <file path="../textures/coise.n_existe" />
+            <amplif_factor s="1" t="1" />
         </TEXTURE>
     </TEXTURES>
 
@@ -80,7 +85,7 @@
         <ROOT id="00"/>
         <NODE id="00">
             <MATERIAL id="glass"/>
-            <TEXTURE id="glass"/>
+            <TEXTURE id="glass"/> <!-- necessary? -->
              <DESCENDANTS>
                 <DESCENDENT id="08"/>
                 <DESCENDENT id="07"/>
@@ -91,7 +96,7 @@
             </DESCENDANTS>
         </NODE>
 
-        <NODE id="11">
+        <NODE id="11"> <!-- on hiatus... -->
             <MATERIAL id="redstuff" />
             <TEXTURE id="clear" />
             <DESCENDANTS>
@@ -101,7 +106,7 @@
 
         <NODE id="09">
             <MATERIAL id="olive" />
-            <TEXTURE id="idk" />
+            <TEXTURE id="clear" />
                <translation x="0" y="4.6" z="0"/>
                <scale sx="0.5" sy="0.55" sz="0.5" />
             <DESCENDANTS>
