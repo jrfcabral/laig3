@@ -155,10 +155,10 @@ MySceneGraph.prototype.EncodeNode = function(node) {
         		mat4.scale(matrix, matrix, scale_vector);
         		break;
 
-        	case 'translate':
-        		var translate_vector = vec3.create();
-        		vec3.set(translate_vector, transformation.getAttribute('x'), transformation.getAttribute('y'), transformation.getAttribute('z') );
-        		mat4.translate(matrix, matrix, translate_vector);
+        	case 'translation':
+        		var translation_vector = vec3.create();
+        		vec3.set(translation_vector, transformation.getAttribute('x'), transformation.getAttribute('y'), transformation.getAttribute('z') );
+        		mat4.translate(matrix, matrix, translation_vector);
         		break;
         		
         		        		
@@ -361,10 +361,10 @@ MySceneGraph.prototype.parseInitials = function(initials) {
     }
     
     
-    //initial translate processing
-    var initTrans = initials.getElementsByTagName('translate');
+    //initial translation processing
+    var initTrans = initials.getElementsByTagName('translation');
     if (initTrans == null  || initTrans.length != 1) {
-        this.errors.push('Missing translate tag or multiple translate tags found.');
+        this.errors.push('Missing translation tag or multiple translation tags found.');
     } 
     else {
         this.initTransx = this.reader.getFloat(initTrans[0], 'x', ['x', 'y', 'z']);
@@ -426,7 +426,7 @@ MySceneGraph.prototype.parseIllum = function(illum) {
         this.errors.push('Missing abient tag on the ILLUMINATION tag');
     } 
     else {
-        var globalAmbLight = this.getRGBAProper(ambient[0]);
+        this.globalAmbLight = this.getRGBAProper(ambient[0]);
     }
     
     var backgrd = illum.getElementsByTagName('background');

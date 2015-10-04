@@ -18,7 +18,7 @@ sphere.prototype.initBuffers = function() {
  	this.normals = [];
  	this.texCoords = [];
 
- 	console.log(this.stacks);
+ //	console.log(this.stacks);
  	var stackDivs = Math.PI /this.stacks;
  	var sliceDivs = (2 * Math.PI) /this.slices;
 

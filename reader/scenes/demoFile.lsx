@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
+<SCENE>
+    <INITIALS>
+        <frustum near="0.05" far="500.00"/>                    
+        <translation  x="0.0" y="0.0" z="5.0" />                 
+        <rotation axis="y" angle="45" />
+        <rotation axis="z" angle="20" />                   
+        <rotation axis="x" angle="45" />
+        <scale sx="1.0" sy="1.0" sz="1.0"/>    
+        <reference length="5.0" />
+    </INITIALS>
+
+    <ILLUMINATION>
+        <ambient r="1" g="1" b="1" a="1"/> <!--needs to be changed-->
+        <background r="0" g="0" b="0" a="1"/>
+    </ILLUMINATION>
+
+
+    <LIGHTS>
+        <LIGHT id="l01">
+            <enable value = "1" />
+            <position x="2.0" y="1.0" z="-1.0" w="1.0" />
+             <ambient r="1" g="0.5" b="0.0" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+        </LIGHT>
+
+        <LIGHT id="l02">
+            <enable value ="1" />
+            <position x="-2.0" y="1.0" z="-1.0" w="1.0" />
+             <ambient r="1" g="0.5" b="0.0" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+        </LIGHT>
+        
+    </LIGHTS>   
+
+    <TEXTURES>
+        <TEXTURE id="t01">
+            <file path="../textures/board.png"/>
+            <amplif_factor s="1" t="1"/>
+        </TEXTURE>
+    </TEXTURES>
+
+    <MATERIALS>
+        <MATERIAL id="glass">                                  
+            <shininess value="100.0" />
+            <specular r="1.0" g="1" b="1" a="1.0" />
+            <diffuse r="1.0" g="1" b="1" a="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <emission r="0" g="0" b="0" a="1.0" />
+        </MATERIAL>
+         <MATERIAL id="floor">                                  
+            <shininess value="10.0" />
+            <specular r="0.63" g="0.32" b="0.17" a="1.0" />
+            <diffuse r="0.63" g="0.32" b="0.17" a="1.0" />
+            <ambient r="0.63" g="0.32" b="0.17" a="1.0" />
+            <emission r="0" g="0" b="0" a="1.0" />
+        </MATERIAL>
+
+         <MATERIAL id="olive">                                  
+            <shininess value="10.0" />
+            <specular r="0.68" g="0.69" b="0.36" a="1.0" />
+            <diffuse r="0.68" g="0.69" b="0.36" a="1.0" />
+            <ambient r="0.68" g="0.69" b="0.36" a="1.0" />
+            <emission r="0" g="0" b="0" a="1.0" />
+        </MATERIAL>
+    </MATERIALS>
+
+
+    <NODES>
+        <ROOT id="00"/>
+        <NODE id="00">
+            <MATERIAL id="glass"/>
+            <TEXTURE id="glass"/>
+             <DESCENDANTS>
+                <DESCENDENT id="10" />
+                <DESCENDENT id="09"/>
+                <DESCENDENT id="08"/>
+                <DESCENDENT id="07"/>
+                <DESCENDENT id ="06"/>                              
+            </DESCENDANTS>
+        </NODE>
+        <NODE id="10">
+            <MATERIAL id="olive" />
+            <TEXTURE id="idk" />
+               <translation x="0" y="4.6" z="0"/>
+               <scale sx="0.5" sy="0.5" sz="0.5" />
+            <DESCENDANTS>
+                <DESCENDENT id="05"/>
+            </DESCENDANTS>
+        </NODE>
+        <NODE id="09">
+            <MATERIAL id="floor"/>
+            <TEXTURE id="wood"/>
+            <scale sx="10.0" sy="1.0" sz="10.0"/>
+            <rotate axis="x" angle="90"/>
+            <DESCENDANTS>
+                <DESCENDENT id="04"/>
+            </DESCENDANTS>
+        </NODE>
+        <NODE id="08">
+            <MATERIAL id="null"/>
+            <TEXTURE id="null"/>
+            <translation x="0" y="4.0" z="0"/>
+            <scale sx="1.0" sy="0.15" sz="1.0"/>
+             <DESCENDANTS> 
+                <DESCENDENT id ="03"/>                              
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="07">
+            <MATERIAL id="null"/>
+            <TEXTURE id="null"/>
+            <translation x="0" y="1.0" z="0" />
+            <scale sx="0.1" sy="0.3" sz="0.1" />
+            <DESCENDANTS> 
+                <DESCENDENT id ="01"/>                              
+            </DESCENDANTS>
+         </NODE>
+         <NODE id="06">
+            <MATERIAL id="null"/>
+            <TEXTURE id="null"/>
+            <scale sx="1.0" sy="0.1" sz="1.0"/>
+            <DESCENDANTS>
+                <DESCENDENT id="02"/>
+             </DESCENDANTS>
+         </NODE>
+
+
+
+    </NODES>    
+
+    <LEAVES>
+        <LEAF id="01" type="cylinder" args="1.0 1.0 1.0 10.0 40.0"/>
+         <LEAF id="02" type="cylinder" args="1.0 1.0 0.1 10.0 40.0"/>
+         <LEAF id="03" type="cylinder" args="1.0 0.1 2.0 10.0 40.0"/>
+         <LEAF id="04" type="rectangle" args="-1.0 1.0 1.0 -1.0"/>
+         <LEAF id="05" type="sphere" args="1.0 40.0 40.0" />
+    </LEAVES>
+
+</SCENE>

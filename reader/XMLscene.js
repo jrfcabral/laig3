@@ -60,8 +60,9 @@ XMLscene.prototype.onGraphLoaded = function ()
 	this.camera.near = this.graph.frustumNear;
 	this.camera.far = this.graph.frustumFar;
 	
+	this.setGlobalAmbientLight(this.graph.globalAmbLight[0], this.graph.globalAmbLight[1], this.graph.globalAmbLight[2], this.graph.globalAmbLight[3]);
 
-	this.gl.clearColor(this.graph.bgLight[0] || 1.0,this.graph.bgLight[1] || 0.5, this.graph.bgLight[2],this.graph.bgLight[3] || 0.3);
+	this.gl.clearColor(this.graph.bgLight[0],this.graph.bgLight[1], this.graph.bgLight[2],this.graph.bgLight[3]);
 
 
 	for(var i = 0; i < ((this.graph.lightsNum > 8)? 8:this.graph.lightsNum); i++){
@@ -133,15 +134,15 @@ XMLscene.prototype.traverseGraph = function(elem){
 
 	//we have reached a leaf
 	if (!elem.descendants){
-		console.log("Reached leaf with id " + elem.id);
-		console.log(mat3.create());
+		//console.log("Reached leaf with id " + elem.id);
+		//console.log(mat3.create());
 
 		this.DrawPrimitive(elem);
 	}
 
 	//this is a node
 	else{
-		console.log("Traversal: reached node with id "+elem.id);
+		//console.log("Traversal: reached node with id "+elem.id);
 
 		//apply transformations
 		this.pushMatrix();
@@ -185,7 +186,7 @@ XMLscene.prototype.DrawPrimitive = function(elem){
 		 [elem.args[6],elem.args[7],elem.args[8]]);
 	
 	else if (elem.type ==="cylinder")
-		object = new cylinder(this, elem.args[0], elem.args[1],elem.args[2], elem.args[3]);
+		object = new cylinder(this, elem.args[0], elem.args[1],elem.args[2], elem.args[3], elem.args[4]);
 	
 	object.display();
 }

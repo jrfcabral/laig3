@@ -44,19 +44,23 @@
 	for(var i = 0; i < this.stacks; i++){
 		for(var j = 0; j < this.slices-1; j++){
 			this.indices.push((i*this.slices) + this.slices+j, (i*this.slices) +j+1, (i*this.slices) +j);
+			this.indices.push((i*this.slices) +j, (i*this.slices) +j+1, (i*this.slices) + this.slices+j);
 			this.indices.push((i*this.slices) +j+1, (i*this.slices) +this.slices+j, (i*this.slices) +this.slices+j+1);
+			this.indices.push( (i*this.slices) +this.slices+j+1, (i*this.slices) +this.slices+j, (i*this.slices) +j+1);
 		}
 		this.indices.push((i*this.slices) +this.slices+j, (i*this.slices) +0, (i*this.slices) +j);
+		this.indices.push((i*this.slices) +j, (i*this.slices) +0, (i*this.slices) +this.slices+j);
 		this.indices.push((i*this.slices) +this.slices+j, ((i+1)*this.slices), (i*this.slices) +0);
-		console.log(this.indices);
+		this.indices.push( (i*this.slices) +0, ((i+1)*this.slices),(i*this.slices) +this.slices+j);
+		//console.log(this.indices);
 	}
 
 
 
 
-	console.log(this.indices.length/3);
+	/*console.log(this.indices.length/3);
 	console.log(this.indices);
-	console.log(this.vertices.length/3);
+	console.log(this.vertices.length/3);*/
 
 
 	this.primitiveType = this.scene.gl.TRIANGLES;
