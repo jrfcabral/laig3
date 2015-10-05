@@ -149,13 +149,7 @@ XMLscene.prototype.traverseGraph = function(elem){
 		this.multMatrix(elem.matrix);
 	
 		if(elem.material != "null"){
-			this.testMat = new CGFappearance(this);
-			this.testMat.setAmbient(this.graph.materials[elem.material].ambient[0], this.graph.materials[elem.material].ambient[1], this.graph.materials[elem.material].ambient[2], this.graph.materials[elem.material].ambient[3]);
-			this.testMat.setDiffuse(this.graph.materials[elem.material].diffuse[0], this.graph.materials[elem.material].diffuse[1], this.graph.materials[elem.material].diffuse[2], this.graph.materials[elem.material].diffuse[3]);
-			this.testMat.setSpecular(this.graph.materials[elem.material].specular[0], this.graph.materials[elem.material].specular[1], this.graph.materials[elem.material].specular[2], this.graph.materials[elem.material].specular[3]);
-			this.testMat.setEmission(this.graph.materials[elem.material].emission[0], this.graph.materials[elem.material].emission[1], this.graph.materials[elem.material].emission[2], this.graph.materials[elem.material].emission[3]);
-			this.testMat.setShininess(this.graph.materials[elem.material].shininess);
-			this.testMat.apply();
+			this.graph.materials[elem.material].apply();
 		}
 		
 		

@@ -580,15 +580,13 @@ MySceneGraph.prototype.parseMaterials = function(mat) {
         
         this.emi = this.getRGBAProper(emissionLightMat);
         
-        
-        this.materials[material.id] = {
-            id: material.id,
-            shininess: this.shine,
-            ambient: illum[0],
-            diffuse: illum[1],
-            specular: illum[2],
-            emission: this.emi
-        };
+        this.actMaterial = new CGFappearance(this.scene);
+        this.actMaterial.setAmbient(illum[0][0], illum[0][1], illum[0][2], illum[0][3]);
+        this.actMaterial.setDiffuse(illum[1][0], illum[1][1], illum[1][2], illum[1][3]);
+        this.actMaterial.setSpecular(illum[2][0], illum[2][1], illum[2][2], illum[2][3]);
+        this.actMaterial.setEmission(this.emi[0], this.emi[1], this.emi[2], this.emi[3]);
+
+        this.materials[material.id] = this.actMaterial;
     }
 }
 
