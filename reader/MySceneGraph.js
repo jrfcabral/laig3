@@ -298,55 +298,60 @@ MySceneGraph.prototype.parseLSX = function(rootElement) {
     if (elems.length == 0) {
         this.errors.push('Missing INITIALS TAG');
     }
-
-    console.log('Starting INITIALS parsing');
-    var initials = elems[0];
-    this.parseInitials(initials);
-    console.log('Done INITIALS parsing');
+	else{
+    	console.log('Starting INITIALS parsing');
+    	var initials = elems[0];
+    	this.parseInitials(initials);
+    	console.log('Done INITIALS parsing');
+	}
 
 
     elems = rootElement.getElementsByTagName('ILLUMINATION');
     if (elems.length == 0) {
         this.errors.push('Missing ILLUMINATION TAG');
     }
-
-    console.log('Starting ILLUMINATION parsing');
-    var illum = elems[0];
-    this.parseIllum(illum);
-    console.log('Done ILLUMINATION parsing');
-
+	else{
+		console.log('Starting ILLUMINATION parsing');
+    	var illum = elems[0];
+    	this.parseIllum(illum);
+    	console.log('Done ILLUMINATION parsing');
+	}
 
     elems = rootElement.getElementsByTagName('LIGHTS');
     if (elems.length == 0) {
         this.errors.push('Missing LIGHTS TAG');
     }
-
-    console.log('Starting LIGHTS parsing');
-    var lights = elems[0];
-    this.parseLights(lights);
-    console.log('Done LIGHTS parsing');
+	else{
+		console.log('Starting LIGHTS parsing');
+    	var lights = elems[0];
+    	this.parseLights(lights);
+    	console.log('Done LIGHTS parsing');
+	}
+    
 
 
     elems = rootElement.getElementsByTagName('TEXTURES');
     if (elems.length == 0) {
         this.errors.push('Missing TEXTURES tag.');
     }
-
-
-    console.log('Starting TEXTURES parsing');
-    var tex = elems[0];
-    this.parseTex(tex);
-    console.log('Done TEXTURES parsing');
+	else{
+		console.log('Starting TEXTURES parsing');
+    	var tex = elems[0];
+    	this.parseTex(tex);
+    	console.log('Done TEXTURES parsing');
+	}
+    
 
     elems = rootElement.getElementsByTagName('MATERIALS');
     if (elems.length == 0) {
         this.errors.push('Missing MATERIALS tag.');
     }
-
-    console.log('Starting MATERIALS parsing');
-    var mat = elems[0];
-    this.parseMaterials(mat);
-    console.log('Done MATERIALS parsing');
+	else{
+		console.log('Starting MATERIALS parsing');
+    	var mat = elems[0];
+    	this.parseMaterials(mat);
+    	console.log('Done MATERIALS parsing');
+	}
 
     this.ParseLeaves(rootElement);
     this.ParseNodes(rootElement);

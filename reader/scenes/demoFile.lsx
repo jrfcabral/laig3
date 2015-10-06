@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-16" standalone="yes"?>
 <SCENE>
-    <INITIALS>
+   <INITIALS>
         <frustum near="0.05" far="500.00"/>                    
         <translation  x="0.0" y="0.0" z="5.0" />                 
         <rotation axis="y" angle="45" />
@@ -99,6 +99,7 @@
         <NODE id="11"> <!-- on hiatus... -->
             <MATERIAL id="redstuff" />
             <TEXTURE id="clear" />
+            <ROTATION axis="x" angle="90" /> 
             <DESCENDANTS>
                 <DESCENDENT id="01" />
             </DESCENDANTS>
@@ -127,6 +128,7 @@
             <TEXTURE id="null"/>
             <TRANSLATION x="0" y="4.0" z="0"/>
             <SCALE sx="1.0" sy="0.15" sz="1.0"/>
+            <ROTATION axis="x" angle="-90" /> 
              <DESCENDANTS> 
                 <DESCENDENT id ="03"/>                              
             </DESCENDANTS>
@@ -137,6 +139,7 @@
             <TEXTURE id="null"/>
             <TRANSLATION x="0" y="1.0" z="0" />
             <SCALE sx="0.1" sy="0.3" sz="0.1" />
+            <ROTATION axis="x" angle="-90" /> 
             <DESCENDANTS> 
                 <DESCENDENT id ="01"/>                              
             </DESCENDANTS>
@@ -145,6 +148,7 @@
             <MATERIAL id="null"/>
             <TEXTURE id="null"/>
             <SCALE sx="1.0" sy="0.1" sz="1.0"/>
+            <ROTATION axis="x" angle="-90" /> 
             <DESCENDANTS>
                 <DESCENDENT id="02"/>
              </DESCENDANTS>
