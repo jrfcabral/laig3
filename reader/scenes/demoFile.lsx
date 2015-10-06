@@ -71,11 +71,11 @@
             <emission r="0" g="0" b="0" a="1.0" />
         </MATERIAL>
                
-        <MATERIAL id="redstuff">
+        <MATERIAL id="porcelain">
             <shininess value="10.0" />
-            <specular r="0.7" g="0.06" b="0.06" a="1.0" />
-            <diffuse r="0.7" g="0.06" b="0.06" a="1.0" />
-            <ambient r="0.7" g="0.06" b="0.06" a="1.0" />
+            <specular r="0.9" g="0.9" b="0.9" a="1.0" />
+            <diffuse r="0.9" g="0.9" b="0.9" a="1.0" />
+            <ambient r="0.9" g="0.9" b="0.9" a="1.0" />
             <emission r="0" g="0" b="0" a="1.0" />
         </MATERIAL>
     </MATERIALS>
@@ -84,30 +84,48 @@
     <NODES>
         <ROOT id="00"/>
         <NODE id="00">
-            <MATERIAL id="glass"/>
-            <TEXTURE id="glass"/> <!-- necessary? -->
+           <MATERIAL id="null" />
+           <TEXTURE id="clear" />
              <DESCENDANTS>
-                  <DESCENDENT id="10" />
-                  <DESCENDENT id="09"/>
-                <DESCENDENT id="08"/>
-                <DESCENDENT id="07"/>
-                <DESCENDENT id ="06"/>
-                    
-               
-               <!--  <DESCENDENT id="11" /> -->                         
+                <DESCENDENT id="glass"/>
+                <DESCENDENT id="floor" /> 
+                <DESCENDENT id="plate" />                    
             </DESCENDANTS>
         </NODE>
 
-        <NODE id="11"> <!-- on hiatus... -->
-            <MATERIAL id="redstuff" />
+        <NODE id="plate">
+            <MATERIAL id="porcelain" />
             <TEXTURE id="clear" />
-            <ROTATION axis="x" angle="90" /> 
+            <SCALE sx="3" sy="0.05" sz="3" />
+            <ROTATION axis="x" angle="-90" />
+            <DESCENDANTS>
+                <DESCENDENT id="09" />
+            </DESCENDANTS>
+        </NODE>
+        
+        <NODE id="09">
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
             <DESCENDANTS>
                 <DESCENDENT id="01" />
             </DESCENDANTS>
         </NODE>
 
-        <NODE id="09">
+
+        <NODE id="glass">
+            <MATERIAL id="glass"/>
+            <TEXTURE id="clear"/>
+            <TRANSLATION x="-2" y="0" z="-5" />
+            <DESCENDANTS>
+                <DESCENDENT id="06" />
+                <DESCENDENT id="07" />
+                <DESCENDENT id="08" />
+                <DESCENDENT id="olive" />
+            </DESCENDANTS>
+        </NODE>
+       
+
+        <NODE id="olive">
             <MATERIAL id="olive" />
             <TEXTURE id="clear" />
                <TRANSLATION x="0" y="4.6" z="0"/>
@@ -116,7 +134,7 @@
                 <DESCENDENT id="05"/>
             </DESCENDANTS>
         </NODE>
-        <NODE id="10">
+        <NODE id="floor">
             <MATERIAL id="floor"/>
             <TEXTURE id="wood"/>
             <SCALE sx="10.0" sy="1.0" sz="10.0"/>

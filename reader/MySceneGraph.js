@@ -134,7 +134,12 @@ MySceneGraph.prototype.EncodeNode = function(node) {
     var i;
     var matrix = mat4.create();
     mat4.identity(matrix);
-    for (i = 2; node.children[i].tagName != 'DESCENDANTS'; i++) {
+    //deu erro aqui qd um no tava assim: 
+    // <NODE id="plate">
+    //        <MATERIAL id="porcelain" />
+    //        <TEXTURE id="clear" />      
+    //</NODE>
+    for (i = 2; node.children[i].tagName != 'DESCENDANTS'; i++) { 
         var transformation = node.children[i];
 		var transformation_matrix = mat4.create();
 		mat4.identity(transformation_matrix);
