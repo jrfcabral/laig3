@@ -107,8 +107,8 @@
         <NODE id="09">
             <MATERIAL id="olive" />
             <TEXTURE id="clear" />
-               <translation x="0" y="4.6" z="0"/>
-               <scale sx="0.5" sy="0.55" sz="0.5" />
+               <TRANSLATION x="0" y="4.6" z="0"/>
+               <SCALE sx="0.5" sy="0.55" sz="0.5" />
             <DESCENDANTS>
                 <DESCENDENT id="05"/>
             </DESCENDANTS>
@@ -116,8 +116,8 @@
         <NODE id="10">
             <MATERIAL id="floor"/>
             <TEXTURE id="wood"/>
-            <scale sx="10.0" sy="1.0" sz="10.0"/>
-            <rotate axis="x" angle="90"/>
+            <SCALE sx="10.0" sy="1.0" sz="10.0"/>
+            <ROTATION axis="x" angle="90"/>
             <DESCENDANTS>
                 <DESCENDENT id="04"/>
             </DESCENDANTS>
@@ -125,8 +125,8 @@
         <NODE id="08">
             <MATERIAL id="null"/>
             <TEXTURE id="null"/>
-            <translation x="0" y="4.0" z="0"/>
-            <scale sx="1.0" sy="0.15" sz="1.0"/>
+            <TRANSLATION x="0" y="4.0" z="0"/>
+            <SCALE sx="1.0" sy="0.15" sz="1.0"/>
              <DESCENDANTS> 
                 <DESCENDENT id ="03"/>                              
             </DESCENDANTS>
@@ -135,8 +135,8 @@
         <NODE id="07">
             <MATERIAL id="null"/>
             <TEXTURE id="null"/>
-            <translation x="0" y="1.0" z="0" />
-            <scale sx="0.1" sy="0.3" sz="0.1" />
+            <TRANSLATION x="0" y="1.0" z="0" />
+            <SCALE sx="0.1" sy="0.3" sz="0.1" />
             <DESCENDANTS> 
                 <DESCENDENT id ="01"/>                              
             </DESCENDANTS>
@@ -144,7 +144,7 @@
          <NODE id="06">
             <MATERIAL id="null"/>
             <TEXTURE id="null"/>
-            <scale sx="1.0" sy="0.1" sz="1.0"/>
+            <SCALE sx="1.0" sy="0.1" sz="1.0"/>
             <DESCENDANTS>
                 <DESCENDENT id="02"/>
              </DESCENDANTS>
