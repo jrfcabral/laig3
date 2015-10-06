@@ -57,6 +57,7 @@ XMLscene.prototype.setDefaultAppearance = function () {
 // As loading is asynchronous, this may be called already after the application has started the run loop
 XMLscene.prototype.onGraphLoaded = function ()
 {
+	this.test = [];
 	this.camera.near = this.graph.frustumNear;
 	this.camera.far = this.graph.frustumFar;
 	
@@ -147,11 +148,13 @@ XMLscene.prototype.traverseGraph = function(elem){
 		//apply transformations
 		this.pushMatrix();
 		this.multMatrix(elem.matrix);
-	
+		
 		if(elem.material != "null"){
-			this.graph.materials[elem.material].apply();
+			this.test.push(this.graph.materials[elem.material]);
+			this.test[this.test.length-1].apply();
 		}
 		
+		//console.log(this.test);
 		
 		//TODO apply materials and textures
 
@@ -171,6 +174,13 @@ XMLscene.prototype.traverseGraph = function(elem){
 
 
 		//restore previous state
+		if(elem.material != "null"){
+			this.test.pop();
+			if(this.test.length != 0){
+				this.test[this.test.length-1].apply();
+			}
+			
+		}
 		this.popMatrix();
 
 	}

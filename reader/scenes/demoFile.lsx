@@ -87,11 +87,13 @@
             <MATERIAL id="glass"/>
             <TEXTURE id="glass"/> <!-- necessary? -->
              <DESCENDANTS>
+                  <DESCENDENT id="10" />
+                  <DESCENDENT id="09"/>
                 <DESCENDENT id="08"/>
                 <DESCENDENT id="07"/>
                 <DESCENDENT id ="06"/>
-                 <DESCENDENT id="09"/>   
-                 <DESCENDENT id="10" />
+                    
+               
                <!--  <DESCENDENT id="11" /> -->                         
             </DESCENDANTS>
         </NODE>
