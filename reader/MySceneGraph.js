@@ -141,7 +141,7 @@ MySceneGraph.prototype.EncodeNode = function(node) {
 
         switch(transformation.tagName){
 
-        	case 'rotate':
+        	case 'ROTATION':
         		var axis = transformation.getAttribute('axis');
         		var vector = vec3.create();
         		if(axis == 'x')
@@ -157,13 +157,13 @@ MySceneGraph.prototype.EncodeNode = function(node) {
         		mat4.rotate(matrix, matrix, angle, vector);
         		break;
 
-        	case 'scale':
+        	case 'SCALE':
         		var scale_vector = vec3.create();
         		vec3.set(scale_vector, transformation.getAttribute('sx'), transformation.getAttribute('sy'), transformation.getAttribute('sz') );
         		mat4.scale(matrix, matrix, scale_vector);
         		break;
 
-        	case 'translation':
+        	case 'TRANSLATION':
         		var translation_vector = vec3.create();
         		vec3.set(translation_vector, transformation.getAttribute('x'), transformation.getAttribute('y'), transformation.getAttribute('z') );
         		mat4.translate(matrix, matrix, translation_vector);
@@ -173,7 +173,7 @@ MySceneGraph.prototype.EncodeNode = function(node) {
         }
 
     }
-    console.log(mat4.str(matrix));
+    console.log(matrix);
 
     var descendants = node.getElementsByTagName('DESCENDANTS')[0];
 
