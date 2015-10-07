@@ -12,14 +12,14 @@
 
     <ILLUMINATION>
         <ambient r="0.5" g="0.5" b="0.5" a="0.5"/> <!--needs to be changed-->
-        <background r="0" g="0" b="0" a="1"/>
+        <background r="1" g="1" b="1" a="1"/>
     </ILLUMINATION>
 
 
     <LIGHTS>
         <LIGHT id="l01">
-            <enable value = "1" />
-            <position x="2.0" y="1.0" z="-1.0" w="1.0" />
+            <enable value = "0" />
+            <position x="2.0" y="-3.0" z="-1.0" w="1.0" />
              <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
             <specular r="0.5" g="0.5" b="0.5" a="1.0" />
@@ -27,7 +27,7 @@
 
         <LIGHT id="l02">
             <enable value ="1" />
-            <position x="-2.0" y="1.0" z="-1.0" w="1.0" />
+            <position x="-4.0" y="3.0" z="-1.0" w="1.0" />
              <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
             <specular r="0.5" g="0.5" b="0.5" a="1.0" />
@@ -78,6 +78,22 @@
             <ambient r="0.9" g="0.9" b="0.9" a="1.0" />
             <emission r="0" g="0" b="0" a="1.0" />
         </MATERIAL>
+
+        <MATERIAL id="test">
+         <shininess value="10.0" />
+            <specular r="0" g="0" b="0" a="1.0" />
+            <diffuse r="0" g="0" b="0" a="1.0" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <emission r="0" g="0" b="0" a="1.0" />
+        </MATERIAL>
+
+         <MATERIAL id="inox">
+         <shininess value="10.0" />
+            <specular r="0.7" g="0.7" b="0.7" a="1.0" />
+            <diffuse r="0.7" g="0.7" b="0.7" a="1.0" />
+            <ambient r="0.7" g="0.7" b="0.7" a="1.0" />
+            <emission r="0" g="0" b="0" a="0" />
+        </MATERIAL>
     </MATERIALS>
 
 
@@ -89,7 +105,181 @@
              <DESCENDANTS>
                 <DESCENDENT id="glass"/>
                 <DESCENDENT id="floor" /> 
-                <DESCENDENT id="plate" />                    
+                <DESCENDENT id="plate" />   
+                <DESCENDENT id="fork"  />
+                <DESCENDENT id="knife" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="knife">
+            <MATERIAL id="inox" />
+            <TEXTURE id="clear" /> //le texture ici?
+            <TRANSLATION x="1" y="0.1" z="-7" />
+            <DESCENDANTS>
+                <DESCENDENT id="modHandle" />
+                <DESCENDENT id="knifeBlade" />
+            </DESCENDANTS>
+        </NODE>
+
+         <NODE id="knifeBlade">
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <TRANSLATION x="-2" y="0" z="0.5" />
+            <ROTATION axis="z" angle="90" />
+            <ROTATION axis="y" angle="-270" />
+            <SCALE sx="0.7" sy="4" sz="1" />
+            <DESCENDANTS>
+                <DESCENDENT id="21" />
+            </DESCENDANTS>
+        </NODE>
+
+        
+
+         <NODE id="modHandle">
+            <MATERIAL id="null" />
+            <TEXTURE id="null" /> 
+            <SCALE sx="0.7" sy="1" sz="1" />
+            <DESCENDANTS>
+                <DESCENDENT id="handle" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="fork">
+            <MATERIAL id="inox" />
+            <TEXTURE id="clear" /> //textura aqui?
+            <TRANSLATION x="0" y="0.1" z="7" />
+            <DESCENDANTS>
+                <DESCENDENT id="handle" />
+                <DESCENDENT id="forkHead" />
+               
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="forkHead">
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <TRANSLATION x="-3" y="0" z="0.25" />
+            <ROTATION axis="z" angle="90" />
+            <ROTATION axis="y" angle="-90" />
+            <DESCENDANTS>
+                <DESCENDENT id="forkSpike1" />
+                <DESCENDENT id="forkSpike2" />
+                <DESCENDENT id="forkSpike3" />
+                 <DESCENDENT id="forkHolder" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="forkHolder"> //for the lack of a better name...
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <TRANSLATION x="0" y="0.0" z="0" />
+            <SCALE sx="0.5" sy="0.5" sz="1" />
+            <DESCENDANTS>
+                <DESCENDENT id="04" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="forkSpike3">
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <TRANSLATION x="0.4" y="0.2" z="0" />
+            <DESCENDANTS>
+                <DESCENDENT id="forkSpike1" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="forkSpike2">
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <TRANSLATION x="-0.4" y="0.2" z="0" />
+            <DESCENDANTS>
+                <DESCENDENT id="forkSpike1" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="forkSpike1">
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <TRANSLATION x="0" y="0.2" z="0" />
+            <SCALE sx="0.1" sy="1.2" sz="1" />
+            <DESCENDANTS>
+                <DESCENDENT id="20" />
+            </DESCENDANTS>
+        </NODE>
+
+         <NODE id="handle">
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <DESCENDANTS>
+                <DESCENDENT id="13" />
+                <DESCENDENT id="14" />
+                <DESCENDENT id="15" />
+                <DESCENDENT id="16" />
+                <DESCENDENT id="17" />
+                <DESCENDENT id="18" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="13">
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <SCALE sx="3" sy="0.05" sz="1" />
+            <DESCENDANTS>
+                <DESCENDENT id="04" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="14">
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <TRANSLATION x="3" y="0" z="0.25" />
+            <ROTATION axis="y" angle="-90" />
+            <SCALE sx="0.25" sy="0.05" sz="1" />
+            <DESCENDANTS>
+                <DESCENDENT id="04" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="15">
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <TRANSLATION x="0" y="0" z="0.5" />
+            <ROTATION axis="x" angle="180" />
+        
+            <DESCENDANTS>
+                <DESCENDENT id="13" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="16">
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <TRANSLATION x="0" y="0" z="0" />
+            <ROTATION axis="z" angle="180" />
+            
+            <DESCENDANTS>
+                <DESCENDENT id="14" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="17">
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <TRANSLATION x="0" y="0.05" z="0.25" />
+            <ROTATION axis="x" angle="-90" />
+            <SCALE sx="3" sy="0.25" sz="1" />
+            <DESCENDANTS>
+                <DESCENDENT id="04" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="18">
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+
+            <ROTATION axis="z" angle="180" />
+            <DESCENDANTS>
+                <DESCENDENT id="17" />
             </DESCENDANTS>
         </NODE>
 
@@ -100,6 +290,9 @@
             <ROTATION axis="x" angle="-90" />
             <DESCENDANTS>
                 <DESCENDENT id="09" />
+                <DESCENDENT id="10" />
+                <DESCENDENT id="11" />
+               
             </DESCENDANTS>
         </NODE>
         
@@ -111,11 +304,28 @@
             </DESCENDANTS>
         </NODE>
 
+        <NODE id="10" >
+            <MATERIAL id="null" />
+            <TEXTURE id="clear" />
+            <TRANSLATION x="0" y="0" z="1.1" />
+            <DESCENDANTS>
+                <DESCENDENT id="05" />
+            </DESCENDANTS>
+        </NODE>
+
+       <NODE id="11" >
+            <MATERIAL id="null" />
+            <TEXTURE id="clear" />
+            <TRANSLATION x="0" y="0" z="10" />
+            <DESCENDANTS>
+                <DESCENDENT id="12" />
+            </DESCENDANTS>
+        </NODE>
 
         <NODE id="glass">
             <MATERIAL id="glass"/>
             <TEXTURE id="clear"/>
-            <TRANSLATION x="-2" y="0" z="-5" />
+            <TRANSLATION x="-3" y="0" z="-8" />
             <DESCENDANTS>
                 <DESCENDENT id="06" />
                 <DESCENDENT id="07" />
@@ -184,6 +394,9 @@
          <LEAF id="03" type="cylinder" args="1.0 0.1 2.0 10.0 40.0"/>
          <LEAF id="04" type="rectangle" args="-1.0 1.0 1.0 -1.0"/>
          <LEAF id="05" type="sphere" args="1.0 40.0 40.0" />
+         <LEAF id="12" type="cylinder" args="1.0 1.0 2.0 10.0 40.0" />
+         <LEAF id="20" type="triangle" args="-1.0 0 0 1.0 0 0 0 1.0 0" />
+         <LEAF id="21" type="triangle" args="0 0 0 1.0 0 0 0 1.0 0" />
     </LEAVES>
 
 </SCENE>
