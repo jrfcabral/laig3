@@ -76,9 +76,11 @@ MySceneGraph.prototype.ParseNodes = function(rootElement) {
     console.log("Parsing nodes");
 
     elems = rootElement.getElementsByTagName('NODES');
-
-    if (elems == null )
+	console.log(elems[0]);
+    if (!elems[0]){
         this.errors.push("NODES element is missing");
+        return;
+    }
     if (elems.length != 1)
         this.warnings.push("more than one NODES element is present");
 
@@ -207,8 +209,9 @@ MySceneGraph.prototype.ParseLeaves = function(rootElement) {
 
     var elems = rootElement.getElementsByTagName('LEAVES');
 
-    if (elems == null ) {
+    if (elems[0] == null ) {
         this.errors.push("LEAVES element is missing");
+        return;
     }
     if (elems.length != 1) {
         this.warnings.push("more than one LEAVES element present");
@@ -274,14 +277,14 @@ MySceneGraph.prototype.onXMLReady = function()
     var rootElement = this.reader.xmlDoc.documentElement;
 
     // Here should go the calls for different functions to parse the various blocks
-    //var error = this.parseGlobalsExample(rootElement);
     this.parseLSX(rootElement);
 
-
+	if (this.errors.length == 0){
     this.loadedOk = true;
 
     // As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
     this.scene.onGraphLoaded();
+	}
 }
 ;
 
@@ -368,7 +371,7 @@ MySceneGraph.prototype.parseLSX = function(rootElement) {
         }
     }
     else {
-        console.log('No warnings! :)');
+        console.log('No warnings!');
     }
 
     console.log('ERRORS: ')
@@ -378,7 +381,7 @@ MySceneGraph.prototype.parseLSX = function(rootElement) {
         }
     }
     else {
-        console.log('No errors! :D');
+        console.log('No errors!');
     }
 
 }
@@ -391,8 +394,8 @@ MySceneGraph.prototype.parseInitials = function(initials) {
         this.errors.push('Missing frustum tag or multiple frustum tags found.');
     }
     else {
-        this.frustumNear = this.reader.getFloat(frustum[0], 'near', 'near');
-        this.frustumFar = this.reader.getFloat(frustum[0], 'far', 'far');
+        this.frustumNear = this.reader.getFloat(frustum[0], 'near');
+        this.frustumFar = this.reader.getFloat(frustum[0], 'far');
     }
 
 
@@ -402,9 +405,9 @@ MySceneGraph.prototype.parseInitials = function(initials) {
         this.errors.push('Missing translation tag or multiple translation tags found.');
     }
     else {
-        this.initTransx = this.reader.getFloat(initTrans[0], 'x', ['x', 'y', 'z']);
-        this.initTransy = this.reader.getFloat(initTrans[0], 'y', ['x', 'y', 'z']);
-        this.initTransz = this.reader.getFloat(initTrans[0], 'z', ['x', 'y', 'z']);
+        initTransx = this.reader.getFloat(initTrans[0], 'x');
+     	initTransy = this.reader.getFloat(initTrans[0], 'y');
+        initTransz = this.reader.getFloat(initTrans[0], 'z');
     }
 
     //initial rotations processing
@@ -413,22 +416,23 @@ MySceneGraph.prototype.parseInitials = function(initials) {
         this.errors.push('Missing 1 of the rotation tags on the INITIALS tag');
     }
     else {
+    	
         var initRot1 = initRot[0];
 
-        this.initRot1Axis = this.reader.getString(initRot1, 'axis', ['axis', 'angle']);
-        this.initRot1Axis = this.reader.getString(initRot1, 'angle', ['axis', 'angle']);
+        initRot1Axis = this.reader.getString(initRot1, 'axis');
+        initRot1Angle = parseFloat(this.reader.getString(initRot1, 'angle'))*Math.PI/180;
 
         var initRot2 = initRot[1];
 
-        this.initRot2Axis = this.reader.getString(initRot2, 'axis', ['axis', 'angle']);
-        this.initRot2Axis = this.reader.getString(initRot2, 'angle', ['axis', 'angle']);
+        initRot2Axis = this.reader.getString(initRot2, 'axis');
+        initRot2Angle = parseFloat(this.reader.getString(initRot2, 'angle'))*Math.PI/180;
 
         var initRot3 = initRot[2];
 
-        this.initRot3Axis = this.reader.getString(initRot3, 'axis', ['axis', 'angle']);
-        this.initRot3Axis = this.reader.getString(initRot3, 'angle', ['axis', 'angle']);
+        initRot3Axis = this.reader.getString(initRot3, 'axis');
+        initRot3Angle = parseFloat(this.reader.getString(initRot3, 'angle'))*Math.PI/180;
     }
-
+	
 
     //inital scaling processing
 
@@ -437,10 +441,25 @@ MySceneGraph.prototype.parseInitials = function(initials) {
         this.errors.push('Missing scale tag on the INITIALS tag');
     }
     else {
-        this.initScalex = this.reader.getFloat(initScale[0], 'sx', ['sx', 'sy', 'sz']);
-        this.initScaley = this.reader.getFloat(initScale[0], 'sy', ['sx', 'sy', 'sz']);
-        this.initScalez = this.reader.getFloat(initScale[0], 'sz', ['sx', 'sy', 'sz']);
+        initScalex = this.reader.getFloat(initScale[0], 'sx');
+        initScaley = this.reader.getFloat(initScale[0], 'sy');
+        initScalez = this.reader.getFloat(initScale[0], 'sz');
     }
+
+    //hashmap to help translate axis character into vector
+    var axii = [];
+    axii["x"] = [1,0,0];
+    axii["y"] = [0,1,0];
+    axii["z"] = [0,0,1];
+
+	//compute transformation matrix corresponding to the transformation values read from lsx	
+   	this.initialsMatrix = mat4.create();
+   	mat4.identity(this.initialsMatrix);
+   	mat4.scale(this.initialsMatrix, this.initialsMatrix, [initScalex, initScaley, initScalez]);
+	mat4.rotate(this.initialsMatrix, this.initialsMatrix, initRot3Angle, axii[initRot3Axis]);
+	mat4.rotate(this.initialsMatrix, this.initialsMatrix, initRot2Angle, axii[initRot2Axis]);
+	mat4.rotate(this.initialsMatrix, this.initialsMatrix, initRot1Angle, axii[initRot1Axis]);
+	mat4.translate(this.initialsMatrix, this.initialsMatrix,[initTransx, initTransy, initTransz]);
 
     //reference length processing
 
@@ -449,7 +468,7 @@ MySceneGraph.prototype.parseInitials = function(initials) {
         this.errors.push('Missing reference tag on the INITIALS tag');
     }
     else {
-        this.refLength = this.reader.getFloat(ref[0], 'length', 'length');
+        this.refLength = this.reader.getFloat(ref[0], 'length');
     }
 
 
@@ -509,10 +528,10 @@ MySceneGraph.prototype.parseLights = function(lights) {
         else {
             position = position[0];
 
-            this.posX = this.reader.getFloat(position, 'x', ['x', 'y', 'z', 'w']);
-            this.posY = this.reader.getFloat(position, 'y', ['x', 'y', 'z', 'w']);
-            this.posZ = this.reader.getFloat(position, 'z', ['x', 'y', 'z', 'w']);
-            this.posW = this.reader.getFloat(position, 'w', ['x', 'y', 'z', 'w']);
+            this.posX = this.reader.getFloat(position, 'x');
+            this.posY = this.reader.getFloat(position, 'y');
+            this.posZ = this.reader.getFloat(position, 'z');
+            this.posW = this.reader.getFloat(position, 'w');
         }
 
 
@@ -547,7 +566,7 @@ MySceneGraph.prototype.parseTex = function(tex) {
         }
         else {
             filePath = filePath[0];
-            this.file = this.reader.getString(filePath, 'path', 'path');
+            this.file = this.reader.getString(filePath, 'path');
         }
 
 
@@ -559,8 +578,8 @@ MySceneGraph.prototype.parseTex = function(tex) {
         }
         else {
             ampFactor = ampFactor[0];
-            this.amplifS = this.reader.getFloat(ampFactor, 's', ['s', 't']);
-            this.amplifT = this.reader.getFloat(ampFactor, 't', ['s', 't']);
+            this.amplifS = this.reader.getFloat(ampFactor, 's');
+            this.amplifT = this.reader.getFloat(ampFactor, 't');
         }
 
 
@@ -588,7 +607,7 @@ MySceneGraph.prototype.parseMaterials = function(mat) {
         }
         else {
             shininess = shininess[0];
-            this.shine = this.reader.getFloat(shininess, 'value', 'value');
+            this.shine = this.reader.getFloat(shininess, 'value');
 
         }
 
@@ -619,10 +638,10 @@ MySceneGraph.prototype.parseMaterials = function(mat) {
 
 /* Gets all the color components */
 MySceneGraph.prototype.getRGBAProper = function(elem) {
-    this.R = this.reader.getFloat(elem, 'r', ['r', 'g', 'b', 'a']);
-    this.G = this.reader.getFloat(elem, 'g', ['r', 'g', 'b', 'a']);
-    this.B = this.reader.getFloat(elem, 'b', ['r', 'g', 'b', 'a']);
-    this.A = this.reader.getFloat(elem, 'a', ['r', 'g', 'b', 'a']);
+    this.R = this.reader.getFloat(elem, 'r');
+    this.G = this.reader.getFloat(elem, 'g');
+    this.B = this.reader.getFloat(elem, 'b');
+    this.A = this.reader.getFloat(elem, 'a');
 
     return [this.R, this.G, this.B, this.A];
 }
