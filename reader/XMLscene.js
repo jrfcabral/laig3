@@ -124,7 +124,11 @@ XMLscene.prototype.display = function () {
 		for(i = 0; i < ((this.graph.lightsNum > 8)? 8:this.graph.lightsNum); i++){
 			this.lights[i].update();
 		}
+
+		this.pushMatrix();
+		this.multMatrix(this.graph.initialsMatrix);
 		this.traverseGraph(this.graph.nodes[this.graph.root]);
+		this.popMatrix();
 	};
 
     this.shader.unbind();

@@ -405,9 +405,9 @@ MySceneGraph.prototype.parseInitials = function(initials) {
         this.errors.push('Missing translation tag or multiple translation tags found.');
     }
     else {
-        this.initTransx = this.reader.getFloat(initTrans[0], 'x');
-        this.initTransy = this.reader.getFloat(initTrans[0], 'y');
-        this.initTransz = this.reader.getFloat(initTrans[0], 'z');
+        initTransx = this.reader.getFloat(initTrans[0], 'x');
+     	initTransy = this.reader.getFloat(initTrans[0], 'y');
+        initTransz = this.reader.getFloat(initTrans[0], 'z');
     }
 
     //initial rotations processing
@@ -416,22 +416,23 @@ MySceneGraph.prototype.parseInitials = function(initials) {
         this.errors.push('Missing 1 of the rotation tags on the INITIALS tag');
     }
     else {
+    	
         var initRot1 = initRot[0];
 
         initRot1Axis = this.reader.getString(initRot1, 'axis');
-        initRot1Angle = this.reader.getString(initRot1, 'angle');
+        initRot1Angle = parseFloat(this.reader.getString(initRot1, 'angle'))*Math.PI/180;
 
         var initRot2 = initRot[1];
 
         initRot2Axis = this.reader.getString(initRot2, 'axis');
-        initRot2Angle = this.reader.getString(initRot2, 'angle');
+        initRot2Angle = parseFloat(this.reader.getString(initRot2, 'angle'))*Math.PI/180;
 
         var initRot3 = initRot[2];
 
         initRot3Axis = this.reader.getString(initRot3, 'axis');
         initRot3Angle = parseFloat(this.reader.getString(initRot3, 'angle'))*Math.PI/180;
     }
-
+	
 
     //inital scaling processing
 
@@ -445,11 +446,20 @@ MySceneGraph.prototype.parseInitials = function(initials) {
         initScalez = this.reader.getFloat(initScale[0], 'sz');
     }
 
-	//compute transformation matrix corresponding to the transformation values read from lsx
+    //hashmap to help translate axis character into vector
+    var axii = [];
+    axii["x"] = [1,0,0];
+    axii["y"] = [0,1,0];
+    axii["z"] = [0,0,1];
+
+	//compute transformation matrix corresponding to the transformation values read from lsx	
    	this.initialsMatrix = mat4.create();
    	mat4.identity(this.initialsMatrix);
    	mat4.scale(this.initialsMatrix, this.initialsMatrix, [initScalex, initScaley, initScalez]);
-	mat4.rotat
+	mat4.rotate(this.initialsMatrix, this.initialsMatrix, initRot3Angle, axii[initRot3Axis]);
+	mat4.rotate(this.initialsMatrix, this.initialsMatrix, initRot2Angle, axii[initRot2Axis]);
+	mat4.rotate(this.initialsMatrix, this.initialsMatrix, initRot1Angle, axii[initRot1Axis]);
+	mat4.translate(this.initialsMatrix, this.initialsMatrix,[initTransx, initTransy, initTransz]);
 
     //reference length processing
 
