@@ -371,7 +371,7 @@ MySceneGraph.prototype.parseLSX = function(rootElement) {
         }
     }
     else {
-        console.log('No warnings! :)');
+        console.log('No warnings!');
     }
 
     console.log('ERRORS: ')
@@ -381,7 +381,7 @@ MySceneGraph.prototype.parseLSX = function(rootElement) {
         }
     }
     else {
-        console.log('No errors! :D');
+        console.log('No errors!');
     }
 
 }
