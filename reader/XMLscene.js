@@ -26,6 +26,8 @@ XMLscene.prototype.init = function (application) {
 	this.currentTexture;
 	this.isTexturePresent = false;
 
+	this.texturesStack = [];
+
 
 	//testing primitives
 	//this.testRect = new rectangle(this, [0, 2], [4, 0]);
@@ -168,24 +170,23 @@ XMLscene.prototype.traverseGraph = function(elem){
 			this.test.push(this.graph.materials[elem.material]);
 			this.test[this.test.length-1].apply();
 		}
-		
-		//console.log(this.test);
-		
+	
+	
 		//TODO apply materials and textures
 		var textureId = elem.texture;
-		//clear texture if node calls for it and a texture is applied
-		if (textureId === "clear" && this.isTexturePresent){
-			//this.currentTexture.unbind();
-			this.isTexturePresent = false;
-		
-		}
-		//apply new texture if node overrides parent's texture
-		else if (textureId !== "null" && textureId !== "clear"){
-			this.currentTexture = this.graph.textures[textureId].texture;
-			this.currentTexture.bind();
-			this.isTexturePresent = true;
-		}
+		var newTexture = this.graph.textures[textureId];
+		//console.log(textureId);
 
+		if (textureId === "clear" && this.currentTexture){
+			this.currentTexture.texture.unbind();
+			newTexture = undefined;
+		}
+		
+		this.texturesStack.push(this.currentTexture);
+		this.currentTexture = newTexture;
+		if(newTexture){		
+			newTexture.texture.bind();
+		}
 
 		var texture = this.graph.textures[textureId];
 		
@@ -199,9 +200,17 @@ XMLscene.prototype.traverseGraph = function(elem){
 			}
 			else{
 				console.log("ERROR: Non-existant descendant");
+				this.graph.loadedOk = false;
+				return;
 			}
 		}
 
+		var oldTexture = this.texturesStack[this.texturesStack.length-1];
+		if(oldTexture)
+			oldTexture.texture.bind();
+		
+		this.texturesStack.pop();
+		//console.log(this.texturesStack.length);
 
 
 		//restore previous state

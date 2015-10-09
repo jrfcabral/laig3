@@ -1,5 +1,142 @@
+<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
 <SCENE>
-<LEAVES>
-    <LEAF id="01" type="rectangle" args="0.0 0.0 2.0 2.0"/>
-</LEAVES>
+   <INITIALS>
+        <frustum near="0.05" far="500.00"/>                    
+        <translation  x="0.0" y="0.0" z="5.0" />                 
+        <rotation axis="y" angle="45" />
+        <rotation axis="z" angle="20" />                   
+        <rotation axis="x" angle="45" />
+        <scale sx="1.0" sy="1.0" sz="1.0"/>    
+        <reference length="5.0" />
+    </INITIALS>
+
+    <ILLUMINATION>
+        <ambient r="0.5" g="0.5" b="0.5" a="0.5"/> <!--needs to be changed-->
+        <background r="1" g="1" b="1" a="1"/>
+    </ILLUMINATION>
+
+
+    <LIGHTS>
+        <LIGHT id="l01">
+            <enable value = "0" />
+            <position x="2.0" y="-3.0" z="-1.0" w="1.0" />
+             <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+        </LIGHT>
+
+        <LIGHT id="l02">
+            <enable value ="1" />
+            <position x="-4.0" y="3.0" z="-1.0" w="1.0" />
+             <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+        </LIGHT>
+        
+    </LIGHTS>   
+
+    <TEXTURES>
+        <TEXTURE id="wood">
+            <file path="textures/floor.png"/>
+            <amplif_factor s="1" t="1"/>
+        </TEXTURE>
+
+        <TEXTURE id="glass">
+            <file path="textures/banco.jpg" />
+            <amplif_factor s="1" t="1" />
+        </TEXTURE>
+    </TEXTURES>
+
+    <MATERIALS>
+        <MATERIAL id="glass">                                  
+            <shininess value="100.0" />
+            <specular r="0.48" g="0.83" b="0.87" a="1.0" />
+            <diffuse r="0.48" g="0.83" b="0.87" a="1.0" />
+            <ambient r="0.48" g="0.83" b="0.87" a="1.0" />
+            <emission r="0" g="0" b="0" a="1.0" />
+        </MATERIAL>
+         <MATERIAL id="floor">                                  
+            <shininess value="10.0" />
+            <specular r="0.42" g="0.29" b="0.06" a="1.0" />
+            <diffuse r="0.42" g="0.29" b="0.06" a="1.0" />
+            <ambient r="0.42" g="0.29" b="0.06" a="1.0" />
+            <emission r="0" g="0" b="0" a="1.0" />
+        </MATERIAL>
+
+         <MATERIAL id="olive">                                  
+            <shininess value="10.0" />
+            <specular r="0.42" g="0.59" b="0.31" a="1.0" />
+            <diffuse r="0.3" g="0.4" b="0.25" a="1.0" />
+            <ambient r="0.3" g="0.4" b="0.25" a="1.0" />
+            <emission r="0" g="0" b="0" a="1.0" />
+        </MATERIAL>
+               
+        <MATERIAL id="porcelain">
+            <shininess value="10.0" />
+            <specular r="0.9" g="0.9" b="0.9" a="1.0" />
+            <diffuse r="0.9" g="0.9" b="0.9" a="1.0" />
+            <ambient r="0.9" g="0.9" b="0.9" a="1.0" />
+            <emission r="0" g="0" b="0" a="1.0" />
+        </MATERIAL>
+
+        <MATERIAL id="test">
+         <shininess value="10.0" />
+            <specular r="0" g="0" b="0" a="1.0" />
+            <diffuse r="0" g="0" b="0" a="1.0" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <emission r="0" g="0" b="0" a="1.0" />
+        </MATERIAL>
+
+         <MATERIAL id="inox">
+         <shininess value="10.0" />
+            <specular r="0.7" g="0.7" b="0.7" a="1.0" />
+            <diffuse r="0.7" g="0.7" b="0.7" a="1.0" />
+            <ambient r="0.7" g="0.7" b="0.7" a="1.0" />
+            <emission r="0" g="0" b="0" a="0" />
+        </MATERIAL>
+    </MATERIALS>
+
+
+    <NODES>
+        <ROOT id="00"/>
+        <NODE id="00">
+            <MATERIAL id="inox"/>
+            <TEXTURE id="wood"/>
+            <TRANSLATION x="0" y="0" z="1"/>
+            <DESCENDANTS>
+                <DESCENDANT id="04"/>
+                <DESCENDANT id="um"/>
+            </DESCENDANTS>
+        </NODE>
+        <NODE id="um">
+            <MATERIAL id="inox"/>
+            <TEXTURE id="clear"/>
+            <TRANSLATION x="0" y="0" z="1"/>
+            <DESCENDANTS>
+                <DESCENDANT id="04"/>
+                <DESCENDANT id="dois"/>
+            </DESCENDANTS>
+        </NODE>
+          <NODE id="dois">
+            <MATERIAL id="inox"/>
+            <TEXTURE id="glass"/>
+            <TRANSLATION x="0" y="0" z="1"/>
+            <DESCENDANTS>
+                <DESCENDANT id="04"/>                
+            </DESCENDANTS>
+        </NODE>
+
+    </NODES>    
+
+    <LEAVES>
+        <LEAF id="01" type="cylinder" args="1.0 1.0 1.0 10.0 40.0"/>
+         <LEAF id="02" type="cylinder" args="1.0 1.0 0.1 10.0 40.0"/>
+         <LEAF id="03" type="cylinder" args="1.0 0.1 2.0 10.0 40.0"/>
+         <LEAF id="04" type="rectangle" args="-1.0 1.0 1.0 -1.0"/>
+         <LEAF id="05" type="sphere" args="1.0 40.0 40.0" />
+         <LEAF id="12" type="cylinder" args="1.0 1.0 2.0 10.0 40.0" />
+         <LEAF id="20" type="triangle" args="-1.0 0 0 1.0 0 0 0 1.0 0" />
+         <LEAF id="21" type="triangle" args="0 0 0 1.0 0 0 0 1.0 0" />
+    </LEAVES>
+
 </SCENE>
