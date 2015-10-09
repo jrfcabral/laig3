@@ -566,7 +566,8 @@ MySceneGraph.prototype.parseTex = function(tex) {
         }
         else {
             filePath = filePath[0];
-            this.file = this.reader.getString(filePath, 'path');
+            file = this.reader.getString(filePath, 'path');
+            console.log(this.file);
         }
 
 
@@ -574,20 +575,21 @@ MySceneGraph.prototype.parseTex = function(tex) {
         var ampFactor = texture.getElementsByTagName('amplif_factor');
         if (ampFactor == null  || ampFactor.length != 1) {
             this.errors.push('Missing amplif_factor tag or multiple amplif_factor tags on texture' + texture.id);
-
+			return;
         }
         else {
             ampFactor = ampFactor[0];
-            this.amplifS = this.reader.getFloat(ampFactor, 's');
-            this.amplifT = this.reader.getFloat(ampFactor, 't');
+            amplifS = this.reader.getFloat(ampFactor, 's');
+          	amplifT = this.reader.getFloat(ampFactor, 't');
         }
 
-
-
+		console.log(texture);
+		textureObject = new CGFtexture(this.scene, file);
         this.textures[texture.id] = {
             id: texture.id,
-            path: this.file,
-            ampFactor: [this.amplifS, this.amplifT]
+            path:file,
+            ampFactor: [amplifS, amplifT],
+            texture: textureObject,
         };
     }
 

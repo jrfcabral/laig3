@@ -37,12 +37,12 @@
 
     <TEXTURES>
         <TEXTURE id="wood">
-            <file path="../textures/floor.png"/>
+            <file path="textures/floor.png"/>
             <amplif_factor s="1" t="1"/>
         </TEXTURE>
 
         <TEXTURE id="glass">
-            <file path="../textures/coise.n_existe" />
+            <file path="textures/coise.n_existe" />
             <amplif_factor s="1" t="1" />
         </TEXTURE>
     </TEXTURES>
@@ -146,7 +146,7 @@
 
         <NODE id="fork">
             <MATERIAL id="inox" />
-            <TEXTURE id="clear" /> //textura aqui?
+            <TEXTURE id="wood" /> //textura aqui?
             <TRANSLATION x="0" y="0.1" z="7" />
             <DESCENDANTS>
                 <DESCENDENT id="handle" />
@@ -209,7 +209,7 @@
 
          <NODE id="handle">
             <MATERIAL id="null" />
-            <TEXTURE id="null" />
+            <TEXTURE id="clear" />
             <DESCENDANTS>
                 <DESCENDENT id="13" />
                 <DESCENDENT id="14" />
@@ -222,7 +222,7 @@
 
         <NODE id="13">
             <MATERIAL id="null" />
-            <TEXTURE id="null" />
+            <TEXTURE id="clear" />
             <SCALE sx="3" sy="0.05" sz="1" />
             <DESCENDANTS>
                 <DESCENDENT id="04" />

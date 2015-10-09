@@ -12,6 +12,7 @@ XMLscene.prototype.init = function (application) {
     this.initCameras();
 
     this.initLights();
+    this.enableTextures(true);
 
     this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
@@ -21,6 +22,11 @@ XMLscene.prototype.init = function (application) {
     this.gl.depthFunc(this.gl.LEQUAL);
 
 	this.axis=new CGFaxis(this);
+
+	this.currentTexture;
+	this.isTexturePresent = false;
+
+	this.texturesStack = [];
 
 
 	//testing primitives
@@ -100,8 +106,7 @@ XMLscene.prototype.display = function () {
 	// Apply transformations corresponding to the camera position relative to the origin
 	this.applyViewMatrix();
 
-	// Draw axis
-	this.axis.display();
+	
 
 	this.setDefaultAppearance();
 
@@ -124,10 +129,18 @@ XMLscene.prototype.display = function () {
 		for(i = 0; i < ((this.graph.lightsNum > 8)? 8:this.graph.lightsNum); i++){
 			this.lights[i].update();
 		}
-
-		this.pushMatrix();
+		
+		//apply initial transformations
+		this.pushMatrix();		
 		this.multMatrix(this.graph.initialsMatrix);
+		
+		// Draw axis
+	    this.axis.display();
+
+		//traverse the render tree and draw elements
 		this.traverseGraph(this.graph.nodes[this.graph.root]);
+
+		//restore previous state
 		this.popMatrix();
 	};
 
@@ -152,16 +165,26 @@ XMLscene.prototype.traverseGraph = function(elem){
 		//apply transformations
 		this.pushMatrix();
 		this.multMatrix(elem.matrix);
+
+		if (elem.id === "parede1")
+			console.log("parei para sonhar");
 		
 		if(elem.material != "null"){
 			this.test.push(this.graph.materials[elem.material]);
 			this.test[this.test.length-1].apply();
 		}
-		
-		//console.log(this.test);
-		
-		//TODO apply materials and textures
+	
+	
+		//apply materials and textures
+		var textureId = elem.texture;
+		if (textureId !== "null"){			
+			this.texturesStack.push(textureId);			
+		}			
 
+		if(textureId !== "clear" && this.texturesStack.length){				
+			this.graph.textures[this.texturesStack[this.texturesStack.length-1]].texture.bind();
+		}
+			
 		//traverse the tree forwards
 		var descendants = elem.descendants.slice();
 		for(var i = 0; i < elem.descendants.length; i++){
@@ -172,10 +195,21 @@ XMLscene.prototype.traverseGraph = function(elem){
 			}
 			else{
 				console.log("ERROR: Non-existant descendant");
+				this.graph.loadedOk = false;
+				return;
 			}
 		}
 
 
+		if(textureId !== "null"){
+			this.texturesStack.pop();
+			if(this.texturesStack.length != 0){
+				var oldTex = this.texturesStack[this.texturesStack.length-1];
+				if(oldTex !== "clear"){					
+					this.graph.textures[oldTex].texture.bind();
+				}
+			}
+		}
 
 		//restore previous state
 		if(elem.material != "null"){
