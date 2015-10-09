@@ -12,6 +12,7 @@ XMLscene.prototype.init = function (application) {
     this.initCameras();
 
     this.initLights();
+    this.enableTextures(true);
 
     this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
@@ -21,6 +22,9 @@ XMLscene.prototype.init = function (application) {
     this.gl.depthFunc(this.gl.LEQUAL);
 
 	this.axis=new CGFaxis(this);
+
+	this.currentTexture;
+	this.isTexturePresent = false;
 
 
 	//testing primitives
@@ -100,8 +104,7 @@ XMLscene.prototype.display = function () {
 	// Apply transformations corresponding to the camera position relative to the origin
 	this.applyViewMatrix();
 
-	// Draw axis
-	this.axis.display();
+	
 
 	this.setDefaultAppearance();
 
@@ -124,10 +127,18 @@ XMLscene.prototype.display = function () {
 		for(i = 0; i < ((this.graph.lightsNum > 8)? 8:this.graph.lightsNum); i++){
 			this.lights[i].update();
 		}
-
-		this.pushMatrix();
+		
+		//apply initial transformations
+		this.pushMatrix();		
 		this.multMatrix(this.graph.initialsMatrix);
+		
+		// Draw axis
+	    this.axis.display();
+
+		//traverse the render tree and draw elements
 		this.traverseGraph(this.graph.nodes[this.graph.root]);
+
+		//restore previous state
 		this.popMatrix();
 	};
 
@@ -161,7 +172,23 @@ XMLscene.prototype.traverseGraph = function(elem){
 		//console.log(this.test);
 		
 		//TODO apply materials and textures
+		var textureId = elem.texture;
+		//clear texture if node calls for it and a texture is applied
+		if (textureId === "clear" && this.isTexturePresent){
+			//this.currentTexture.unbind();
+			this.isTexturePresent = false;
+		
+		}
+		//apply new texture if node overrides parent's texture
+		else if (textureId !== "null" && textureId !== "clear"){
+			this.currentTexture = this.graph.textures[textureId].texture;
+			this.currentTexture.bind();
+			this.isTexturePresent = true;
+		}
 
+
+		var texture = this.graph.textures[textureId];
+		
 		//traverse the tree forwards
 		var descendants = elem.descendants.slice();
 		for(var i = 0; i < elem.descendants.length; i++){
