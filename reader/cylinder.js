@@ -33,7 +33,7 @@
 		var radius = this.br + ((this.tr - this.br)/this.stacks)*i;
 		for(var j = 0; j < this.slices; j++){
 			var x = Math.cos(ang*j)*radius; 
-			var z = i/this.height;
+			var z = i * this.height/this.stacks;
 			var y = Math.sin(ang*j)*radius; 
 
 			this.vertices.push(x, y, z);
