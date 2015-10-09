@@ -165,6 +165,9 @@ XMLscene.prototype.traverseGraph = function(elem){
 		//apply transformations
 		this.pushMatrix();
 		this.multMatrix(elem.matrix);
+
+		if (elem.id === "parede1")
+			console.log("parei para sonhar");
 		
 		if(elem.material != "null"){
 			this.test.push(this.graph.materials[elem.material]);
@@ -172,24 +175,16 @@ XMLscene.prototype.traverseGraph = function(elem){
 		}
 	
 	
-		//TODO apply materials and textures
+		//apply materials and textures
 		var textureId = elem.texture;
-		var newTexture = this.graph.textures[textureId];
-		//console.log(textureId);
+		if (textureId !== "null"){			
+			this.texturesStack.push(textureId);			
+		}			
 
-		if (textureId === "clear" && this.currentTexture){
-			this.currentTexture.texture.unbind();
-			newTexture = undefined;
+		if(textureId !== "clear" && this.texturesStack.length){				
+			this.graph.textures[this.texturesStack[this.texturesStack.length-1]].texture.bind();
 		}
-		
-		this.texturesStack.push(this.currentTexture);
-		this.currentTexture = newTexture;
-		if(newTexture){		
-			newTexture.texture.bind();
-		}
-
-		var texture = this.graph.textures[textureId];
-		
+			
 		//traverse the tree forwards
 		var descendants = elem.descendants.slice();
 		for(var i = 0; i < elem.descendants.length; i++){
@@ -205,13 +200,16 @@ XMLscene.prototype.traverseGraph = function(elem){
 			}
 		}
 
-		var oldTexture = this.texturesStack[this.texturesStack.length-1];
-		if(oldTexture)
-			oldTexture.texture.bind();
-		
-		this.texturesStack.pop();
-		//console.log(this.texturesStack.length);
 
+		if(textureId !== "null"){
+			this.texturesStack.pop();
+			if(this.texturesStack.length != 0){
+				var oldTex = this.texturesStack[this.texturesStack.length-1];
+				if(oldTex !== "clear"){					
+					this.graph.textures[oldTex].texture.bind();
+				}
+			}
+		}
 
 		//restore previous state
 		if(elem.material != "null"){
