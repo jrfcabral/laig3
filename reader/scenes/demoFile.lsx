@@ -299,6 +299,7 @@
         <NODE id="09">
             <MATERIAL id="null" />
             <TEXTURE id="null" />
+            <SCALE sx="1" sy="1" sz="10" />
             <DESCENDANTS>
                 <DESCENDENT id="01" />
             </DESCENDANTS>
@@ -317,6 +318,7 @@
             <MATERIAL id="null" />
             <TEXTURE id="clear" />
             <TRANSLATION x="0" y="0" z="10" />
+            <SCALE sx="1" sy="1" sz="10" />
             <DESCENDANTS>
                 <DESCENDENT id="12" />
             </DESCENDANTS>
@@ -326,6 +328,7 @@
             <MATERIAL id="glass"/>
             <TEXTURE id="clear"/>
             <TRANSLATION x="-3" y="0" z="-8" />
+           
             <DESCENDANTS>
                 <DESCENDENT id="06" />
                 <DESCENDENT id="07" />
@@ -357,7 +360,7 @@
             <MATERIAL id="null"/>
             <TEXTURE id="null"/>
             <TRANSLATION x="0" y="4.0" z="0"/>
-            <SCALE sx="1.0" sy="0.15" sz="1.0"/>
+            <SCALE sx="1.0" sy="1.5" sz="1.0"/>
             <ROTATION axis="x" angle="-90" /> 
              <DESCENDANTS> 
                 <DESCENDENT id ="03"/>                              
@@ -368,7 +371,7 @@
             <MATERIAL id="null"/>
             <TEXTURE id="null"/>
             <TRANSLATION x="0" y="1.0" z="0" />
-            <SCALE sx="0.1" sy="0.3" sz="0.1" />
+            <SCALE sx="0.1" sy="3" sz="0.1" />
             <ROTATION axis="x" angle="-90" /> 
             <DESCENDANTS> 
                 <DESCENDENT id ="01"/>                              
@@ -377,7 +380,7 @@
          <NODE id="06">
             <MATERIAL id="null"/>
             <TEXTURE id="null"/>
-            <SCALE sx="1.0" sy="0.1" sz="1.0"/>
+            <SCALE sx="1.0" sy="1" sz="1.0"/>
             <ROTATION axis="x" angle="-90" /> 
             <DESCENDANTS>
                 <DESCENDENT id="02"/>
@@ -389,12 +392,12 @@
     </NODES>    
 
     <LEAVES>
-        <LEAF id="01" type="cylinder" args="1.0 1.0 1.0 10.0 40.0"/>
-         <LEAF id="02" type="cylinder" args="1.0 1.0 0.1 10.0 40.0"/>
-         <LEAF id="03" type="cylinder" args="1.0 0.1 2.0 10.0 40.0"/>
+        <LEAF id="01" type="cylinder" args="1.0 1.0 1.0 40.0 40.0"/>
+         <LEAF id="02" type="cylinder" args="1.0 1.0 0.1 40.0 40.0"/>
+         <LEAF id="03" type="cylinder" args="1.0 0.1 2.0 40.0 40.0"/>
          <LEAF id="04" type="rectangle" args="-1.0 1.0 1.0 -1.0"/>
          <LEAF id="05" type="sphere" args="1.0 40.0 40.0" />
-         <LEAF id="12" type="cylinder" args="1.0 1.0 2.0 10.0 40.0" />
+         <LEAF id="12" type="cylinder" args="1.0 1.0 2.0 40.0 40.0" />
          <LEAF id="20" type="triangle" args="-1.0 0 0 1.0 0 0 0 1.0 0" />
          <LEAF id="21" type="triangle" args="0 0 0 1.0 0 0 0 1.0 0" />
     </LEAVES>
