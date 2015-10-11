@@ -23,7 +23,7 @@ XMLscene.prototype.init = function (application) {
 
 	this.axis=new CGFaxis(this);
 
-	this.currentTexture;
+	this.currentTexture = "clear";
 	this.isTexturePresent = false;
 
 	this.texturesStack = [];
@@ -152,22 +152,15 @@ XMLscene.prototype.traverseGraph = function(elem){
 
 	//we have reached a leaf
 	if (!elem.descendants){
-		//console.log("Reached leaf with id " + elem.id);
-		//console.log(mat3.create());
-
 		this.DrawPrimitive(elem);
 	}
 
 	//this is a node
 	else{
-		//console.log("Traversal: reached node with id "+elem.id);
 
 		//apply transformations
 		this.pushMatrix();
 		this.multMatrix(elem.matrix);
-
-		/*if (elem.id === "parede1")
-			console.log("parei para sonhar");*/
 		
 		if(elem.material != "null"){
 			this.test.push(this.graph.materials[elem.material]);
@@ -176,14 +169,8 @@ XMLscene.prototype.traverseGraph = function(elem){
 	
 	
 		//apply materials and textures
-		var textureId = elem.texture;
-		if (textureId !== "null"){			
-			this.texturesStack.push(textureId);			
-		}			
-
-		if(textureId !== "clear" && this.texturesStack.length && textureId !== "null"){				
-			this.graph.textures[this.texturesStack[this.texturesStack.length-1]].texture.bind();
-		}
+		this.PushTexture();
+		this.ApplyTexture(elem.texture);
 			
 		//traverse the tree forwards
 		var descendants = elem.descendants.slice();
@@ -201,24 +188,10 @@ XMLscene.prototype.traverseGraph = function(elem){
 		}
 
 
-		if(textureId !== "null"){
-			this.texturesStack.pop();
-			if(this.texturesStack.length != 0){
-				var oldTex = this.texturesStack[this.texturesStack.length-1];
-				if(oldTex !== "clear"){					
-					this.graph.textures[oldTex].texture.bind();
-				}
-			}
-		}
+		
 
 		//restore previous state
-		if(elem.material != "null"){
-			this.test.pop();
-			if(this.test.length != 0){
-				this.test[this.test.length-1].apply();
-			}
-			
-		}
+		this.PopTexture();
 		this.popMatrix();
 
 	}
@@ -227,4 +200,32 @@ XMLscene.prototype.traverseGraph = function(elem){
 XMLscene.prototype.DrawPrimitive = function(elem){	
 	
 	elem.object.display();
+}
+
+XMLscene.prototype.PushTexture = function(){
+	this.texturesStack.push(this.currentTexture);
+}
+XMLscene.prototype.ApplyTexture = function(texture){
+
+	if (texture !== "null" && texture !== "clear"){
+		this.graph.textures[texture].texture.bind();
+		this.currentTexture = texture;
+	}
+	else if (texture === "clear" && this.currentTexture !== "clear"){
+		this.graph.textures[this.currentTexture].texture.unbind();
+		this.currentTexture = texture;
+	}
+
+}
+
+XMLscene.prototype.PopTexture = function(){
+	var stackTop = this.texturesStack[this.texturesStack.length-1];
+	this.texturesStack.pop();
+	if (stackTop === "clear" && this.currentTexture !== "clear"){
+		this.graph.textures[this.currentTexture].texture.unbind();
+	}
+	else if (stackTop !== "clear"){
+		this.graph.textures[stackTop].texture.bind();
+		this.currentTexture = stackTop;
+	}
 }

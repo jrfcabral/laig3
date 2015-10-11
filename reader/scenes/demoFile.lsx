@@ -41,7 +41,10 @@
             <amplif_factor s="1" t="1"/>
         </TEXTURE>
 
-       
+        <TEXTURE id="glass">
+            <file path="textures/board.png" />
+            <amplif_factor s="1" t="1" />
+        </TEXTURE>
     </TEXTURES>
 
     <MATERIALS>
@@ -110,7 +113,7 @@
 
         <NODE id="knife">
             <MATERIAL id="inox" />
-            <TEXTURE id="clear" /> 
+            <TEXTURE id="wood" /> //le texture ici?
             <TRANSLATION x="1" y="0.1" z="-7" />
             <DESCENDANTS>
                 <DESCENDENT id="modHandle" />
@@ -120,7 +123,7 @@
 
          <NODE id="knifeBlade">
             <MATERIAL id="null" />
-            <TEXTURE id="null" />
+            <TEXTURE id="glass" />
             <TRANSLATION x="-2" y="0" z="0.5" />
             <ROTATION axis="z" angle="90" />
             <ROTATION axis="y" angle="-270" />
@@ -143,7 +146,7 @@
 
         <NODE id="fork">
             <MATERIAL id="inox" />
-            <TEXTURE id="wood" /> 
+            <TEXTURE id="wood" /> //textura aqui?
             <TRANSLATION x="0" y="0.1" z="7" />
             <DESCENDANTS>
                 <DESCENDENT id="handle" />
@@ -166,7 +169,7 @@
             </DESCENDANTS>
         </NODE>
 
-        <NODE id="forkHolder"> 
+        <NODE id="forkHolder"> //for the lack of a better name...
             <MATERIAL id="null" />
             <TEXTURE id="null" />
             <TRANSLATION x="0" y="0.0" z="0" />
