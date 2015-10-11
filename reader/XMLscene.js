@@ -23,7 +23,7 @@ XMLscene.prototype.init = function (application) {
 
 	this.axis=new CGFaxis(this);
 
-	this.currentTexture;
+	this.currentTexture = "clear";
 	this.isTexturePresent = false;
 
 	this.texturesStack = [];
@@ -176,14 +176,8 @@ XMLscene.prototype.traverseGraph = function(elem){
 	
 	
 		//apply materials and textures
-		var textureId = elem.texture;
-		if (textureId !== "null"){			
-			this.texturesStack.push(textureId);			
-		}			
-
-		if(textureId !== "clear" && this.texturesStack.length){				
-			this.graph.textures[this.texturesStack[this.texturesStack.length-1]].texture.bind();
-		}
+		this.PushTexture();
+		this.ApplyTexture(elem.texture);
 			
 		//traverse the tree forwards
 		var descendants = elem.descendants.slice();
@@ -201,24 +195,10 @@ XMLscene.prototype.traverseGraph = function(elem){
 		}
 
 
-		if(textureId !== "null"){
-			this.texturesStack.pop();
-			if(this.texturesStack.length != 0){
-				var oldTex = this.texturesStack[this.texturesStack.length-1];
-				if(oldTex !== "clear"){					
-					this.graph.textures[oldTex].texture.bind();
-				}
-			}
-		}
+		
 
 		//restore previous state
-		if(elem.material != "null"){
-			this.test.pop();
-			if(this.test.length != 0){
-				this.test[this.test.length-1].apply();
-			}
-			
-		}
+		this.PopTexture();
 		this.popMatrix();
 
 	}
@@ -227,4 +207,34 @@ XMLscene.prototype.traverseGraph = function(elem){
 XMLscene.prototype.DrawPrimitive = function(elem){	
 	
 	elem.object.display();
+}
+
+XMLscene.prototype.PushTexture = function(){
+	this.texturesStack.push(this.currentTexture);
+}
+XMLscene.prototype.ApplyTexture = function(texture){
+
+	if (texture !== "null" && texture !== "clear"){
+		console.log("Applying texture " + texture);
+		this.graph.textures[texture].texture.bind();
+		this.currentTexture = texture;
+	}
+	else if (texture === "clear" && this.currentTexture !== "clear"){
+		this.graph.textures[this.currentTexture].texture.unbind();
+		this.currentTexture = texture;
+	}
+
+}
+
+XMLscene.prototype.PopTexture = function(){
+	var stackTop = this.texturesStack[this.texturesStack.length-1];
+	this.texturesStack.pop();
+	if (stackTop === "clear" && this.currentTexture !== "clear"){
+		this.graph.textures[this.currentTexture].texture.unbind();
+	}
+	else if (stackTop !== "clear"){
+		console.log(stackTop);
+		this.graph.textures[stackTop].texture.bind();
+	}
+	console.log(this.texturesStack.length);
 }
