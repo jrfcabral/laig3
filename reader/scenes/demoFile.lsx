@@ -41,10 +41,7 @@
             <amplif_factor s="1" t="1"/>
         </TEXTURE>
 
-        <TEXTURE id="glass">
-            <file path="textures/coise.n_existe" />
-            <amplif_factor s="1" t="1" />
-        </TEXTURE>
+       
     </TEXTURES>
 
     <MATERIALS>
@@ -113,7 +110,7 @@
 
         <NODE id="knife">
             <MATERIAL id="inox" />
-            <TEXTURE id="clear" /> //le texture ici?
+            <TEXTURE id="clear" /> 
             <TRANSLATION x="1" y="0.1" z="-7" />
             <DESCENDANTS>
                 <DESCENDENT id="modHandle" />
@@ -146,7 +143,7 @@
 
         <NODE id="fork">
             <MATERIAL id="inox" />
-            <TEXTURE id="wood" /> //textura aqui?
+            <TEXTURE id="wood" /> 
             <TRANSLATION x="0" y="0.1" z="7" />
             <DESCENDANTS>
                 <DESCENDENT id="handle" />
@@ -169,7 +166,7 @@
             </DESCENDANTS>
         </NODE>
 
-        <NODE id="forkHolder"> //for the lack of a better name...
+        <NODE id="forkHolder"> 
             <MATERIAL id="null" />
             <TEXTURE id="null" />
             <TRANSLATION x="0" y="0.0" z="0" />

@@ -166,8 +166,8 @@ XMLscene.prototype.traverseGraph = function(elem){
 		this.pushMatrix();
 		this.multMatrix(elem.matrix);
 
-		if (elem.id === "parede1")
-			console.log("parei para sonhar");
+		/*if (elem.id === "parede1")
+			console.log("parei para sonhar");*/
 		
 		if(elem.material != "null"){
 			this.test.push(this.graph.materials[elem.material]);
@@ -181,7 +181,7 @@ XMLscene.prototype.traverseGraph = function(elem){
 			this.texturesStack.push(textureId);			
 		}			
 
-		if(textureId !== "clear" && this.texturesStack.length){				
+		if(textureId !== "clear" && this.texturesStack.length && textureId !== "null"){				
 			this.graph.textures[this.texturesStack[this.texturesStack.length-1]].texture.bind();
 		}
 			
