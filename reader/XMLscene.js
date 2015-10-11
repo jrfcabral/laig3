@@ -152,22 +152,15 @@ XMLscene.prototype.traverseGraph = function(elem){
 
 	//we have reached a leaf
 	if (!elem.descendants){
-		//console.log("Reached leaf with id " + elem.id);
-		//console.log(mat3.create());
-
 		this.DrawPrimitive(elem);
 	}
 
 	//this is a node
 	else{
-		//console.log("Traversal: reached node with id "+elem.id);
 
 		//apply transformations
 		this.pushMatrix();
 		this.multMatrix(elem.matrix);
-
-		if (elem.id === "parede1")
-			console.log("parei para sonhar");
 		
 		if(elem.material != "null"){
 			this.test.push(this.graph.materials[elem.material]);
@@ -215,7 +208,6 @@ XMLscene.prototype.PushTexture = function(){
 XMLscene.prototype.ApplyTexture = function(texture){
 
 	if (texture !== "null" && texture !== "clear"){
-		console.log("Applying texture " + texture);
 		this.graph.textures[texture].texture.bind();
 		this.currentTexture = texture;
 	}
@@ -233,8 +225,7 @@ XMLscene.prototype.PopTexture = function(){
 		this.graph.textures[this.currentTexture].texture.unbind();
 	}
 	else if (stackTop !== "clear"){
-		console.log(stackTop);
 		this.graph.textures[stackTop].texture.bind();
+		this.currentTexture = stackTop;
 	}
-	console.log(this.texturesStack.length);
 }
