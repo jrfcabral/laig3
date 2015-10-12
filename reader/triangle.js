@@ -21,6 +21,10 @@ function triangle(scene, p1, p2, p3, minS, maxS, minT, maxT) {
 triangle.prototype = Object.create(CGFobject.prototype);
 triangle.prototype.constructor=triangle;
 
+triangle.prototype.updateTexCoords = function(texture){
+	
+}
+
 triangle.prototype.initBuffers = function () {
 this.vertices = [
         this.p1[0], this.p1[1], this.p1[2],
