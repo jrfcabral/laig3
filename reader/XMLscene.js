@@ -80,7 +80,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 		if(this.graph.lightsDic[i].enable == 1){
 			this.lights[i].enable();
 		}
-		this.lights[i].setVisible(true);
+		this.lights[i].setVisible(false);
 
 	}
 
