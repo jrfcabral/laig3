@@ -12,43 +12,36 @@ sphere.prototype.constructor = sphere;
 
 
 sphere.prototype.initBuffers = function() { 	
-
+    
  	this.vertices = [];
  	this.indices = [];
  	this.normals = [];
  	this.texCoords = [];
 
- //	console.log(this.stacks);
- 	var stackDivs = Math.PI /this.stacks;
- 	var sliceDivs = (2 * Math.PI) /this.slices;
+    var ang = 2*Math.PI/this.slices;
+ 	var ang2 = Math.PI/this.stacks;
 
-    for(var stack = 0; stack <= this.stacks; stack++){
-        var stackAngle = stack * stackDivs;//phi
+ 	for(var i = 0; i <= this.stacks; i++){
+ 	  for(var j = 0; j < this.slices; j++){
+ 	    var x = Math.cos(ang*j)*this.radius*Math.sin(ang2*i);
+ 	    var y = Math.sin(ang*j)*this.radius*Math.sin(ang2*i);
+ 	    var z = Math.cos(ang2*i)*this.radius;
 
-        for(var slice = 0; slice <= this.slices; slice++){
-            var sliceAngle = slice*sliceDivs;//theta
-            var x = Math.cos(stackAngle)*Math.sin(sliceAngle);
-            var y = Math.cos(sliceAngle);
-            var z = Math.sin(stackAngle)*Math.sin(sliceAngle);
-
-            this.vertices.push(this.radius*x, this.radius*y, this.radius*z);
-            this.normals.push(x,y,z);            
-        }
+ 	    this.vertices.push(x, y, z);
+ 	    this.normals.push(x, y, z);
+ 	    this.texCoords.push(j/this.slices, i/this.stacks);
+	 }
+	 this.texCoords.push((j+1)/this.slices, i/this.stacks);
+	} 
+    for(var i = 0; i < this.stacks; i++){
+      for(var j = 0; j < this.slices-1; j++){
+        this.indices.push((i*this.slices) + this.slices+j, (i*this.slices) +j+1, (i*this.slices) +j);
+        this.indices.push((i*this.slices) +j+1, (i*this.slices) +this.slices+j, (i*this.slices) +this.slices+j+1);
+      }
+      this.indices.push((i*this.slices) +this.slices+j, (i*this.slices) +0, (i*this.slices) +j);
+      this.indices.push((i*this.slices) +this.slices+j, ((i+1)*this.slices), (i*this.slices) +0);
     }
-
-    for(var stack = 0; stack < this.stacks; stack++){
-        for(var slice = 0; slice < this.slices; slice++){
-            var ref = (stack * (this.slices +1 )) + slice;   
-            this.indices.push( ref, ref + this.slices + 1, ref+1);
-            this.indices.push( ref+this.slices+1, ref+this.slices+2, ref+1);
-
-           this.indices.push(  ref + this.slices + 1,ref, ref+1);
-           this.indices.push(  ref+this.slices+2,ref+this.slices+1, ref+1);
-
-
-        }
-    }
-      
+ 
 	this.primitiveType = this.scene.gl.TRIANGLES;
  	this.initGLBuffers();
 
