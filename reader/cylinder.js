@@ -39,9 +39,9 @@
 
 			this.vertices.push(x, y, z);
 			this.normals.push(x, 0, z);
-			this.texCoords.push(j*this.slices, i*this.stacks);
+			this.texCoords.push(j/this.slices, i/this.stacks);
 		}
-		this.texCoords.push((j+1)*this.slices, i*this.stacks);
+		this.texCoords.push((j+1)/this.slices, i/this.stacks);
 	}
 
 	
