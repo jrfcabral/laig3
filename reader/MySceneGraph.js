@@ -528,13 +528,14 @@ MySceneGraph.prototype.parseLights = function(lights) {
         else {
             position = position[0];
 
-            this.posX = this.reader.getFloat(position, 'x');
-            this.posY = this.reader.getFloat(position, 'y');
-            this.posZ = this.reader.getFloat(position, 'z');
-            this.posW = this.reader.getFloat(position, 'w');
+            posx = this.reader.getFloat(position, 'x');
+            posY = this.reader.getFloat(position, 'y');
+            posZ = this.reader.getFloat(position, 'z');
+            posW = this.reader.getFloat(position, 'w');
         }
 
-
+		var position = [posx, posY, posZ, posW];
+		vec4.transformMat4(position, position, this.initialsMatrix);
         var illum = this.getIllumination(light, 'LIGHT');
         if (illum == -1) {
             this.errors.push("Something went wrong parsing the illumination values for light" + light.id);
@@ -544,7 +545,7 @@ MySceneGraph.prototype.parseLights = function(lights) {
         this.lightsDic[i] = {
             id: light.id,
             enable: this.enableVal,
-            position: [this.posX, this.posY, this.posZ, this.posW],
+            position: position,
             ambient: illum[0],
             diffuse: illum[1],
             specular: illum[2]
@@ -633,7 +634,7 @@ MySceneGraph.prototype.parseMaterials = function(mat) {
         this.actMaterial.setDiffuse(illum[1][0], illum[1][1], illum[1][2], illum[1][3]);
         this.actMaterial.setSpecular(illum[2][0], illum[2][1], illum[2][2], illum[2][3]);
         this.actMaterial.setEmission(this.emi[0], this.emi[1], this.emi[2], this.emi[3]);
-
+		this.actMaterial.setTextureWrap('REPEAT', 'REPEAT');
         this.materials[material.id] = this.actMaterial;
     }
 }
