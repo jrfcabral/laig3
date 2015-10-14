@@ -20,6 +20,10 @@
  cylinder.prototype = Object.create(CGFobject.prototype);
  cylinder.prototype.constructor = cylinder;
 
+ cylinder.prototype.updateTexCoords = function(texture){
+	
+}
+
  cylinder.prototype.initBuffers = function() {
  	
 

@@ -11,6 +11,10 @@ sphere.prototype = Object.create(CGFobject.prototype);
 sphere.prototype.constructor = sphere;
 
 
+sphere.prototype.updateTexCoords = function(texture){
+	
+}
+
 sphere.prototype.initBuffers = function() { 	
     
  	this.vertices = [];

@@ -197,8 +197,14 @@ XMLscene.prototype.traverseGraph = function(elem){
 	}
 };
 
-XMLscene.prototype.DrawPrimitive = function(elem){	
-	
+XMLscene.prototype.DrawPrimitive = function(elem, texture){	
+	var textureId = this.currentTexture;
+		
+	if (textureId !== "clear"){
+		texture = this.graph.textures[textureId];
+		elem.object.updateTexCoords(texture);
+	}
+
 	elem.object.display();
 }
 

@@ -18,11 +18,32 @@ function rectangle(scene, lt, br, minS, maxS, minT, maxT) {
 
 	this.lt = lt;
 	this.br = br;
+
+	//pre-compute length of rectangle sides
+	this.ds = Math.sqrt( Math.pow((this.br[0] - this.lt[0]),2) + Math.pow((this.br[1] - this.br[1]),2) );
+	console.log(this.ds);
+	this.dt = Math.sqrt( Math.pow((this.lt[0] - this.lt[0]),2) + Math.pow((this.lt[1] - this.br[1]),2) );
+	console.log(this.ds);
+
 	this.initBuffers();
 };
 
 rectangle.prototype = Object.create(CGFobject.prototype);
 rectangle.prototype.constructor=rectangle;
+
+rectangle.prototype.updateTexCoords = function(texture){
+	
+	this.texCoords = [	
+	0, this.dt/texture.ampFactor[1],
+	this.ds/texture.ampFactor[0], this.dt/texture.ampFactor[1],
+	0,0,
+	this.ds/texture.ampFactor[0], 0,
+	];
+
+	this.updateTexCoordsGLBuffers();
+	
+		
+}
 
 rectangle.prototype.initBuffers = function () {
 this.vertices = [
