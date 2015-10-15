@@ -67,13 +67,15 @@ function MySceneGraph(filename, scene) {
 
 }
 
-/*
+/**
 * Loops through the list of nodes declared on the Graph Scene file
 * Since a node is more complicated than a leave the processing into internal representation has been delegate to the encodeNode function.
 * See ProcessNode documentation for details on the node's interal representation.
+* @param rootElement object corresponding to the <SCENE> tag from which all others descend
+* @return null if the function encounters a fatal error situation
 */
 MySceneGraph.prototype.ParseNodes = function(rootElement) {
-    console.log("Parsing nodes");
+    console.log("Starting NODES parsing");
 
     elems = rootElement.getElementsByTagName('NODES');
 	console.log(elems[0]);
@@ -98,19 +100,21 @@ MySceneGraph.prototype.ParseNodes = function(rootElement) {
         console.log("Parsing node with id " + nodes[i].id);
         this.EncodeNode(nodes[i]);
     }
-    console.log("Nodes parsed");
+    console.log("Done NODES parsing");
 
 }
 ;
 
 
-/*
+/**
 * Internal representation of a node as an object with the fields:
 * id: the unique id of the node
 * material: the unique id of a material
 * texture: the unique id of a texture
 * transformations: stack of transformations to be applied when this node is processed
 * descendants: array of the ids of nodes or leaves that descend from this node
+* @param node object corresponding to a <NODE>
+* @return returns when either no <MATERIAL> or no <TEXTURE> tag is found (or both)
 */
 MySceneGraph.prototype.EncodeNode = function(node) {
     var material = node.getElementsByTagName('MATERIAL')[0];
@@ -125,7 +129,7 @@ MySceneGraph.prototype.EncodeNode = function(node) {
     }
 
     if (!material || !texture) {
-        this.errors.push("node with id \"" + node.id + "\" did not have a material or a texture");
+        this.errors.push("node with id \"" + node.id + "\" did not have either a material or a texture or both");
         return;
     }
 
@@ -136,11 +140,6 @@ MySceneGraph.prototype.EncodeNode = function(node) {
     var i;
     var matrix = mat4.create();
     mat4.identity(matrix);
-    //deu erro aqui qd um no tava assim: 
-    // <NODE id="plate">
-    //        <MATERIAL id="porcelain" />
-    //        <TEXTURE id="clear" />      
-    //</NODE>
     for (i = 2; node.children[i].tagName != 'DESCENDANTS'; i++) { 
         var transformation = node.children[i];
 		var transformation_matrix = mat4.create();
@@ -198,7 +197,8 @@ MySceneGraph.prototype.EncodeNode = function(node) {
 
 }
 
-/*
+/**
+* Parses leaves within the <LEAVES> tag
 * Internal representation of a leaf as an object with the fields:
 * id: the unique id of the leaf
 * type: one of the identifiers of the drawable primitives. Allowed primitves are on the array allowedPrimitives of MySceneGraph.
@@ -299,7 +299,10 @@ MySceneGraph.prototype.onXMLError = function(message) {
 }
 ;
 
-//Needs to consider the case of multilpe tag definition
+/**
+* Main function for LSX parsing.
+* @param rootElement object corresponding to the <SCENE> tag from which all others descend
+*/
 MySceneGraph.prototype.parseLSX = function(rootElement) {
 
     var elems = rootElement.getElementsByTagName('INITIALS');
@@ -386,7 +389,11 @@ MySceneGraph.prototype.parseLSX = function(rootElement) {
 
 }
 
-//Everything is an error until default values are selected
+/**
+* Parses the <INITIALS> tag
+* @param initials corresponds to the <INITIALS> tag
+* 
+*/
 MySceneGraph.prototype.parseInitials = function(initials) {
     //frustum processing
     var frustum = initials.getElementsByTagName('frustum');
@@ -474,6 +481,11 @@ MySceneGraph.prototype.parseInitials = function(initials) {
 
 }
 
+/**
+* Parses the <ILLUMINATION> tag
+* @param illum corresponds to the <ILLUMINATION> tag
+* 
+*/
 MySceneGraph.prototype.parseIllum = function(illum) {
     var ambient = illum.getElementsByTagName('ambient');
     if (ambient == null  || ambient.length != 1) {
@@ -494,6 +506,11 @@ MySceneGraph.prototype.parseIllum = function(illum) {
 
 }
 
+/**
+* Parses the <LIGHTS> tag
+* @param lights corresponds to the <LIGHTS> tag
+* 
+*/
 MySceneGraph.prototype.parseLights = function(lights) {
 
     var numberLights = lights.children.length;
@@ -553,6 +570,12 @@ MySceneGraph.prototype.parseLights = function(lights) {
     }
 }
 
+
+/**
+* Parses the <TEXTURES> tag
+* @param lights corresponds to the <TEXTURES> tag
+* 
+*/
 MySceneGraph.prototype.parseTex = function(tex) {
 
     var numberTex = tex.children.length;
@@ -597,6 +620,11 @@ MySceneGraph.prototype.parseTex = function(tex) {
 
 }
 
+/**
+* Parses the <MATERIALS> tag
+* @param lights corresponds to the <MATERIALS> tag
+* 
+*/
 MySceneGraph.prototype.parseMaterials = function(mat) {
     var numberMat = mat.children.length;
 
@@ -639,7 +667,11 @@ MySceneGraph.prototype.parseMaterials = function(mat) {
     }
 }
 
-/* Gets all the color components */
+/**
+* Gets all the color components (R, G, B, A)
+* @param elem element from which to parse the color 
+* @return an array with the color components in the right order (RGBA)
+*/
 MySceneGraph.prototype.getRGBAProper = function(elem) {
     this.R = this.reader.getFloat(elem, 'r');
     this.G = this.reader.getFloat(elem, 'g');
@@ -650,7 +682,14 @@ MySceneGraph.prototype.getRGBAProper = function(elem) {
 }
 
 
-/*  Gets ambient, diffuse and specular light components*/
+/**
+* Gets ambient, diffuse and specular light components
+* @param obj object from which to extract the components
+* @param tag a string containing the name of the tag that corresponds to the object passed
+* (used to report errors)
+* @return an array of arrays containing the different light components in the right order
+* (ambient, diffuse, specular)
+*/
 MySceneGraph.prototype.getIllumination = function(obj, tag) {
 
     var ambientLight = obj.getElementsByTagName('ambient');
