@@ -148,7 +148,9 @@ XMLscene.prototype.display = function () {
 };
 
 /**
-* Traverses the scene graph
+* Traverses the scene graph recursively
+* @param elem element of the scene graph to be parsed (as built in encodeNode in MySceneGraph)
+* @return null when a descendant is declared that doesn't exist
 */
 XMLscene.prototype.traverseGraph = function(elem){
 
@@ -200,6 +202,11 @@ XMLscene.prototype.traverseGraph = function(elem){
 	}
 };
 
+/**
+* Draws the actual primitives when a leaf is reached in the traversal method above
+* @param elem the element to be drawn
+* @param texture texture to be applied to the primitive
+*/
 XMLscene.prototype.DrawPrimitive = function(elem, texture){	
 	var textureId = this.currentTexture;
 		
@@ -211,9 +218,17 @@ XMLscene.prototype.DrawPrimitive = function(elem, texture){
 	elem.object.display();
 }
 
+/**
+* Pushes the current texture into the texture stack 
+*/
 XMLscene.prototype.PushTexture = function(){
 	this.texturesStack.push(this.currentTexture);
 }
+
+/**
+* Applies the provided texture or unbinds the current texture if it's clear
+* @texture texture to be applied
+*/
 XMLscene.prototype.ApplyTexture = function(texture){
 
 	if (texture !== "null" && texture !== "clear"){
@@ -227,6 +242,9 @@ XMLscene.prototype.ApplyTexture = function(texture){
 
 }
 
+/**
+* Pops the texture at the top of the texture stack and binds ir unbinds textures as needed
+*/
 XMLscene.prototype.PopTexture = function(){
 	var stackTop = this.texturesStack[this.texturesStack.length-1];
 	this.texturesStack.pop();
@@ -239,17 +257,26 @@ XMLscene.prototype.PopTexture = function(){
 	}
 }
 
-
+/**
+* Pushes a material into the materials stack
+* @param elem element form which to extract the material to be pushed
+*/
 XMLscene.prototype.pushMaterial = function(elem){
 	this.materialStack.push(this.graph.materials[elem.material]);
 }
 
+/**
+* Applies the material at the top of the material stack
+*/
 XMLscene.prototype.applyMaterial = function(){
 	if(this.materialStack.length != 0){
 		this.materialStack[this.materialStack.length-1].apply();
 	}	
 }
 
+/**
+* Pops the material at the top of the stack
+*/
 XMLscene.prototype.popMaterial = function(){
 	this.materialStack.pop();
 }
