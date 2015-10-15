@@ -107,6 +107,7 @@ MySceneGraph.prototype.ParseNodes = function(rootElement) {
 
 
 /**
+* Creates node data structure
 * Internal representation of a node as an object with the fields:
 * id: the unique id of the node
 * material: the unique id of a material
@@ -203,6 +204,8 @@ MySceneGraph.prototype.EncodeNode = function(node) {
 * id: the unique id of the leaf
 * type: one of the identifiers of the drawable primitives. Allowed primitves are on the array allowedPrimitives of MySceneGraph.
 * args: array of the float arguments of the primitives
+* @param rootElement object corresponding to the <SCENE> tag from which all others descend
+* @return returns null when no <LEAVES> tag is found or when a value can't be converted to a float
 */
 MySceneGraph.prototype.ParseLeaves = function(rootElement) {
     console.log("Parsing leaves");

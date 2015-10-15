@@ -63,7 +63,7 @@ XMLscene.prototype.setDefaultAppearance = function () {
 // As loading is asynchronous, this may be called already after the application has started the run loop
 XMLscene.prototype.onGraphLoaded = function ()
 {
-	this.test = [];
+	this.materialStack = [];
 	this.camera.near = this.graph.frustumNear;
 	this.camera.far = this.graph.frustumFar;
 	
@@ -147,10 +147,13 @@ XMLscene.prototype.display = function () {
     this.shader.unbind();
 };
 
+/**
+* Traverses the scene graph
+*/
 XMLscene.prototype.traverseGraph = function(elem){
 
 
-	//we have reached a leaf
+	//reached a leaf
 	if (!elem.descendants){
 		this.DrawPrimitive(elem);
 	}
@@ -161,14 +164,13 @@ XMLscene.prototype.traverseGraph = function(elem){
 		//apply transformations
 		this.pushMatrix();
 		this.multMatrix(elem.matrix);
-		
-		if(elem.material != "null"){
-			this.test.push(this.graph.materials[elem.material]);
-			this.test[this.test.length-1].apply();
-		}
 	
 	
 		//apply materials and textures
+		if(elem.material != "null"){
+			this.pushMaterial(elem)
+			this.applyMaterial();
+		}
 		this.PushTexture();
 		this.ApplyTexture(elem.texture);
 			
@@ -187,10 +189,11 @@ XMLscene.prototype.traverseGraph = function(elem){
 			}
 		}
 
-
-		
-
 		//restore previous state
+		if(elem.material != "null"){
+			this.popMaterial();
+			this.applyMaterial();
+		}
 		this.PopTexture();
 		this.popMatrix();
 
@@ -234,4 +237,19 @@ XMLscene.prototype.PopTexture = function(){
 		this.graph.textures[stackTop].texture.bind();
 		this.currentTexture = stackTop;
 	}
+}
+
+
+XMLscene.prototype.pushMaterial = function(elem){
+	this.materialStack.push(this.graph.materials[elem.material]);
+}
+
+XMLscene.prototype.applyMaterial = function(){
+	if(this.materialStack.length != 0){
+		this.materialStack[this.materialStack.length-1].apply();
+	}	
+}
+
+XMLscene.prototype.popMaterial = function(){
+	this.materialStack.pop();
 }
