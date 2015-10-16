@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
+<SCENE>
+   <INITIALS>
+        <frustum near="0.05" far="500.00"/>                    
+        <translation  x="0.0" y="0.0" z="0.0" />                 
+        <rotation axis="y" angle="0" />
+        <rotation axis="z" angle="0" />                   
+        <rotation axis="x" angle="0" />
+        <scale sx="1.0" sy="1.0" sz="1.0"/>    
+        <reference length="5.0" />
+    </INITIALS>
+
+    <ILLUMINATION>
+        <ambient r="0.5" g="0.5" b="0.5" a="0.5"/> <!--needs to be changed-->
+        <background r="0.7" g="0" b="0" a="1"/>
+    </ILLUMINATION>
+
+
+    <LIGHTS>
+        <LIGHT id="l01">
+            <enable value = "1" />
+            <position x="0.0" y="0.0" z="1.0" w="1.0" />
+             <ambient r="0.2" g="0.52" b="0.2" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+        </LIGHT>
+        
+    </LIGHTS>   
+
+    <TEXTURES>
+
+        <TEXTURE id="grid">
+            <file path="textures/grid.jpg" />
+            <amplif_factor s="5" t="5" />
+        </TEXTURE>
+    </TEXTURES>
+
+    <MATERIALS>
+        <MATERIAL id="test">
+            <shininess value="10" />
+             <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.9" g="0.9" b="0.9" a="1.0" />
+            <emission r="0" g="0"  b="0" a="1.0" />
+        </MATERIAL> 
+    </MATERIALS>
+
+    <LEAVES>
+        <LEAF id="tritri" type="triangle" args="-3.0 0 0 3.0 0 0 0 3.0 0" />
+    </LEAVES>
+
+    <NODES>
+        <ROOT id="root">
+        <NODE id="root">
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <DESCENDANTS>
+                <DESCENDENT id="testri" />
+            </DESCENDANTS>
+        </NODE>
+        <NODE id="testri">
+            <MATERIAL id="null" />
+            <TEXTURE id="grid" />
+            <DESCENDANTS>
+                <DESCENDENT id="tritri" />
+            </DESCENDANTS>
+        </NODE>
+    </NODES>    
+
+
+
+    
+</SCENE>

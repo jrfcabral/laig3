@@ -42,11 +42,8 @@ triangle.prototype.updateTexCoords = function(texture){
 	this.texCoords = [
 	this.c/(scale_s),0,
 	0,0,
-	(this.c - this.a*this.cosbeta)/scale_s, (this.a*this.sinbeta)/scale_t,
-	
-	
-	
-	
+	(this.c - this.a*this.cosbeta)/scale_s, 
+	(this.a*this.sinbeta)/scale_t
 	];
 
 	this.updateTexCoordsGLBuffers();
@@ -71,12 +68,13 @@ this.vertices = [
     0,0,1
     ];
 
-    this.texCoords = [
+   /* this.texCoords = [
     this.minS,this.maxT,
     this.maxS,this.maxT,
     this.minS, this.minT,
     this.maxS,this.minT
     ];
+    */
 	
 	this.primitiveType=this.scene.gl.TRIANGLES;
 	this.initGLBuffers();
