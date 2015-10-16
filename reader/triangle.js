@@ -44,8 +44,7 @@ triangle.prototype.updateTexCoords = function(texture){
 	this.c/scale_s, 0,
 	(this.c - this.a*this.cosbeta)/scale_s, -(this.a*this.sinbeta)/scale_t
 	];
-	
-	console.log(this.texCoords);
+		
 	this.updateTexCoordsGLBuffers();
 
 }
