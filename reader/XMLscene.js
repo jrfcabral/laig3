@@ -28,13 +28,6 @@ XMLscene.prototype.init = function (application) {
 
 	this.texturesStack = [];
 
-
-	//testing primitives
-	//this.testRect = new rectangle(this, [0, 2], [4, 0]);
-	//this.testTri = new triangle(this, [0, 0, 0], [4, 0, 0], [2, 2, 0]);
-	//this.testCyl = new cylinder(this, 4, 0.5, 0.5, 4, 8);
-
-	//this.testSphere = new sphere(this, 1, 4,4);
 };
 
 XMLscene.prototype.initLights = function () {
@@ -63,6 +56,7 @@ XMLscene.prototype.setDefaultAppearance = function () {
 // As loading is asynchronous, this may be called already after the application has started the run loop
 XMLscene.prototype.onGraphLoaded = function ()
 {
+	console.log(this.graph.nodes.length);
 	this.materialStack = [];
 	this.camera.near = this.graph.frustumNear;
 	this.camera.far = this.graph.frustumFar;
@@ -84,11 +78,6 @@ XMLscene.prototype.onGraphLoaded = function ()
 
 	}
 
-
-
-
-	//this.lights[0].setVisible(true);
-    //this.lights[0].enable();
 };
 
 XMLscene.prototype.display = function () {
@@ -105,20 +94,9 @@ XMLscene.prototype.display = function () {
 
 	// Apply transformations corresponding to the camera position relative to the origin
 	this.applyViewMatrix();
-
-	
-
 	this.setDefaultAppearance();
 
 	// ---- END Background, camera and axis setup
-
-
-	//testing primitives display
-	//this.testRect.display();
-	//this.testTri.display();
-	//this.testCyl.display();
-	//this.testSphere.display();
-
 
 	// it is important that things depending on the proper loading of the graph
 	// only get executed after the graph has loaded correctly.
