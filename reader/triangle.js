@@ -17,9 +17,9 @@ function triangle(scene, p1, p2, p3, minS, maxS, minT, maxT) {
 	this.p3 = p3;
 
 	//precompute some distances
-	this.a = Math.sqrt( Math.pow(p1[0]-p3[0], 2) +  Math.pow(p1[1]-p3[1], 2) + Math.pow(p1[2]-p3[2], 2) );
-	this.b = Math.sqrt( Math.pow(p2[0]-p1[0], 2) +  Math.pow(p2[1]-p1[1], 2) + Math.pow(p2[2]-p1[2], 2) );
-	this.c = Math.sqrt( Math.pow(p3[0]-p2[0], 2) +  Math.pow(p3[1]-p2[1], 2) + Math.pow(p3[2]-p2[2], 2) );
+	this.a = Math.sqrt( Math.pow(p2[0]-p3[0], 2) +  Math.pow(p2[1]-p3[1], 2) + Math.pow(p2[2]-p3[2], 2) );
+	this.b = Math.sqrt( Math.pow(p3[0]-p2[0], 2) +  Math.pow(p3[1]-p2[1], 2) + Math.pow(p3[2]-p2[2], 2) );
+	this.c = Math.sqrt( Math.pow(p1[0]-p2[0], 2) +  Math.pow(p1[1]-p2[1], 2) + Math.pow(p1[2]-p2[2], 2) );
 
 	//precompute some angles
 	this.cosalpha = (-Math.pow(this.a,2) + Math.pow(this.b,2) - Math.pow(this.c, 2))/(2*this.b*this.c);
@@ -38,14 +38,14 @@ triangle.prototype.constructor=triangle;
 triangle.prototype.updateTexCoords = function(texture){
 	scale_s = texture.ampFactor[0];
 	scale_t = texture.ampFactor[1];
-
+	
 	this.texCoords = [
-	this.c/(scale_s),0,
 	0,0,
-	(this.c - this.a*this.cosbeta)/scale_s, 
-	(this.a*this.sinbeta)/scale_t
+	this.c/scale_s, 0,
+	(this.c - this.a*this.cosbeta)/scale_s, -(this.a*this.sinbeta)/scale_t
 	];
-
+	
+	console.log(this.texCoords);
 	this.updateTexCoordsGLBuffers();
 
 }
@@ -58,8 +58,7 @@ this.vertices = [
 			];
 			
 	this.indices = [
-            0, 1, 2, 
-			2, 1, 0
+            0, 1, 2, 		
         ];
 
     this.normals = [
@@ -67,14 +66,6 @@ this.vertices = [
     0,0,1,
     0,0,1
     ];
-
-   /* this.texCoords = [
-    this.minS,this.maxT,
-    this.maxS,this.maxT,
-    this.minS, this.minT,
-    this.maxS,this.minT
-    ];
-    */
 	
 	this.primitiveType=this.scene.gl.TRIANGLES;
 	this.initGLBuffers();
