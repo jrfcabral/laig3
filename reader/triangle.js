@@ -4,13 +4,8 @@
  * @constructor
  */
 
-function triangle(scene, p1, p2, p3, minS, maxS, minT, maxT) {
+function triangle(scene, p1, p2, p3) {
 	CGFobject.call(this,scene);
-	
-	this.minS = minS || 0;
-	this.minT = minT || 0;
-	this.maxT = maxT || 1;
-	this.maxS = maxS || 1;
 
 	this.p1 = p1;
 	this.p2 = p2;
