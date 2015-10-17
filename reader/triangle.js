@@ -27,6 +27,10 @@ function triangle(scene, p1, p2, p3, minS, maxS, minT, maxT) {
 	this.cosgamma = (-Math.pow(this.a,2) + Math.pow(this.b,2) - Math.pow(this.c, 2))/(2*this.b*this.a);
 	this.sinbeta = Math.sqrt(1 - Math.pow(this.cosbeta, 2));
 
+	//precompute some texture coordinates before scale factors are applied
+	//these do not need to be recalculated for each texture
+	this.topX = (this.c - this.a*this.cosbeta);
+	this.topY = (this.a*this.sinbeta);
 	
 
 	this.initBuffers();
@@ -42,7 +46,7 @@ triangle.prototype.updateTexCoords = function(texture){
 	this.texCoords = [
 	0,0,
 	this.c/scale_s, 0,
-	(this.c - this.a*this.cosbeta)/scale_s, -(this.a*this.sinbeta)/scale_t
+	this.topX/scale_s, this.topY/scale_t
 	];
 		
 	this.updateTexCoordsGLBuffers();
