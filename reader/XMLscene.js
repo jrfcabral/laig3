@@ -228,11 +228,13 @@ XMLscene.prototype.PopTexture = function(){
 	this.texturesStack.pop();
 	if (stackTop === "clear" && this.currentTexture !== "clear"){
 		this.graph.textures[this.currentTexture].texture.unbind();
+	
 	}
 	else if (stackTop !== "clear"){
 		this.graph.textures[stackTop].texture.bind();
-		this.currentTexture = stackTop;
+		
 	}
+	this.currentTexture = stackTop;
 }
 
 /**
