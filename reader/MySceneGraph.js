@@ -544,7 +544,6 @@ MySceneGraph.prototype.parseLights = function(lights) {
         var light = lights.children[i];
         
 		for(var j = 0; j < i; j++){
-			console.log(this.lightsDic);
 			if(this.lightsDic[j].id == light.id){
         		this.errors.push("There are two or more LIGHTs with the same id " + light.id);
         	}
@@ -701,13 +700,13 @@ MySceneGraph.prototype.parseMaterials = function(mat) {
 
         this.emi = this.getRGBAProper(emissionLightMat, 'MATERIAL', material.id, 'emission');
 
-        this.actMaterial = new CGFappearance(this.scene);
-        this.actMaterial.setAmbient(illum[0][0], illum[0][1], illum[0][2], illum[0][3]);
-        this.actMaterial.setDiffuse(illum[1][0], illum[1][1], illum[1][2], illum[1][3]);
-        this.actMaterial.setSpecular(illum[2][0], illum[2][1], illum[2][2], illum[2][3]);
-        this.actMaterial.setEmission(this.emi[0], this.emi[1], this.emi[2], this.emi[3]);
-		this.actMaterial.setTextureWrap('REPEAT', 'REPEAT');
-        this.materials[material.id] = this.actMaterial;
+        actMaterial = new CGFappearance(this.scene);
+        actMaterial.setAmbient(illum[0][0], illum[0][1], illum[0][2], illum[0][3]);
+        actMaterial.setDiffuse(illum[1][0], illum[1][1], illum[1][2], illum[1][3]);
+        actMaterial.setSpecular(illum[2][0], illum[2][1], illum[2][2], illum[2][3]);
+        actMaterial.setEmission(this.emi[0], this.emi[1], this.emi[2], this.emi[3]);
+		actMaterial.setTextureWrap('REPEAT', 'REPEAT');
+        this.materials[material.id] = actMaterial;
     }
 }
 

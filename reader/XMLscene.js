@@ -20,7 +20,12 @@ XMLscene.prototype.init = function (application) {
     this.gl.enable(this.gl.DEPTH_TEST);
 	this.gl.enable(this.gl.CULL_FACE);
     this.gl.depthFunc(this.gl.LEQUAL);
-
+	this.defaultAppearance = new CGFappearance(this);
+	this.defaultAppearance.setAmbient(0.2, 0.4, 0.8, 1.0);
+    this.defaultAppearance.setDiffuse(0.2, 0.4, 0.8, 1.0);
+    this.defaultAppearance.setSpecular(0.2, 0.4, 0.8, 1.0);
+    this.defaultAppearance.setShininess(10.0);
+    this.defaultAppearance.setTextureWrap("REPEAT", "REPEAT");
 	
 
 	this.currentTexture = "clear";
@@ -46,10 +51,7 @@ XMLscene.prototype.initCameras = function () {
 };
 
 XMLscene.prototype.setDefaultAppearance = function () {
-    this.setAmbient(0.2, 0.4, 0.8, 1.0);
-    this.setDiffuse(0.2, 0.4, 0.8, 1.0);
-    this.setSpecular(0.2, 0.4, 0.8, 1.0);
-    this.setShininess(10.0);
+ 	this.defaultAppearance.apply();
 };
 
 // Handler called when the graph is finally loaded.
