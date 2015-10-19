@@ -11,7 +11,7 @@
     </INITIALS>
 
     <ILLUMINATION>
-        <ambient r="0.5" g="0.5" b="0.5" a="0.5"/> <!--needs to be changed-->
+        <ambient r="0.5" g="0.5" b="0.5" a="0.5"/>
         <background r="0.7" g="0" b="0" a="1"/>
     </ILLUMINATION>
 
@@ -19,26 +19,28 @@
     <LIGHTS>
         <LIGHT id="l01">
             <enable value = "1" />
-            <position x="0.0" y="0.0" z="1.0" w="1.0" />
+          <position x="0.0" y="0.0" z="1.0" w="1.0" />
              <ambient r="0.2" g="0.52" b="0.2" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
-        </LIGHT>
+            <specular r="0.5" g="0.5" b="0.5" a="1.0" /> 
+       </LIGHT>
         
     </LIGHTS>   
 
     <TEXTURES>
 
-        <TEXTURE id="grid">
+       <TEXTURE id="grid">
             <file path="textures/grid.jpg" />
             <amplif_factor s="5" t="5" />
-        </TEXTURE>
+        </TEXTURE> 
+
+
     </TEXTURES>
 
     <MATERIALS>
         <MATERIAL id="test">
             <shininess value="10" />
-             <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+            <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
             <specular r="0.9" g="0.9" b="0.9" a="1.0" />
             <emission r="0" g="0"  b="0" a="1.0" />
@@ -50,13 +52,13 @@
     </LEAVES>
 
     <NODES>
-        <ROOT id="root">
+        <ROOT id="root"/>
         <NODE id="root">
             <MATERIAL id="null" />
             <TEXTURE id="null" />
             <DESCENDANTS>
                 <DESCENDANT id="testri" />
-            </DESCENDANTS>
+            </DESCENDANTS> 
         </NODE>
 
         <NODE id="testri">
@@ -68,7 +70,7 @@
         </NODE>
     </NODES>    
 
-    
+     
 
     
 </SCENE>

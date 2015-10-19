@@ -92,7 +92,6 @@ MySceneGraph.prototype.ParseNodes = function(rootElement) {
         return;
     }
 
-    console.log(this.root);
 
     var nodes = elems[0].getElementsByTagName('NODE');
     var numberNodes = nodes.length;
@@ -118,21 +117,25 @@ MySceneGraph.prototype.ParseNodes = function(rootElement) {
 * @return returns when either no <MATERIAL> or no <TEXTURE> tag is found (or both)
 */
 MySceneGraph.prototype.EncodeNode = function(node) {
+
+	if(this.nodes[node.id] != null){
+		this.errors.push("There are two or more nodes wih the same id " + node.id);
+		return;
+	}
+
     var material = node.getElementsByTagName('MATERIAL')[0];
-	if(material.id != "null" && this.materials[material.id] == null){
-		this.errors.push("node " + node.id + " references a non-existant material.");
+    if(!material){this.errors.push("MATERIAL tag missing on NODE " + node.id);}
+	else if(material.id != "null" && this.materials[material.id] == null){
+		this.errors.push("node " + node.id + " references a non-existant or damaged material.");
 	}
 	//console.log(this.textures["wood"]);
 
     var texture = node.getElementsByTagName('TEXTURE')[0];
+     if(!texture){this.errors.push("TEXTURE tag missing on NODE " + node.id);}
     if(texture.id != "null" && texture.id != "clear" && this.textures[texture.id] == null){
-    	this.errors.push("node " + node.id + " references a non-existant texture");
+    	this.errors.push("node " + node.id + " references a non-existant or damaged texture");
     }
 
-    if (!material || !texture) {
-        this.errors.push("node with id \"" + node.id + "\" did not have either a material or a texture or both");
-        return;
-    }
 
     var transformations = [];
     var descendant_ids = [];
@@ -226,7 +229,7 @@ MySceneGraph.prototype.ParseLeaves = function(rootElement) {
 
         if (this.leaves[leaf.id] != null ) {
             this.errors.push("there are leaves with repeated id \"" + id + "\"");
-            return;
+           	continue;
         }
 
         //tokenize args value and convert it into a list of floats
@@ -258,7 +261,9 @@ MySceneGraph.prototype.ParseLeaves = function(rootElement) {
 
 	else if (type ==="cylinder")
 		object = new cylinder(this.scene, args[0], args[1],args[2], args[3], args[4]);
-
+	else{
+		this.errors.push("Unknown primitive type on LEAF " + leaf.id)
+	}
     //store values in leaves hashmap, key is the unique id
     this.leaves[leaf.id] = {
     	id: leaf.id,
@@ -507,7 +512,7 @@ MySceneGraph.prototype.parseIllum = function(illum) {
     }
 
     var backgrd = illum.getElementsByTagName('background');
-    if (ambient == null  || ambient.length != 1) {
+    if (backgrd == null  || backgrd.length != 1) {
         this.errors.push('Missing background tag in the ILLUMINATION tag');
     }
     else {
@@ -531,8 +536,17 @@ MySceneGraph.prototype.parseLights = function(lights) {
 
     this.lightsNum = numberLights;
 
-    for (var i = 0; i < numberLights; i++) {
+    for (var i = 0; i < ((this.lightsNum > 8)? 8:this.lightsNum); i++) {
         var light = lights.children[i];
+        
+		for(var j = 0; j < i; j++){
+			console.log(this.lightsDic);
+			if(this.lightsDic[j].id == light.id){
+        		this.errors.push("There are two or more LIGHTs with the same id " + light.id);
+        	}
+		}
+
+        
 
         var enable = light.getElementsByTagName('enable');
         if (enable == null  || enable.length != 1) {
@@ -551,7 +565,7 @@ MySceneGraph.prototype.parseLights = function(lights) {
         var position = light.getElementsByTagName('position');
         if (position == null  || position.length != 1) {
             this.errors.push('Missing position tag or multiple position tags on light' + light.id);
-
+			this.transformationsOK = false;
         }
         else {
             position = position[0];
@@ -594,14 +608,19 @@ MySceneGraph.prototype.parseLights = function(lights) {
 MySceneGraph.prototype.parseTex = function(tex) {
 
     var numberTex = tex.children.length;
-
+	var texOK = true;
     for (var i = 0; i < numberTex; i++) {
         var texture = tex.children[i];
+
+        if(this.textures[texture.id] != null){
+        	this.errors.push("There are two or more textures with the same id " + texture.id);
+        	continue;
+        }
 
         var filePath = texture.getElementsByTagName('file');
         if (filePath == null  || filePath.length != 1) {
             this.errors.push('Missing file tag or multiple file tags on texture' + texture.id);
-
+			texOK = false;
         }
         else {
             filePath = filePath[0];
@@ -614,7 +633,7 @@ MySceneGraph.prototype.parseTex = function(tex) {
         var ampFactor = texture.getElementsByTagName('amplif_factor');
         if (ampFactor == null  || ampFactor.length != 1) {
             this.errors.push('Missing amplif_factor tag or multiple amplif_factor tags on texture' + texture.id);
-			return;
+			texOK = false;
         }
         else {
             ampFactor = ampFactor[0];
@@ -622,14 +641,16 @@ MySceneGraph.prototype.parseTex = function(tex) {
           	amplifT = this.reader.getFloat(ampFactor, 't');
         }
 
-		console.log(texture);
-		textureObject = new CGFtexture(this.scene, file);
-        this.textures[texture.id] = {
-            id: texture.id,
-            path:file,
-            ampFactor: [amplifS, amplifT],
-            texture: textureObject,
-        };
+		if(texOK){
+			textureObject = new CGFtexture(this.scene, file);
+      	    this.textures[texture.id] = {
+            	id: texture.id,
+            	path:file,
+            	ampFactor: [amplifS, amplifT],
+            	texture: textureObject,
+       	    };	
+		}
+		
     }
 
 
@@ -645,6 +666,11 @@ MySceneGraph.prototype.parseMaterials = function(mat) {
 
     for (var i = 0; i < numberMat; i++) {
         var material = mat.children[i];
+
+		if(this.materials[material.id] != null){
+        	this.errors.push("There are two or more materials with the same id " + material.id);
+        	continue;
+        }
 
         var shininess = material.getElementsByTagName('shininess');
         if (shininess == null  || shininess.length != 1) {
@@ -664,13 +690,13 @@ MySceneGraph.prototype.parseMaterials = function(mat) {
 
         var emissionLightMat = material.getElementsByTagName('emission');
         if (emissionLightMat == null  || emissionLightMat.length != 1) {
-            this.errors.push('Missing emission tag or multiple specular tags on material' + material.id);
+            this.errors.push('Missing emission tag or multiple emission tags on MATERIAL ' + material.id);
             return -1;
         }
 
         emissionLightMat = emissionLightMat[0];
 
-        this.emi = this.getRGBAProper(emissionLightMat);
+        this.emi = this.getRGBAProper(emissionLightMat, 'MATERIAL', material.id, 'emission');
 
         this.actMaterial = new CGFappearance(this.scene);
         this.actMaterial.setAmbient(illum[0][0], illum[0][1], illum[0][2], illum[0][3]);
@@ -684,14 +710,31 @@ MySceneGraph.prototype.parseMaterials = function(mat) {
 
 /**
 * Gets all the color components (R, G, B, A)
-* @param elem element from which to parse the color 
+* @param elem element from which to parse the color
+* @param tag name of the tag the colors are being gotten from
+* @param tagId id of the aforementioned tag
+* @param comp name of the light component the colors pertain to (ambient, diffuse, etc) 
 * @return an array with the color components in the right order (RGBA)
 */
-MySceneGraph.prototype.getRGBAProper = function(elem) {
+MySceneGraph.prototype.getRGBAProper = function(elem, tag, tagId, comp) {
     this.R = this.reader.getFloat(elem, 'r');
     this.G = this.reader.getFloat(elem, 'g');
     this.B = this.reader.getFloat(elem, 'b');
     this.A = this.reader.getFloat(elem, 'a');
+	
+	if(this.R < 0 || this.R > 1){
+		this.warnings.push("Red has an out of range value on " + tag + " " + tagId + " on the " + comp + " component");
+	}
+	if(this.G < 0 || this.G > 1){
+		this.warnings.push("Green has an out of range value on " + tag + " " + tagId + " on the " + comp + " component");
+	}
+	if(this.B < 0 || this.B > 1){
+		this.warnings.push("Blue has an out of range value on " + tag + " " + tagId + " on the " + comp + " component");
+	}
+	if(this.A < 0 || this.A > 1){
+		this.warnings.push("Alpha has an out of range value on " + tag + " " + tagId + " on the " + comp + " component");
+	}
+
 
     return [this.R, this.G, this.B, this.A];
 }
@@ -709,34 +752,34 @@ MySceneGraph.prototype.getIllumination = function(obj, tag) {
 
     var ambientLight = obj.getElementsByTagName('ambient');
     if (ambientLight == null  || ambientLight.length != 1) {
-        this.warnings.push('Missing ambient tag on' + tag, obj.id + 'default values will be used');
+        this.errors.push("Missing ambient tag on or mutiple ambient tags found on " + tag +" "+ obj.id);
 
     }
     else {
         ambientLight = ambientLight[0];
-        this.ambient = this.getRGBAProper(ambientLight);
+        this.ambient = this.getRGBAProper(ambientLight, tag, obj.id, 'ambient');
     }
 
 
     var diffuseLight = obj.getElementsByTagName('diffuse');
     if (diffuseLight == null  || diffuseLight.length != 1) {
-        this.warnings.push('Missing ambient tag on' + tag, obj.id + 'default values will be used');
+        this.errors.push("Missing diffuse tag on or mutiple ambient tags found on " + tag + " " + obj.id);
 
     }
     else {
         diffuseLight = diffuseLight[0];
-        this.diffuse = this.getRGBAProper(diffuseLight);
+        this.diffuse = this.getRGBAProper(diffuseLight, tag, obj.id, 'diffuse');
     }
 
 
     var specularLight = obj.getElementsByTagName('specular');
     if (specularLight == null  || specularLight.length != 1) {
-        this.warnings.push('Missing ambient tag on' + tag, obj.id + 'default values will be used');
+        this.errors.push("Missing specular tag on or mutiple ambient tags found on " + tag + " " + obj.id);
 
     }
     else {
         specularLight = specularLight[0];
-        this.specular = this.getRGBAProper(specularLight);
+        this.specular = this.getRGBAProper(specularLight, tag, obj.id, 'specular');
     }
 
 
