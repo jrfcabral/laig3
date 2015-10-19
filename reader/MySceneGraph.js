@@ -401,18 +401,20 @@ MySceneGraph.prototype.parseInitials = function(initials) {
     //frustum processing
     var frustum = initials.getElementsByTagName('frustum');
     if (frustum == null  || frustum.length != 1) {
-        this.errors.push('Missing frustum tag or multiple frustum tags found.');
+        this.errors.push('Missing frustum tag or multiple frustum tags found inside INITIALS.');
     }
     else {
         this.frustumNear = this.reader.getFloat(frustum[0], 'near');
         this.frustumFar = this.reader.getFloat(frustum[0], 'far');
     }
 
+	this.transformationsOK = true;
 
     //initial translation processing
     var initTrans = initials.getElementsByTagName('translation');
     if (initTrans == null  || initTrans.length != 1) {
         this.errors.push('Missing translation tag or multiple translation tags found.');
+        this.transformationsOK = false;
     }
     else {
         initTransx = this.reader.getFloat(initTrans[0], 'x');
@@ -423,7 +425,8 @@ MySceneGraph.prototype.parseInitials = function(initials) {
     //initial rotations processing
     var initRot = initials.getElementsByTagName('rotation');
     if (initRot == null  || initRot.length != 3) {
-        this.errors.push('Missing 1 of the rotation tags on the INITIALS tag');
+        this.errors.push('Missing rotation tags on the INITIALS tag. There should be three of them.');
+         this.transformationsOK = false;
     }
     else {
     	
@@ -449,6 +452,7 @@ MySceneGraph.prototype.parseInitials = function(initials) {
     var initScale = initials.getElementsByTagName('scale');
     if (initScale == null  || initScale.length != 1) {
         this.errors.push('Missing scale tag on the INITIALS tag');
+         this.transformationsOK = false;
     }
     else {
         initScalex = this.reader.getFloat(initScale[0], 'sx');
@@ -462,14 +466,18 @@ MySceneGraph.prototype.parseInitials = function(initials) {
     axii["y"] = [0,1,0];
     axii["z"] = [0,0,1];
 
-	//compute transformation matrix corresponding to the transformation values read from lsx	
-   	this.initialsMatrix = mat4.create();
-   	mat4.identity(this.initialsMatrix);
-   	mat4.scale(this.initialsMatrix, this.initialsMatrix, [initScalex, initScaley, initScalez]);
-	mat4.rotate(this.initialsMatrix, this.initialsMatrix, initRot3Angle, axii[initRot3Axis]);
-	mat4.rotate(this.initialsMatrix, this.initialsMatrix, initRot2Angle, axii[initRot2Axis]);
-	mat4.rotate(this.initialsMatrix, this.initialsMatrix, initRot1Angle, axii[initRot1Axis]);
-	mat4.translate(this.initialsMatrix, this.initialsMatrix,[initTransx, initTransy, initTransz]);
+	//compute transformation matrix corresponding to the transformation values read from lsx
+	
+	if(this.transformationsOK){
+		this.initialsMatrix = mat4.create();
+   		mat4.identity(this.initialsMatrix);
+   		mat4.scale(this.initialsMatrix, this.initialsMatrix, [initScalex, initScaley, initScalez]);
+		mat4.rotate(this.initialsMatrix, this.initialsMatrix, initRot3Angle, axii[initRot3Axis]);
+		mat4.rotate(this.initialsMatrix, this.initialsMatrix, initRot2Angle, axii[initRot2Axis]);
+		mat4.rotate(this.initialsMatrix, this.initialsMatrix, initRot1Angle, axii[initRot1Axis]);
+		mat4.translate(this.initialsMatrix, this.initialsMatrix,[initTransx, initTransy, initTransz]);	
+	}	
+   
 
     //reference length processing
 
@@ -554,8 +562,12 @@ MySceneGraph.prototype.parseLights = function(lights) {
             posW = this.reader.getFloat(position, 'w');
         }
 
+		if(this.transformationsOK){
 		var position = [posx, posY, posZ, posW];
 		vec4.transformMat4(position, position, this.initialsMatrix);
+		}
+
+
         var illum = this.getIllumination(light, 'LIGHT');
         if (illum == -1) {
             this.errors.push("Something went wrong parsing the illumination values for light" + light.id);

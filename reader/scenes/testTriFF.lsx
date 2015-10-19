@@ -2,11 +2,11 @@
 <SCENE>
    <INITIALS>
         <frustum near="0.05" far="500.00"/>                    
-        <translation  x="0.0" y="0.0" z="0.0" />                 
+        <translation  x="0.0" y="0.0" z="0.0" />                
         <rotation axis="y" angle="0" />
-        <rotation axis="z" angle="0" />                   
+        <rotation axis="z" angle="0" />                 
         <rotation axis="x" angle="0" />
-        <scale sx="1.0" sy="1.0" sz="1.0"/>    
+        <scale sx="1.0" sy="1.0" sz="1.0"/>
         <reference length="5.0" />
     </INITIALS>
 
@@ -55,19 +55,20 @@
             <MATERIAL id="null" />
             <TEXTURE id="null" />
             <DESCENDANTS>
-                <DESCENDENT id="testri" />
+                <DESCENDANT id="testri" />
             </DESCENDANTS>
         </NODE>
+
         <NODE id="testri">
             <MATERIAL id="null" />
             <TEXTURE id="grid" />
             <DESCENDANTS>
-                <DESCENDENT id="tritri" />
+                <DESCENDANT id="tritri" />
             </DESCENDANTS>
         </NODE>
     </NODES>    
 
-
+    
 
     
 </SCENE>

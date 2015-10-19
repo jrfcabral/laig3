@@ -21,7 +21,7 @@ XMLscene.prototype.init = function (application) {
 	this.gl.enable(this.gl.CULL_FACE);
     this.gl.depthFunc(this.gl.LEQUAL);
 
-	this.axis=new CGFaxis(this);
+	
 
 	this.currentTexture = "clear";
 	this.isTexturePresent = false;
@@ -56,7 +56,9 @@ XMLscene.prototype.setDefaultAppearance = function () {
 // As loading is asynchronous, this may be called already after the application has started the run loop
 XMLscene.prototype.onGraphLoaded = function ()
 {
-	console.log(this.graph.nodes.length);
+
+	this.axis=new CGFaxis(this, this.graph.refLength);
+
 	this.materialStack = [];
 	this.camera.near = this.graph.frustumNear;
 	this.camera.far = this.graph.frustumFar;
