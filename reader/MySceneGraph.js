@@ -188,7 +188,6 @@ MySceneGraph.prototype.EncodeNode = function(node) {
         }
 
     }
-    console.log(matrix);
 
     var descendants = node.getElementsByTagName('DESCENDANTS')[0];
 
@@ -630,7 +629,6 @@ MySceneGraph.prototype.parseTex = function(tex) {
         else {
             filePath = filePath[0];
             file = this.reader.getString(filePath, 'path');
-            console.log(this.file);
         }
 
 
