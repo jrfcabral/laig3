@@ -124,14 +124,14 @@ MySceneGraph.prototype.EncodeNode = function(node) {
 	}
 
     var material = node.getElementsByTagName('MATERIAL')[0];
-    if(!material){this.errors.push("MATERIAL tag missing on NODE " + node.id);}
+    if(!material){this.errors.push("MATERIAL tag missing on NODE " + node.id);return;}
 	else if(material.id != "null" && this.materials[material.id] == null){
 		this.errors.push("node " + node.id + " references a non-existant or damaged material.");
 	}
 	//console.log(this.textures["wood"]);
 
     var texture = node.getElementsByTagName('TEXTURE')[0];
-     if(!texture){this.errors.push("TEXTURE tag missing on NODE " + node.id);}
+     if(!texture){this.errors.push("TEXTURE tag missing on NODE " + node.id);return;}
     if(texture.id != "null" && texture.id != "clear" && this.textures[texture.id] == null){
     	this.errors.push("node " + node.id + " references a non-existant or damaged texture");
     }
@@ -177,6 +177,11 @@ MySceneGraph.prototype.EncodeNode = function(node) {
         		var translation_vector = vec3.create();
         		vec3.set(translation_vector, transformation.getAttribute('x'), transformation.getAttribute('y'), transformation.getAttribute('z') );
         		mat4.translate(matrix, matrix, translation_vector);
+        		break;
+
+        	default:
+        		this.errors.push("Malformed transformation tags or delimiters at " +node.id);
+        		return;
         		break;
 
 
@@ -619,7 +624,7 @@ MySceneGraph.prototype.parseTex = function(tex) {
 
         var filePath = texture.getElementsByTagName('file');
         if (filePath == null  || filePath.length != 1) {
-            this.errors.push('Missing file tag or multiple file tags on texture' + texture.id);
+            this.errors.push('Missing file tag or multiple file tags on texture ' + texture.id);
 			texOK = false;
         }
         else {
