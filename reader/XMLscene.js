@@ -33,6 +33,9 @@ XMLscene.prototype.init = function (application) {
 
 	this.texturesStack = [];
 
+	this.interface;
+	
+
 };
 
 XMLscene.prototype.initLights = function () {
@@ -69,15 +72,35 @@ XMLscene.prototype.onGraphLoaded = function ()
 
 	this.gl.clearColor(this.graph.bgLight[0],this.graph.bgLight[1], this.graph.bgLight[2],this.graph.bgLight[3]);
 
+	this.lightsCheesy =  [];
+		
+	this.lightsCheesy = {
+		light0: false,
+		light1: false,
+		light2: false,
+		light3: false,
+		light4: false,
+		light5: false,
+		light6: false,
+		light7: false,		
+	};
+
 	for(var i = 0; i < ((this.graph.lightsNum > 8)? 8:this.graph.lightsNum); i++){
+		
 		this.lights[i].setPosition(this.graph.lightsDic[i].position[0] , this.graph.lightsDic[i].position[1] , this.graph.lightsDic[i].position[2], this.graph.lightsDic[i].position[3] );
 		this.lights[i].setAmbient(this.graph.lightsDic[i].ambient[0], this.graph.lightsDic[i].ambient[1], this.graph.lightsDic[i].ambient[2], this.graph.lightsDic[i].ambient[3]);
 		this.lights[i].setDiffuse(this.graph.lightsDic[i].diffuse[0], this.graph.lightsDic[i].diffuse[1], this.graph.lightsDic[i].diffuse[2], this.graph.lightsDic[i].diffuse[3]);
 		this.lights[i].setSpecular(this.graph.lightsDic[i].specular[0], this.graph.lightsDic[i].specular[1], this.graph.lightsDic[i].specular[2], this.graph.lightsDic[i].specular[3]);
-		if(this.graph.lightsDic[i].enable == 1){
+		if(this.graph.lightsDic[i].enable == true){
 			this.lights[i].enable();
+			this.lightsCheesy["light"+i] = true;
+		}
+		else{
+
 		}
 		this.lights[i].setVisible(false);
+
+		this.interface.group.add(this.lightsCheesy, 'light'+i);
 
 	}
 
@@ -108,6 +131,11 @@ XMLscene.prototype.display = function () {
 	{
 
 		for(i = 0; i < ((this.graph.lightsNum > 8)? 8:this.graph.lightsNum); i++){
+			if(this.lightsCheesy['light'+i])
+				this.lights[i].enable();
+			else
+				this.lights[i].disable();
+			
 			this.lights[i].update();
 		}
 		

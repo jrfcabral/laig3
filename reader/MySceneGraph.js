@@ -588,16 +588,20 @@ MySceneGraph.prototype.parseLights = function(lights) {
         var illum = this.getIllumination(light, 'LIGHT');
         if (illum == -1) {
             this.errors.push("Something went wrong parsing the illumination values for light" + light.id);
-        }
-
-        //Can't see why lights need IDs and it's easier to just go with numbers here
+        }	
+        var enableLight;
+		if (this.enableVal == 1)
+			enableLight = true;
+		else
+			enableLight = false;
+        //Can't see why lig	hts need IDs and it's easier to just go with numbers here
         this.lightsDic[i] = {
             id: light.id,
-            enable: this.enableVal,
+            enable: enableLight,
             position: position,
             ambient: illum[0],
             diffuse: illum[1],
-            specular: illum[2]
+            specular: illum[2]            
         };
     }
 }
