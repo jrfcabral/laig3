@@ -779,7 +779,8 @@ MySceneGraph.prototype.parseAnims = function(anims){
 		}
 
         this.controlPoints = this.parseControlPoints(animation);
-
+		if(!this.controlPoints)
+			this.errors.push("Linear Animations need at least 2 control points.");
 		if(animOK){
 			this.animations[animation.id] = {
         		id: animation.id,
@@ -796,6 +797,8 @@ MySceneGraph.prototype.parseAnims = function(anims){
 
 MySceneGraph.prototype.parseControlPoints = function(anim){
 	var numPoints = anim.children.length;
+	if(numPoints < 2)
+		return false;
 	this.points = [];
 
 	for(var i = 0; i < numPoints; i++){

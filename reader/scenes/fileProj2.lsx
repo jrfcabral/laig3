@@ -44,6 +44,7 @@
     <ANIMATIONS>
         <ANIMATION id="test" span="1" type="linear">
             <controlpoint x="0" y="0" z="0" />
+            <controlpoint x="0" y="0" z="5" />
         </ANIMATION>
     </ANIMATIONS>
 
@@ -57,9 +58,6 @@
             <MATERIAL id="null" />
             <TEXTURE id="null" />
             <ANIMATION id="test" />
-            <ANIMATION id="test" />
-            <ANIMATION id="test" />
-            <TRANSLATION x="0" y="0" z="3" />
             <DESCENDANTS>
                 <DESCENDANT id="testerino" />
             </DESCENDANTS> 

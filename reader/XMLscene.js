@@ -104,8 +104,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 
 	}
 
-	console.log(this.graph.nodes);
-
+	this.setUpdatePeriod(100);
 };
 
 XMLscene.prototype.display = function () {
@@ -178,7 +177,7 @@ XMLscene.prototype.traverseGraph = function(elem){
 		this.pushMatrix();
 		this.multMatrix(elem.matrix);
 	
-	
+		
 		//apply materials and textures
 		if(elem.material != "null"){
 			this.pushMaterial(elem)
@@ -292,4 +291,9 @@ XMLscene.prototype.applyMaterial = function(){
 */
 XMLscene.prototype.popMaterial = function(){
 	this.materialStack.pop();
+}
+
+
+XMLscene.prototype.update = function(){
+	console.log("faço cenas buede bonitas");
 }
