@@ -44,11 +44,14 @@
             <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
             <specular r="0.9" g="0.9" b="0.9" a="1.0" />
             <emission r="0" g="0"  b="0" a="1.0" />
+
         </MATERIAL> 
     </MATERIALS>
 
     <LEAVES>
         <LEAF id="tritri" type="triangle" args="-3.0 0 0 3.0 0 0 0 3.0 0" />
+        <LEAF id="planes" type="plane" args="100"/> <!-- divs-->
+        
     </LEAVES>
 
     <NODES>
@@ -65,7 +68,7 @@
             <MATERIAL id="null" />
             <TEXTURE id="grid" />
             <DESCENDANTS>
-                <DESCENDANT id="tritri" />
+                <DESCENDANT id="planes" />
             </DESCENDANTS>
         </NODE>
     </NODES>    
