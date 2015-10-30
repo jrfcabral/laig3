@@ -104,7 +104,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 
 	}
 
-	console.log(this.graph.animations);
+	console.log(this.graph.nodes);
 
 };
 

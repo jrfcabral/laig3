@@ -141,7 +141,21 @@ MySceneGraph.prototype.EncodeNode = function(node) {
     if(texture.id != "null" && texture.id != "clear" && this.textures[texture.id] == null){
     	this.errors.push("node " + node.id + " references a non-existant or damaged texture");
     }
-
+	
+	nodeAnims = [];
+	var animations = node.getElementsByTagName('ANIMATION');
+	var animNum = animations.length;
+	console.log("animations.length is " + animations.length);
+	for(var i = 0; i < animNum; i++){
+		if(animations[i].id == null){
+			this.errors.push("Animation in node " + node.id + "has no id");
+			return;
+		}
+		else if(this.animations[animations[i].id] == null){
+			this.errors.push("node " + node.id + " references a non-existant or damaged animation");
+		}
+		nodeAnims.push(animations[i].id);
+	}
 
     var transformations = [];
     var descendant_ids = [];
@@ -150,7 +164,7 @@ MySceneGraph.prototype.EncodeNode = function(node) {
     var i;
     var matrix = mat4.create();
     mat4.identity(matrix);
-    for (i = 2; node.children[i].tagName != 'DESCENDANTS'; i++) { 
+    for (i = 2+animNum; node.children[i].tagName != 'DESCENDANTS'; i++) { 
         var transformation = node.children[i];
 		var transformation_matrix = mat4.create();
 		mat4.identity(transformation_matrix);
@@ -205,6 +219,7 @@ MySceneGraph.prototype.EncodeNode = function(node) {
         id: node.id,
         material: material.id,
         texture: texture.id,
+        animations: nodeAnims,
         matrix: matrix,
         descendants: descendant_ids
     };
