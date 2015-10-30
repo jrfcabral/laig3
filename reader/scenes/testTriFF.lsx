@@ -51,8 +51,10 @@
     <LEAVES>
         <LEAF id="tritri" type="triangle" args="-3.0 0 0 3.0 0 0 0 3.0 0" />
         <LEAF id="planes" type="plane" args="100"/> <!-- divs-->
-        
+        <LEAF id="suparficie" type="nurb" id="nurb1"/>
+
     </LEAVES>
+
 
     <NODES>
         <ROOT id="root"/>

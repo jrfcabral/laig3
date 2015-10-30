@@ -63,6 +63,10 @@ function MySceneGraph(filename, scene) {
 	 * If any error occurs, the reader calls onXMLError on this object, with an error message
 	 */
 
+	/*
+	* Dictionary containing all nurbs declared
+	*/
+	this.nurbs = [];
     this.reader.open('scenes/' + filename, this);
 
 }
@@ -379,6 +383,17 @@ MySceneGraph.prototype.parseLSX = function(rootElement) {
     	console.log('Done MATERIALS parsing');
 	}
 
+	elems = rootElement.getElementsByTagName('NURBS');
+    if (elems.length == 0) {
+        //this.errors.push('Missing NURBS tag.');
+    }
+	else{
+		console.log('Starting NURBS parsing');
+    	var nurbs = elems[0];
+    	this.parseNurbs(nurbs);
+    	console.log('Done NURBS parsing');
+	}
+
     this.ParseLeaves(rootElement);
     this.ParseNodes(rootElement);
 
@@ -402,6 +417,22 @@ MySceneGraph.prototype.parseLSX = function(rootElement) {
         console.log('No errors!');
     }
 
+}
+/**
+* Parses the <NURBS> tag
+*/
+MySceneGraph.prototype.parseNurbs = function(nurbs){
+	var nurblist = nurbs.getElementsByTagName('nurb');
+	for(var i = 0; i < nurblist.length;i++){
+		var order_u = ParseFloat(this.reader.getString(nurblist[i], 'u_order'));
+		var order_v = ParseFloat(this.reader.getString(nurblist[i], 'v_order'));
+		var knots_u = nurblist[i].getElementsByTagName('knots_u')[0];
+		var knots_v = nurblist[i].getElementsByTagName('knots_v')[0];
+		knots_u = this.reader.getString(knots_u, values).split(" ").map(Number);
+		knots_v = this.reader.getString(knots_v, values).split(" ").map(Number);
+		knots_u = Sti
+
+	}
 }
 
 /**
