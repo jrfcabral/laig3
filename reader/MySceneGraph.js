@@ -45,14 +45,20 @@ function MySceneGraph(filename, scene) {
 	* Care must be taken that all the ids are unique
 	* Need to check what best identifiers would be
 	*/
-    this.textures = []
+    this.textures = [];
 
     /*
 	* Dictionary containing all materials specified in the LSX file
 	* Care must be taken that all the ids are unique
-	* Need to check what best identifiers would be
 	*/
-    this.materials = []
+    this.materials = [];
+
+
+	 /*
+	* Dictionary containing all animations specified in the LSX file
+	* Care must be taken that all the ids are unique
+	*/	
+    this.animations = [];
 
     // File reading
     this.reader = new CGFXMLreader();
@@ -228,6 +234,12 @@ MySceneGraph.prototype.ParseLeaves = function(rootElement) {
     }
 
     var numberLeaves = elems[0].children.length;
+
+	if(numberLeaves < 1){
+		this.errors.push("There are no leaves in the LEAVES tag");
+		return;
+	}
+
     for (var i = 0; i < numberLeaves; i++) {
         var leaf = elems[0].children[i];
 
@@ -375,6 +387,18 @@ MySceneGraph.prototype.parseLSX = function(rootElement) {
     	this.parseMaterials(mat);
     	console.log('Done MATERIALS parsing');
 	}
+
+	elems = rootElement.getElementsByTagName('ANIMATIONS');
+	if (elems.length == 0) {
+        this.errors.push('Missing ANIMATIONS tag.');
+    }
+    else{
+    	console.log('Starting ANIMATIONS parsing');
+    	var anims = elems[0];
+    	this.parseAnims(anims);
+    	console.log('Done ANIMATIONS parsing');
+	}
+
 
     this.ParseLeaves(rootElement);
     this.ParseNodes(rootElement);
@@ -712,6 +736,67 @@ MySceneGraph.prototype.parseMaterials = function(mat) {
 		actMaterial.setTextureWrap('REPEAT', 'REPEAT');
         this.materials[material.id] = actMaterial;
     }
+}
+
+MySceneGraph.prototype.parseAnims = function(anims){
+	var numAnims = anims.children.length;
+	
+	for(var i = 0; i < numAnims; i++){
+		var animation = anims.children[i];
+		var animOK = true;
+		if(!animation.id){
+			this.errors.push("There's an animation with no id.");
+		}
+		console.log(animation);
+		if(this.animations[animation.id] != null){
+        	this.errors.push("There are two or more animations with the same id " + animation.id);
+        	continue;
+        }
+
+       var animSpan = this.reader.getFloat(animation, 'span');
+       if(animSpan == null){
+       		this.errors.push("Missing span attribute from animation " + animation.id);
+       }
+      
+		var animType = this.reader.getString(animation, 'type');
+		if(animType == null){
+			this.errors.push("Missing type attribute from animation " + animation.id);
+		}
+
+        this.controlPoints = this.parseControlPoints(animation);
+
+		if(animOK){
+			this.animations[animation.id] = {
+        		id: animation.id,
+        		span: animSpan,
+        		type: animType,
+        		controlPoints: this.controlPoints	
+        	};
+		}
+        
+		
+	}
+}
+
+
+MySceneGraph.prototype.parseControlPoints = function(anim){
+	var numPoints = anim.children.length;
+	this.points = [];
+
+	for(var i = 0; i < numPoints; i++){
+		var controlPoint = anim.children[i];
+		this.pointCoords = this.getXYZ(controlPoint);
+		this.points[i] = this.pointCoords;
+	}
+	return this.points;
+}
+
+MySceneGraph.prototype.getXYZ = function(elem){
+	this.X = this.reader.getFloat(elem, 'x', true);
+	this.Y = this.reader.getFloat(elem, 'y', true);
+	this.Z = this.reader.getFloat(elem, 'z', true);
+
+	return [this.X, this.Y, this.Z];
 }
 
 /**

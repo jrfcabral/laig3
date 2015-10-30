@@ -40,13 +40,13 @@ XMLscene.prototype.init = function (application) {
 
 XMLscene.prototype.initLights = function () {
 
-    this.shader.bind();
+    //this.shader.bind();
 
 	this.lights[0].setPosition(2, 3, 3, 1);
     this.lights[0].setDiffuse(1.0,1.0,1.0,1.0);
     this.lights[0].update();
 
-    this.shader.unbind();
+    //this.shader.unbind();
 };
 
 XMLscene.prototype.initCameras = function () {
@@ -104,11 +104,13 @@ XMLscene.prototype.onGraphLoaded = function ()
 
 	}
 
+	console.log(this.graph.animations);
+
 };
 
 XMLscene.prototype.display = function () {
 	// ---- BEGIN Background, camera and axis setup
-    this.shader.bind();
+    //this.shader.bind();
 
 	// Clear image and depth buffer everytime we update the scene
     this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
@@ -153,7 +155,7 @@ XMLscene.prototype.display = function () {
 		this.popMatrix();
 	};
 
-    this.shader.unbind();
+    //this.shader.unbind();
 };
 
 /**
