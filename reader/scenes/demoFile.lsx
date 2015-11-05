@@ -101,6 +101,8 @@
         </MATERIAL>
     </MATERIALS>
 
+    <ANIMATIONS>
+    </ANIMATIONS>
 
     <NODES>
         <ROOT id="00"/>

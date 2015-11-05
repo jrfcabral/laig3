@@ -105,6 +105,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 	}
 
 	this.setUpdatePeriod(100);
+	this.acum = 0;
 };
 
 XMLscene.prototype.display = function () {
@@ -176,6 +177,7 @@ XMLscene.prototype.traverseGraph = function(elem){
 		//apply transformations
 		this.pushMatrix();
 		this.multMatrix(elem.matrix);
+		this.multMatrix(this.testMatrix);
 	
 		
 		//apply materials and textures
@@ -295,5 +297,11 @@ XMLscene.prototype.popMaterial = function(){
 
 
 XMLscene.prototype.update = function(){
-	console.log("faço cenas buede bonitas");
+	this.testMatrix = mat4.create();
+	mat4.identity(this.testMatrix);
+	if(this.acum < 1)
+		this.acum += 0.05;
+	mat4.translate(this.testMatrix, this.testMatrix, [0, 0, this.acum]);
+
+
 }

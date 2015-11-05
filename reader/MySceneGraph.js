@@ -781,6 +781,7 @@ MySceneGraph.prototype.parseAnims = function(anims){
         this.controlPoints = this.parseControlPoints(animation);
 		if(!this.controlPoints)
 			this.errors.push("Linear Animations need at least 2 control points.");
+
 		if(animOK){
 			this.animations[animation.id] = {
         		id: animation.id,
