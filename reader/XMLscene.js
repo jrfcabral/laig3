@@ -105,7 +105,8 @@ XMLscene.prototype.onGraphLoaded = function ()
 	}
 
 	this.setUpdatePeriod(100);
-	this.acum = 0;
+	//this.acum = 0;
+	this.currAnim = null;
 };
 
 XMLscene.prototype.display = function () {
@@ -173,11 +174,16 @@ XMLscene.prototype.traverseGraph = function(elem){
 
 	//this is a node
 	else{
+		
+		for(var i = 0; i < elem.animations.length; i++){
+			if(!elem.animations[i].done)
+				this.currAnim = elem.animations[i];
+		}
 
 		//apply transformations
 		this.pushMatrix();
 		this.multMatrix(elem.matrix);
-		this.multMatrix(this.testMatrix);
+		
 	
 		
 		//apply materials and textures
@@ -297,11 +303,16 @@ XMLscene.prototype.popMaterial = function(){
 
 
 XMLscene.prototype.update = function(){
-	this.testMatrix = mat4.create();
+	/*this.testMatrix = mat4.create();
 	mat4.identity(this.testMatrix);
 	if(this.acum < 1)
 		this.acum += 0.05;
-	mat4.translate(this.testMatrix, this.testMatrix, [0, 0, this.acum]);
+	mat4.translate(this.testMatrix, this.testMatrix, [0, 0, this.acum]);*/
+	if(this.currAnim != null){
+		this.currAnim.update();
+	}
+	
+
 
 
 }

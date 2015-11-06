@@ -142,19 +142,20 @@ MySceneGraph.prototype.EncodeNode = function(node) {
     	this.errors.push("node " + node.id + " references a non-existant or damaged texture");
     }
 	
-	nodeAnims = [];
-	var animations = node.getElementsByTagName('ANIMATION');
-	var animNum = animations.length;
-	console.log("animations.length is " + animations.length);
+	var nodeAnims = [];
+	var anim = node.getElementsByTagName('ANIMATION');
+	var animNum = anim.length;
+	console.log("animations.length is " + anim.length);
 	for(var i = 0; i < animNum; i++){
-		if(animations[i].id == null){
+		if(anim[i].id == null){
 			this.errors.push("Animation in node " + node.id + "has no id");
 			return;
 		}
-		else if(this.animations[animations[i].id] == null){
+		else if(this.animations[anim[i].id] == null){
 			this.errors.push("node " + node.id + " references a non-existant or damaged animation");
 		}
-		nodeAnims.push(animations[i].id);
+		this.animObj = new LinearAnimation(node, this.animations[anim[i].id].span, this.animations[anim[i].id].controlPoints);
+		nodeAnims.push(this.animObj);
 	}
 
     var transformations = [];
@@ -414,6 +415,7 @@ MySceneGraph.prototype.parseLSX = function(rootElement) {
     	console.log('Done ANIMATIONS parsing');
 	}
 
+	console.log(this.animations);
 
     this.ParseLeaves(rootElement);
     this.ParseNodes(rootElement);
