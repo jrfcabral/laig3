@@ -58,7 +58,8 @@ function MySceneGraph(filename, scene) {
 	* Dictionary containing all animations specified in the LSX file
 	* Care must be taken that all the ids are unique
 	*/	
-    this.animations = [];
+    this.linearAnimations = [];
+    this.circularAnimations = [];
 
     // File reading
     this.reader = new CGFXMLreader();
@@ -145,17 +146,18 @@ MySceneGraph.prototype.EncodeNode = function(node) {
 	var nodeAnims = [];
 	var anim = node.getElementsByTagName('ANIMATION');
 	var animNum = anim.length;
+	var startTimes = []; //important for later
 	console.log("animations.length is " + anim.length);
 	for(var i = 0; i < animNum; i++){
 		if(anim[i].id == null){
 			this.errors.push("Animation in node " + node.id + "has no id");
 			return;
 		}
-		else if(this.animations[anim[i].id] == null){
+		else if(this.linearAnimations[anim[i].id] == null && this.circularAnimations[anim[i].id] == null){
 			this.errors.push("node " + node.id + " references a non-existant or damaged animation");
 		}
-		this.animObj = new LinearAnimation(node, this.animations[anim[i].id].span, this.animations[anim[i].id].controlPoints);
-		nodeAnims.push(this.animObj);
+		nodeAnims.push(anim[i].id);
+		startTimes.push(0);
 	}
 
     var transformations = [];
@@ -221,6 +223,8 @@ MySceneGraph.prototype.EncodeNode = function(node) {
         material: material.id,
         texture: texture.id,
         animations: nodeAnims,
+        currentAnimation: 0, //to be discussed
+        animationStartTimes: startTimes,
         matrix: matrix,
         descendants: descendant_ids
     };
@@ -765,7 +769,7 @@ MySceneGraph.prototype.parseAnims = function(anims){
 			this.errors.push("There's an animation with no id.");
 		}
 		console.log(animation);
-		if(this.animations[animation.id] != null){
+		if(this.linearAnimations[animation.id] != null || this.circularAnimations[animation.id] != null){
         	this.errors.push("There are two or more animations with the same id " + animation.id);
         	continue;
         }
@@ -780,21 +784,43 @@ MySceneGraph.prototype.parseAnims = function(anims){
 			this.errors.push("Missing type attribute from animation " + animation.id);
 		}
 
-        this.controlPoints = this.parseControlPoints(animation);
-		if(!this.controlPoints)
-			this.errors.push("Linear Animations need at least 2 control points.");
-
-		if(animOK){
-			this.animations[animation.id] = {
-        		id: animation.id,
-        		span: animSpan,
-        		type: animType,
-        		controlPoints: this.controlPoints	
-        	};
+		if(animType == "linear"){
+			this.parseLinearAnimation(animation, animSpan);
 		}
-        
+		else if(animType == "circular"){
+
+		}
+		else{
+			this.errors.push("Unknown animation type in animation " + animation.id);
+		}
+   
+	}
+}
+
+MySceneGraph.prototype.parseLinearAnimation = function(animation, animSpan){
+	var controlPoints = this.parseControlPoints(animation);
+	if(!controlPoints)
+			this.errors.push("Linear Animations need at least 2 control points.");
+	else{
+		var animObj = new LinearAnimation(animSpan, controlPoints);
+		if(!animObj)
+			this.errors.push("Something went wrong instantiating animation " + animation.id);
+
+		if(animObj && controlPoints){
+			this.linearAnimations[animation.id] = {
+				id: animation.id,
+				span: animSpan,
+				points: controlPoints,
+				object: animObj
+			};
+		}
 		
 	}
+
+}
+
+MySceneGraph.prototype.parseCircularAnimation = function(animation, animSpan){
+	console.log("Under construction :S");
 }
 
 

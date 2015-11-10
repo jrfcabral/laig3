@@ -1,13 +1,10 @@
-function LinearAnimation(node, span, points){
-    this.span = span*10;
+function LinearAnimation(span, points){
+    this.span = span*1000;
     this.points = points;
-    this.node = node;
     this.dists = [];
     this.vectors = [];
     this.totalDist = 0;
-    this.speed = this.computeSpeeds();
-    this.currentTrajectory = 0;
-    this.progress = 0;
+    this.computeSpeeds();
 }
 
 LinearAnimation.prototype.computeSpeeds = function(){
@@ -25,26 +22,40 @@ LinearAnimation.prototype.computeSpeeds = function(){
 
 }
 
-LinearAnimation.prototype.update = function(){
-    if(this.dists[this.currentTrajectory] == this.progress){
-        this.currentTrajectory++;
-        //virar o soce na direçao certa
-        console.log("Tou aqui2");
+/*
+Returns a matrix with the necessary translation based on the current time
+*/
+LinearAnimation.prototype.update = function(startDate){
+    
+    var elapsed = Date.now() - startDate;
+    if(elapsed >= this.span){
+        return "done";
     }
-    console.log(this.vectors);
-    console.log(this.speed);
-    console.log(this.vectors[this.currentTrajectory][1]/this.speed);
-    if(this.dists[this.currentTrajectory] >= this.progress + this.speed){
-        console.log("ola biba");
-         mat4.translate(this.node.matrix, this.node.matrix, [this.vectors[this.currentTrajectory][0]/this.speed, 
-                                                             this.vectors[this.currentTrajectory][1]/this.speed, 
-                                                             this.vectors[this.currentTrajectory][2]/this.speed]);
+    console.log(startDate);
+    console.log("TIME ELAPSED: " + elapsed);
+    var percentageComplete = elapsed/this.span;
+
+    var distanceTraveled = this.totalDist*percentageComplete;
+    var acum = 0;
+    var currentTrajectory;
+    for(var i = 0; i < this.dists.length; i++){
+        acum += this.dists[i];
+        if(acum >= distanceTraveled){
+            currentTrajectory = i;
+            break;
+        }
     }
-    else{
-        mat4.translate(this.node.matrix, this.node.matrix, [this.vectors[this.currentTrajectory][0]/(this.speed - (this.dists[this.currentTrajectory] - this.progress)), 
-                                                            this.vectors[this.currentTrajectory][1]/(this.speed - (this.dists[this.currentTrajectory] - this.progress)), 
-                                                            this.vectors[this.currentTrajectory][2]/(this.speed - (this.dists[this.currentTrajectory] - this.progress))]);
-    }
-    this.progress += this.speed;
-    console.log("Tou aqui");
+    var distanceTraveledInTrajectory = acum-distanceTraveled;
+    var percentageOfTrajectory = distanceTraveledInTrajectory/this.dists[currentTrajectory];
+    console.log("Current trajectory is " + currentTrajectory);
+
+
+
+    var matrix = mat4.create();
+    mat4.identity(matrix);
+    mat4.translate(matrix, matrix, [this.vectors[currentTrajectory][0]*percentageOfTrajectory,
+                                    this.vectors[currentTrajectory][1]*percentageOfTrajectory,
+                                    this.vectors[currentTrajectory][2]*percentageOfTrajectory]);
+
+    return matrix;
 }

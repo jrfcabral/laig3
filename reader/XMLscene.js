@@ -105,8 +105,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 	}
 
 	this.setUpdatePeriod(100);
-	//this.acum = 0;
-	this.currAnim = null;
+	console.log(this.graph.nodes);
 };
 
 XMLscene.prototype.display = function () {
@@ -182,6 +181,29 @@ XMLscene.prototype.traverseGraph = function(elem){
 
 		//apply transformations
 		this.pushMatrix();
+		if(elem.animations.length != 0){
+			if(elem.currentAnimation != "done"){
+				if(elem.animationStartTimes[elem.currentAnimation] == 0){
+					elem.animationStartTimes[elem.currentAnimation] = Date.now();
+				}
+				var animMatrix = this.graph.linearAnimations[elem.animations[elem.currentAnimation]].object.update(elem.animationStartTimes[elem.currentAnimation]);
+				if(!animMatrix){
+				//procurar no outro array
+				}
+				if(animMatrix == "done"){
+					elem.currentAnimation++;
+					if(elem.currentAnimation == elem.animations.length){
+						elem.currentAnimation = "done";
+					}
+
+				}
+				else{
+					this.multMatrix(animMatrix);
+				}
+				this.multMatrix(animMatrix);
+				}
+			
+			}
 		this.multMatrix(elem.matrix);
 		
 	
@@ -303,16 +325,5 @@ XMLscene.prototype.popMaterial = function(){
 
 
 XMLscene.prototype.update = function(){
-	/*this.testMatrix = mat4.create();
-	mat4.identity(this.testMatrix);
-	if(this.acum < 1)
-		this.acum += 0.05;
-	mat4.translate(this.testMatrix, this.testMatrix, [0, 0, this.acum]);*/
-	if(this.currAnim != null){
-		this.currAnim.update();
-	}
 	
-
-
-
 }

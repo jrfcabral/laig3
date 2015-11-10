@@ -42,9 +42,9 @@
     </TEXTURES>
 
     <ANIMATIONS>
-        <ANIMATION id="test" span="1" type="linear">
+        <ANIMATION id="test" span="10" type="linear">
             <controlpoint x="0" y="0" z="0" />
-            <controlpoint x="0" y="0" z="5" />
+            <controlpoint x="0" y="0" z="1" />
         </ANIMATION>
     </ANIMATIONS>
 
