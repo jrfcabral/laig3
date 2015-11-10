@@ -200,10 +200,10 @@ XMLscene.prototype.traverseGraph = function(elem){
 				else{
 					this.multMatrix(animMatrix);
 				}
-				this.multMatrix(animMatrix);
-				}
-			
+				
 			}
+			
+		}
 		this.multMatrix(elem.matrix);
 		
 	
