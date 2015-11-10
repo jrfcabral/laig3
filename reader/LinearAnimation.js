@@ -45,9 +45,6 @@ LinearAnimation.prototype.update = function(startDate){
     }
     var distanceTraveledInTrajectory = acum-distanceTraveled;
     var percentageOfTrajectory = distanceTraveledInTrajectory/this.dists[currentTrajectory];
-    console.log("Current trajectory is " + currentTrajectory);
-    console.log(this);
-
 
     var matrix = mat4.create();
     mat4.identity(matrix);

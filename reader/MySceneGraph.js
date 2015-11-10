@@ -820,7 +820,38 @@ MySceneGraph.prototype.parseLinearAnimation = function(animation, animSpan){
 }
 
 MySceneGraph.prototype.parseCircularAnimation = function(animation, animSpan){
-	console.log("Under construction :S");
+	var animOK = true;
+
+	var center = this.reader.getString(animation, 'center');
+	if(!center){
+		this.errors.push("Missing center attribute in animation " + animation.id);
+		animOK = false;
+	}
+	else{
+		center = center.split(" ");
+		if(center.length != 3 && !isNan(center[0]) && !isNan(center[1]) && !isNan(center[2])){
+			this.errors.push("Malformed center attribute in animation " + animation.id);
+			animOK = false;
+		}
+	}
+
+	var radius = this.reader.getFloat(animation, 'radius', true);
+	if(!radius){
+		this.errors.push("Missing radius tag on animation " + animation.id);
+		animOK = false;
+	}
+
+	var startAng = this.reader.getFloat(animation, 'startang', true);
+	if(!startAng){
+		this.errors.push("Missing startang tag on animation " + animation.id);
+		animOK = false;
+	}
+
+	var rotAng = this.reader.getFloat(animation, 'rotang', true);
+	if(!rotAng){
+		this.errors.push("Missing rotang tag on animation " + animation.id);
+		animOK = false;
+	}
 }
 
 

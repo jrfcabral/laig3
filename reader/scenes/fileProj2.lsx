@@ -44,9 +44,9 @@
     <ANIMATIONS>
         <ANIMATION id="test" span="10" type="linear">
             <controlpoint x="0" y="0" z="0" />
-            <controlpoint x="0" y="0" z="1" />
-            <controlpoint x="0" y="0" z="2" />
+            <controlpoint x="-1" y="0" z="1" />
         </ANIMATION>
+        <ANIMATION id="testCirc" span="5" type="circular" center="0 0 0" radius="2" startang="0" rotang="90" />
     </ANIMATIONS>
 
     <LEAVES>
@@ -58,18 +58,29 @@
          <NODE id="root">
             <MATERIAL id="null" />
             <TEXTURE id="null" />
-            <ANIMATION id="test" />
             <DESCENDANTS>
-                <DESCENDANT id="testerino" />
+                <DESCENDENT id="testerino" />
+                <DESCENDENT id ="testerinono" />
             </DESCENDANTS> 
         </NODE>
 
         <NODE id="testerino">
             <MATERIAL id="null" />
             <TEXTURE id="clear" />
+            <ANIMATION id="test" />
             <DESCENDANTS>
-                <DESCENDANT id="rectangle2" />
+                <DESCENDENT id="rectangle2" />
             </DESCENDANTS>
         </NODE>
+
+        <NODE id="testerinono">
+            <MATERIAL id="null" />
+            <TEXTURE id="clear" />
+            <TRANSLATION x="0"  y="0" z="1" />
+            <DESCENDANTS>
+                <DESCENDENT id="rectangle2" />
+            </DESCENDANTS>
+        </NODE>
+
     </NODES>
 
