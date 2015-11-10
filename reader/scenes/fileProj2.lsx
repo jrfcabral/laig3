@@ -45,6 +45,7 @@
         <ANIMATION id="test" span="10" type="linear">
             <controlpoint x="0" y="0" z="0" />
             <controlpoint x="0" y="0" z="1" />
+            <controlpoint x="0" y="0" z="2" />
         </ANIMATION>
     </ANIMATIONS>
 

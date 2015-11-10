@@ -31,8 +31,6 @@ LinearAnimation.prototype.update = function(startDate){
     if(elapsed >= this.span){
         return "done";
     }
-    console.log(startDate);
-    console.log("TIME ELAPSED: " + elapsed);
     var percentageComplete = elapsed/this.span;
 
     var distanceTraveled = this.totalDist*percentageComplete;
@@ -48,14 +46,14 @@ LinearAnimation.prototype.update = function(startDate){
     var distanceTraveledInTrajectory = acum-distanceTraveled;
     var percentageOfTrajectory = distanceTraveledInTrajectory/this.dists[currentTrajectory];
     console.log("Current trajectory is " + currentTrajectory);
-
+    console.log(this);
 
 
     var matrix = mat4.create();
     mat4.identity(matrix);
-    mat4.translate(matrix, matrix, [this.vectors[currentTrajectory][0]*percentageOfTrajectory,
-                                    this.vectors[currentTrajectory][1]*percentageOfTrajectory,
-                                    this.vectors[currentTrajectory][2]*percentageOfTrajectory]);
+    mat4.translate(matrix, matrix, [this.vectors[currentTrajectory][0]*(1-percentageOfTrajectory),
+                                    this.vectors[currentTrajectory][1]*(1-percentageOfTrajectory),
+                                    this.vectors[currentTrajectory][2]*(1-percentageOfTrajectory)]);
 
     return matrix;
 }
