@@ -30,7 +30,7 @@ LinearAnimation.prototype.update = function(startDate,node){
     var elapsed = Date.now() - startDate;
     if(elapsed >= this.span){
         return "done";
-    }
+     }
     var percentageComplete = elapsed/this.span;
 
     var distanceTraveled = this.totalDist*percentageComplete;
@@ -49,18 +49,24 @@ LinearAnimation.prototype.update = function(startDate,node){
     var matrix = mat4.create();
     mat4.identity(matrix);
 
-    /*var rotAng = Math.sin(this.vectors[currentTrajectory][0]/(Math.sqrt((this.vectors[currentTrajectory][2]*this.vectors[currentTrajectory][2]) + (this.vectors[currentTrajectory][0]*this.vectors[currentTrajectory][0]))));
-    var vector = vec3.create();
-    vec3.set(vector, 0, 1, 0);
-    mat4.rotate(matrix, matrix, rotAng, vector);*/
+    
 
     for(var i = 0; i < currentTrajectory; i++){
         mat4.translate(matrix, matrix, [this.vectors[i][0], this.vectors[i][1], this.vectors[i][2]]);
     }
 
+    
     mat4.translate(matrix, matrix, [this.vectors[currentTrajectory][0]*(1-percentageOfTrajectory),
-                                    this.vectors[currentTrajectory][1]*(1-percentageOfTrajectory),
-                                    this.vectors[currentTrajectory][2]*(1-percentageOfTrajectory)]);
+                                       this.vectors[currentTrajectory][1]*(1-percentageOfTrajectory),
+                                       this.vectors[currentTrajectory][2]*(1-percentageOfTrajectory)]);
+
+    
+
+    
+    var rotAng = Math.sin(this.vectors[currentTrajectory][0]/(Math.sqrt((this.vectors[currentTrajectory][2]*this.vectors[currentTrajectory][2]) + (this.vectors[currentTrajectory][0]*this.vectors[currentTrajectory][0]))));
+    var vector = vec3.create();
+    vec3.set(vector, 0, 1, 0);
+    mat4.rotate(matrix, matrix, rotAng, vector);
 
     return matrix;
 }

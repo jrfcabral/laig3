@@ -105,7 +105,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 	}
 
 	this.setUpdatePeriod(100);
-	console.log(this.graph.nodes);
+	console.log(this.graph.circularAnimations);
 };
 
 XMLscene.prototype.display = function () {
@@ -186,9 +186,11 @@ XMLscene.prototype.traverseGraph = function(elem){
 				if(elem.animationStartTimes[elem.currentAnimation] == 0){
 					elem.animationStartTimes[elem.currentAnimation] = Date.now();
 				}
-				var animMatrix = this.graph.linearAnimations[elem.animations[elem.currentAnimation]].object.update(elem.animationStartTimes[elem.currentAnimation]);
-				if(!animMatrix){
-				//procurar no outro array
+				if(this.graph.linearAnimations[elem.animations[elem.currentAnimation]] != null){
+					var animMatrix = this.graph.linearAnimations[elem.animations[elem.currentAnimation]].object.update(elem.animationStartTimes[elem.currentAnimation], elem);
+				}
+				else{
+					animMatrix = this.graph.circularAnimations[elem.animations[elem.currentAnimation]].object.update(elem.animationStartTimes[elem.currentAnimation], elem);
 				}
 				if(animMatrix == "done"){
 					elem.currentAnimation++;

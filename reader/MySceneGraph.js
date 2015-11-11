@@ -788,7 +788,7 @@ MySceneGraph.prototype.parseAnims = function(anims){
 			this.parseLinearAnimation(animation, animSpan);
 		}
 		else if(animType == "circular"){
-
+			this.parseCircularAnimation(animation, animSpan);
 		}
 		else{
 			this.errors.push("Unknown animation type in animation " + animation.id);
@@ -836,21 +836,35 @@ MySceneGraph.prototype.parseCircularAnimation = function(animation, animSpan){
 	}
 
 	var radius = this.reader.getFloat(animation, 'radius', true);
-	if(!radius){
+	if(radius == null){
 		this.errors.push("Missing radius tag on animation " + animation.id);
 		animOK = false;
 	}
 
 	var startAng = this.reader.getFloat(animation, 'startang', true);
-	if(!startAng){
+	if(startAng == null){
 		this.errors.push("Missing startang tag on animation " + animation.id);
 		animOK = false;
 	}
 
 	var rotAng = this.reader.getFloat(animation, 'rotang', true);
-	if(!rotAng){
+	if(rotAng == 0){
 		this.errors.push("Missing rotang tag on animation " + animation.id);
 		animOK = false;
+	}
+	console.log("CHIGUEI AQUI");
+	if(animOK){
+		var animObj = new CircularAnimation(animSpan, center, radius, startAng, rotAng);
+		
+		this.circularAnimations[animation.id] = {
+			id: animation.id,
+			span: animSpan, 
+			center: center,
+			radius: radius,
+			startAng: startAng,
+			rotAng: rotAng,
+			object: animObj
+		};
 	}
 }
 
