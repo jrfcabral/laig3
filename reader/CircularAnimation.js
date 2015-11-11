@@ -17,9 +17,7 @@ CircularAnimation.prototype.compute = function(){
 CircularAnimation.prototype.update = function(startDate, node){
     var elapsed = Date.now() - startDate;
     Date;
-    if(elapsed >= this.span){
-        return "done";
-    }
+    
 
     var percentageComplete = elapsed/this.span;
 
@@ -29,7 +27,11 @@ CircularAnimation.prototype.update = function(startDate, node){
     mat4.identity(matrix);
     console.log(percentageComplete);
     mat4.translate(matrix, matrix, this.center);
+    if(elapsed >= this.span){
+        mat4.translate(matrix, matrix, [this.radius*Math.cos((this.start+this.rot)*(Math.PI/180)), 0, -(this.radius*Math.sin((this.start+this.rot)*(Math.PI/180)))]);
+        return ["done", matrix];
+    }
     mat4.translate(matrix, matrix, [this.radius*Math.cos(currentAngle*(Math.PI/180)), 0, -(this.radius*Math.sin(currentAngle*(Math.PI/180)))]);
 
-    return matrix;
+    return [0, matrix];
 }

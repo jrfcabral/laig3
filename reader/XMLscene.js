@@ -182,29 +182,22 @@ XMLscene.prototype.traverseGraph = function(elem){
 		//apply transformations
 		this.pushMatrix();
 		if(elem.animations.length != 0){
-			if(elem.currentAnimation != "done"){
-				if(elem.animationStartTimes[elem.currentAnimation] == 0){
-					elem.animationStartTimes[elem.currentAnimation] = Date.now();
-				}
-				if(this.graph.linearAnimations[elem.animations[elem.currentAnimation]] != null){
-					var animMatrix = this.graph.linearAnimations[elem.animations[elem.currentAnimation]].object.update(elem.animationStartTimes[elem.currentAnimation], elem);
-				}
-				else{
-					animMatrix = this.graph.circularAnimations[elem.animations[elem.currentAnimation]].object.update(elem.animationStartTimes[elem.currentAnimation], elem);
-				}
-				if(animMatrix == "done"){
-					elem.currentAnimation++;
-					if(elem.currentAnimation == elem.animations.length){
-						elem.currentAnimation = "done";
-					}
-
-				}
-				else{
-					this.multMatrix(animMatrix);
-				}
-				
+			if(elem.animationStartTimes[elem.currentAnimation] == 0){
+				elem.animationStartTimes[elem.currentAnimation] = Date.now();
 			}
-			
+			if(this.graph.linearAnimations[elem.animations[elem.currentAnimation]] != null){
+				var animMatrix = this.graph.linearAnimations[elem.animations[elem.currentAnimation]].object.update(elem.animationStartTimes[elem.currentAnimation], elem);
+			}
+			else{
+				var animMatrix = this.graph.circularAnimations[elem.animations[elem.currentAnimation]].object.update(elem.animationStartTimes[elem.currentAnimation], elem);
+			}
+			if(animMatrix[0] == "done"){
+				elem.currentAnimation++;
+				if(elem.currentAnimation == elem.animations.length){
+					elem.currentAnimation = elem.animations.length-1;
+				}
+			}
+			this.multMatrix(animMatrix[1]);
 		}
 		this.multMatrix(elem.matrix);
 		
