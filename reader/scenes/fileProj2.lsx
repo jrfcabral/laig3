@@ -12,7 +12,7 @@
 
     <ILLUMINATION>
         <ambient r="0.5" g="0.5" b="0.5" a="0.5"/> <!--needs to be changed-->
-        <background r="0" g="0" b="0" a="1"/>
+        <background r="0" g="0.8" b="1" a="1"/>
     </ILLUMINATION>
 
 
@@ -36,22 +36,62 @@
     </LIGHTS>
 
     <MATERIALS>
+        <MATERIAL id="ground_dirt">
+            <shininess value="10.0" />
+            <specular r="0.2" g="0.2" b="0.2" a="1.0" />
+            <diffuse r="0.5" g="0.43" b="0.33" a="1.0" />
+            <ambient r="0.5" g="0.43" b="0.33" a="1.0" />
+            <emission r="0" g="0" b="0" a="1.0" />
+        </MATERIAL>
+        <MATERIAL id="tar">
+            <shininess value="10.0" />
+            <specular r="0.15" g="0.15" b="0.15" a="1.0" />
+            <diffuse r="0.32" g="0.31" b="0.31" a="1.0" />
+            <ambient r="0.32" g="0.31" b="0.31" a="1.0" />
+            <emission r="0" g="0" b="0" a="1.0" />
+        </MATERIAL>
+        rgb(31, 29, 28)
     </MATERIALS>
 
     <TEXTURES> 
+        <TEXTURE id="runway">
+            <file path="textures/samplerwyac.jpg" />
+            <amplif_factor s="0.5" t="1" />
+        </TEXTURE>
     </TEXTURES>
 
     <ANIMATIONS>
-        <ANIMATION id="test" span="2" type="linear">
+        <ANIMATION id="test" span="10" type="linear">
             <controlpoint x="0" y="0" z="0" />
             <controlpoint x="-1" y="0" z="1" />
             <controlpoint x="0" y="0" z="2" />
+            <controlpoint x="1" y="1" z="1" />
+            <controlpoint x="0" y="1" z="0" />
         </ANIMATION>
-        <ANIMATION id="testCirc" span="5" type="circular" center="0 0 1" radius="1" startang="270" rotang="90" />
+        <ANIMATION id="testCirc" span="10" type="circular" center="0 1 0" radius="1" startang="0" rotang="360" />
+
+        <ANIMATION id="planeLiftOff" span="3" type="linear">
+            <controlpoint x="0" y="0" z="0" />
+            <controlpoint x="5" y="0" z="0" />
+            <controlpoint x="10" y="5" z="0" />
+        </ANIMATION>
+
+        <ANIMATION id="planeFlyAround" span="10" type="circular" center="0 5 0" radius="10" startang="0" rotang="180" />
+
+        <ANIMATION id="planeLand" span="3" type="linear">
+            <controlpoint x="-10" y="5" z="0" />
+            <controlpoint x="-5" y="0" z="0" />
+            <controlpoint x="0" y="0" z="0" />
+        </ANIMATION>
+
     </ANIMATIONS>
 
     <LEAVES>
          <LEAF id="rectangle2" type="rectangle" args="-0.5 0.5 0.5 -0.5" />
+         <LEAF id="triangle1" type="triangle" args="0.5 0 0 0 0 1 -0.5 0 0" />
+         <LEAF id="cylinder1" type="cylinder" args="1.0 1.0 1.0 40.0 40.0"/>
+         <LEAF id="cylinder2" type="cylinder" args="1.0 1.0 0.6 40.0 40.0"/>
+         <LEAF id="cylinder3" type="cylinder" args="1.0 1.0 0.1 40.0 40.0"/>
     </LEAVES>
 
     <NODES>
@@ -60,18 +100,182 @@
             <MATERIAL id="null" />
             <TEXTURE id="null" />
             <DESCENDANTS>
-                <DESCENDENT id="testerino" />
-                <DESCENDENT id ="testerinono" />
+                <DESCENDENT id="airstrip_ground" />
+                <DESCENDENT id="tarmac" />
+                <DESCENDENT id="airplane" />
+               <!-- <DESCENDENT id="testerino" />
+                <DESCENDENT id ="testerinono" />-->
             </DESCENDANTS> 
         </NODE>
+
+        <NODE id="airplane">
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <ANIMATION id="planeLiftOff" />
+            <ANIMATION id="planeFlyAround" />
+            <ANIMATION id="planeLand" />
+            <ROTATION axis="y" angle="90" />
+            <DESCENDANTS>
+                <DESCENDENT id="planeBody" />
+                <DESCENDENT id="landingGear0" />
+                <DESCENDENT id="landingGear1" />
+                <DESCENDENT id="landingGear2" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="planeBody">
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <DESCENDANTS>
+                <DESCENDENT id="mainBody" />
+                <DESCENDENT id="frontBody" />
+                <!--<DESCENDENT id="tailBody" />-->
+            </DESCENDANTS>
+        </NODE>
+        
+        <NODE id="mainBody">
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <TRANSLATION x="0" y="0.5" z="-1" />
+            <SCALE sx="0.25" sy="0.25" sz="1.5" />
+            <DESCENDANTS>
+                <DESCENDENT id="cylinder1" />
+                <DESCENDENT id="wing0" />
+                <DESCENDENT id="wing1" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="wing0">
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <TRANSLATION x="0.9" y="0" z="0.5" />
+            <ROTATION axis="y" angle="90" />
+            <DESCENDANTS>
+                <DESCENDENT id="wing" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="wing1">
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <TRANSLATION x="-0.9" y="0" z="0.5" />
+            <ROTATION axis="y" angle="-90" />
+            <DESCENDANTS>
+                <DESCENDENT id="wing" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="wing">
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <SCALE sx="0.3" sy="0.5" sz="4" />
+            <DESCENDANTS>
+                <DESCENDENT id="cylinder2" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="frontBody">
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <TRANSLATION x="0" y="0.5" z="0.5" />
+            <SCALE sx="0.25" sy="0.25" sz="0.5" /> 
+            <DESCENDANTS>
+                <DESCENDENT id="cylinder3" />
+            </DESCENDANTS>
+        </NODE>
+
+
+        <NODE id="landingGear0">
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <DESCENDANTS>
+                <DESCENDENT id="landingGear" />
+            </DESCENDANTS>
+        </NODE>
+
+         <NODE id="landingGear1">
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <TRANSLATION x="0.1" y="0" z="-0.5" />
+            <DESCENDANTS>
+                <DESCENDENT id="landingGear" />
+            </DESCENDANTS>
+        </NODE>
+
+         <NODE id="landingGear2">
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <TRANSLATION x="-0.1" y="0" z="-0.5" />
+            <DESCENDANTS>
+                <DESCENDENT id="landingGear" />
+            </DESCENDANTS>
+        </NODE>
+
+         <NODE id="landingGear">
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            
+            <DESCENDANTS>
+                <DESCENDENT id="wheels"/>
+                <DESCENDENT id="supporter" />
+            </DESCENDANTS>
+        </NODE>
+
+         <NODE id="supporter">
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <TRANSLATION x="0" y="0.1" z="0" />
+            <ROTATION axis="x" angle="-90" />
+            <SCALE sx="0.005" sy="0.005" sz="0.25"/>
+            <DESCENDANTS>
+                <DESCENDENT id="cylinder1" />
+            </DESCENDANTS>
+        </NODE>
+            
+        <NODE id="wheels">
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <TRANSLATION x="0.025" y="0.05" z="0" />
+            <ROTATION axis="y" angle="-90" />
+            <SCALE sx="0.05" sy="0.05" sz="0.05"/>
+            <DESCENDANTS>
+                <DESCENDENT id="cylinder1" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="airstrip_ground">
+            <MATERIAL id="ground_dirt" />
+            <TEXTURE id="clear" />
+            <ROTATION axis="x" angle="-90" />
+            <SCALE sx="30" sy="30" sz="1"/>
+            <DESCENDANTS>
+                <DESCENDENT id="rectangle2"/>
+                
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="tarmac">
+             <MATERIAL id="tar" />
+            <TEXTURE id="runway" />
+            <TRANSLATION x="0" y="0.01" z="0" />
+            <ROTATION axis="x" angle="-90" />
+            <SCALE sx="30" sy="2" sz="1"/>
+            <DESCENDANTS>
+                <DESCENDENT id="rectangle2"/>
+            </DESCENDANTS>
+        </NODE>
+
+
 
         <NODE id="testerino">
             <MATERIAL id="null" />
             <TEXTURE id="clear" />
             <ANIMATION id="test" />
-            <ANIMATION id="testCirc"/>
+           <!-- <ANIMATION id="testCirc"/>-->
+           <ROTATION axis="z" angle="180" />
             <DESCENDANTS>
-                <DESCENDENT id="rectangle2" />
+                <DESCENDENT id="triangle1" />
+                <DESCENDENT id="testerinono" />
             </DESCENDANTS>
         </NODE>
 
