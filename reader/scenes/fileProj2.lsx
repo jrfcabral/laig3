@@ -47,7 +47,7 @@
             <controlpoint x="-1" y="0" z="1" />
             <controlpoint x="0" y="0" z="2" />
         </ANIMATION>
-        <ANIMATION id="testCirc" span="5" type="circular" center="0 0 1" radius="1" startang="270" rotang="360" />
+        <ANIMATION id="testCirc" span="5" type="circular" center="0 0 1" radius="1" startang="270" rotang="90" />
     </ANIMATIONS>
 
     <LEAVES>

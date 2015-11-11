@@ -27,10 +27,9 @@ CircularAnimation.prototype.update = function(startDate, node){
 
     var matrix = mat4.create();
     mat4.identity(matrix);
-    console.log(this.radius*Math.cos(currentAngle*(Math.PI/180)));
-    console.log(this.radius*Math.sin(currentAngle*(Math.PI/180)));
-    console.log(this.start);
-    mat4.translate(matrix, matrix, [this.radius*Math.cos(currentAngle*(Math.PI/180))+this.center[0], 0+this.center[1], -this.radius*Math.sin(currentAngle*(Math.PI/180))+this.center[2]]);
+    console.log(percentageComplete);
+    mat4.translate(matrix, matrix, this.center);
+    mat4.translate(matrix, matrix, [this.radius*Math.cos(currentAngle*(Math.PI/180)), 0, -(this.radius*Math.sin(currentAngle*(Math.PI/180)))]);
 
     return matrix;
 }
