@@ -31,15 +31,28 @@ LinearAnimation.prototype.update = function(startDate,node){
     if(elapsed >= this.span){
         var matrix = mat4.create();
         mat4.identity(matrix);
-        for(var i = 0; i < this.vectors.length; i++){
-            mat4.translate(matrix, matrix, [this.points[this.points.length-1][0], this.points[this.points.length-1][1], this.points[this.points.length-1][2]]);
-        }
+        mat4.translate(matrix, matrix, [this.points[this.points.length-1][0], this.points[this.points.length-1][1], this.points[this.points.length-1][2]]);
         var hipothenuse = Math.sqrt(this.vectors[this.vectors.length-1][0]*this.vectors[this.vectors.length-1][0] + this.vectors[this.vectors.length-1][2]*this.vectors[this.vectors.length-1][2]); 
         var rotAng = (Math.acos(this.vectors[this.vectors.length-1][0]/hipothenuse)*180)/Math.PI;
-        console.log(rotAng);
-        /*var vector = vec3.create();
+       
+        var vector = vec3.create();
         vec3.set(vector, 0, 1, 0);
-        mat4.rotate(matrix, matrix, rotAng, vector);*/
+        if(this.vectors[this.vectors.length-1][0] > 0 && this.vectors[this.vectors.length-1][2] > 0){ //ta bom
+            mat4.rotate(matrix, matrix, rotAng*(Math.PI/180)-(Math.PI/2), vector);
+            
+        } 
+        else if(this.vectors[this.vectors.length-1][0] < 0 && this.vectors[this.vectors.length-1][2] > 0){ //ta bom
+            mat4.rotate(matrix, matrix, -rotAng*(Math.PI/180), vector);
+            
+        }
+        else if(this.vectors[this.vectors.length-1][0] > 0 && this.vectors[this.vectors.length-1][2] < 0){ //ta bom
+            mat4.rotate(matrix, matrix, -rotAng*(Math.PI/180)+(Math.PI/2), vector);
+            
+        }
+        else if(this.vectors[this.vectors.length-1][0] < 0 && this.vectors[this.vectors.length-1][2] < 0){ //ta bom
+            mat4.rotate(matrix, matrix, rotAng*(Math.PI/180), vector);
+              
+        }
         
         return ["done", matrix];
      }
@@ -71,10 +84,25 @@ LinearAnimation.prototype.update = function(startDate,node){
 
     var hipothenuse = Math.sqrt(this.vectors[currentTrajectory][0]*this.vectors[currentTrajectory][0] + this.vectors[currentTrajectory][2]*this.vectors[currentTrajectory][2]); 
     var rotAng = (Math.acos(this.vectors[currentTrajectory][0]/hipothenuse)*180)/Math.PI;
-    console.log(rotAng);
-    /*var vector = vec3.create();
+    
+    var vector = vec3.create();
     vec3.set(vector, 0, 1, 0);
-    mat4.rotate(matrix, matrix, rotAng, vector);*/
+    if(this.vectors[currentTrajectory][0] > 0 && this.vectors[currentTrajectory][2] > 0){ //ta bom
+        mat4.rotate(matrix, matrix, rotAng*(Math.PI/180)-(Math.PI/2), vector);
+        
+    } 
+    else if(this.vectors[currentTrajectory][0] < 0 && this.vectors[currentTrajectory][2] > 0){ //ta bom
+        mat4.rotate(matrix, matrix, -rotAng*(Math.PI/180), vector);
+        
+    }
+    else if(this.vectors[currentTrajectory][0] > 0 && this.vectors[currentTrajectory][2] < 0){ //ta bom
+        mat4.rotate(matrix, matrix, -rotAng*(Math.PI/180)+(Math.PI/2), vector);
+        
+    }
+    else if(this.vectors[currentTrajectory][0] < 0 && this.vectors[currentTrajectory][2] < 0){ //ta bom
+        mat4.rotate(matrix, matrix, rotAng*(Math.PI/180), vector);
+         
+    }
 
     return [0, matrix];
 }
