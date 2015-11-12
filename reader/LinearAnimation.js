@@ -91,7 +91,7 @@ LinearAnimation.prototype.update = function(startDate,node){
         mat4.rotate(matrix, matrix, rotAng*(Math.PI/180)-(Math.PI/2), vector);
         
     } 
-    else if(this.vectors[currentTrajectory][0] < 0 && this.vectors[currentTrajectory][2] > 0){ //ta bom
+    else if(this.vectors[currentTrajectory][0] <= 0 && this.vectors[currentTrajectory][2] > 0){ //ta bom
         mat4.rotate(matrix, matrix, -rotAng*(Math.PI/180), vector);
         
     }
@@ -99,10 +99,11 @@ LinearAnimation.prototype.update = function(startDate,node){
         mat4.rotate(matrix, matrix, -rotAng*(Math.PI/180)+(Math.PI/2), vector);
         
     }
-    else if(this.vectors[currentTrajectory][0] < 0 && this.vectors[currentTrajectory][2] < 0){ //ta bom
+    else if(this.vectors[currentTrajectory][0] <= 0 && this.vectors[currentTrajectory][2] < 0){ //ta bom
         mat4.rotate(matrix, matrix, rotAng*(Math.PI/180), vector);
          
     }
+    
 
     return [0, matrix];
 }

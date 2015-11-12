@@ -70,6 +70,11 @@
         </ANIMATION>
         <ANIMATION id="testCirc" span="10" type="circular" center="0 1 0" radius="1" startang="0" rotang="360" />
 
+        <ANIMATION id="planeRideToRunway" span="5" type="linear" >
+            <controlpoint x="-10" y="0" z="-7" />
+            <controlpoint x="-10" y="0" z="0" />
+            <controlpoint x="-0" y="0" z="0" />
+        </ANIMATION>
         <ANIMATION id="planeLiftOff" span="3" type="linear">
             <controlpoint x="0" y="0" z="0" />
             <controlpoint x="5" y="0" z="0" />
@@ -92,6 +97,17 @@
          <LEAF id="cylinder1" type="cylinder" args="1.0 1.0 1.0 40.0 40.0"/>
          <LEAF id="cylinder2" type="cylinder" args="1.0 1.0 0.6 40.0 40.0"/>
          <LEAF id="cylinder3" type="cylinder" args="1.0 1.0 0.1 40.0 40.0"/>
+         <LEAF id="superficie" type="patch" order="2" partsU="10" partsV="10">
+            <controlpoint x="0" y="0" z="0"/>
+            <controlpoint x="-1" y="0" z="1"/>
+            <controlpoint x="-2" y="0" z="0"/>
+            <controlpoint x="0" y="1" z="0"/>
+            <controlpoint x="-1" y="1" z="1"/>
+            <controlpoint x="-2" y="1" z="0"/>
+            <controlpoint x="0" y="2" z="0"/>
+            <controlpoint x="-1" y="2" z="1"/>
+            <controlpoint x="-2" y="2" z="0"/>
+         </LEAF>
     </LEAVES>
 
     <NODES>
@@ -103,14 +119,27 @@
                 <DESCENDENT id="airstrip_ground" />
                 <DESCENDENT id="tarmac" />
                 <DESCENDENT id="airplane" />
+                <DESCENDENT id="hangar"/>
                <!-- <DESCENDENT id="testerino" />
                 <DESCENDENT id ="testerinono" />-->
             </DESCENDANTS> 
         </NODE>
 
+        <NODE id="hangar">
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <TRANSLATION x="-5" y="0" z="-5" />
+            <ROTATION axis="x" angle="-90" />
+            <SCALE sx="5" sy="5" sz="7" />
+            <DESCENDANTS>
+                <DESCENDENT id="superficie" />
+            </DESCENDANTS>
+        </NODE>
+
         <NODE id="airplane">
             <MATERIAL id="null" />
             <TEXTURE id="null" />
+            <ANIMATION id="planeRideToRunway" />
             <ANIMATION id="planeLiftOff" />
             <ANIMATION id="planeFlyAround" />
             <ANIMATION id="planeLand" />
