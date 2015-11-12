@@ -39,19 +39,19 @@ LinearAnimation.prototype.update = function(startDate,node){
         vec3.set(vector, 0, 1, 0);
         if(this.vectors[this.vectors.length-1][0] > 0 && this.vectors[this.vectors.length-1][2] > 0){ //ta bom
             mat4.rotate(matrix, matrix, rotAng*(Math.PI/180)-(Math.PI/2), vector);
-            
+        
         } 
-        else if(this.vectors[this.vectors.length-1][0] < 0 && this.vectors[this.vectors.length-1][2] > 0){ //ta bom
+        else if(this.vectors[this.vectors.length-1][0] <= 0 && this.vectors[this.vectors.length-1][2] >= 0){ //ta bom
             mat4.rotate(matrix, matrix, -rotAng*(Math.PI/180), vector);
-            
+        
         }
         else if(this.vectors[this.vectors.length-1][0] > 0 && this.vectors[this.vectors.length-1][2] < 0){ //ta bom
             mat4.rotate(matrix, matrix, -rotAng*(Math.PI/180)+(Math.PI/2), vector);
-            
+        
         }
-        else if(this.vectors[this.vectors.length-1][0] < 0 && this.vectors[this.vectors.length-1][2] < 0){ //ta bom
+        else if(this.vectors[this.vectors.length-1][0] <= 0 && this.vectors[this.vectors.length-1][2] <= 0){ //ta bom
             mat4.rotate(matrix, matrix, rotAng*(Math.PI/180), vector);
-              
+         
         }
         
         return ["done", matrix];
@@ -91,7 +91,7 @@ LinearAnimation.prototype.update = function(startDate,node){
         mat4.rotate(matrix, matrix, rotAng*(Math.PI/180)-(Math.PI/2), vector);
         
     } 
-    else if(this.vectors[currentTrajectory][0] <= 0 && this.vectors[currentTrajectory][2] > 0){ //ta bom
+    else if(this.vectors[currentTrajectory][0] <= 0 && this.vectors[currentTrajectory][2] >= 0){ //ta bom
         mat4.rotate(matrix, matrix, -rotAng*(Math.PI/180), vector);
         
     }
@@ -99,7 +99,7 @@ LinearAnimation.prototype.update = function(startDate,node){
         mat4.rotate(matrix, matrix, -rotAng*(Math.PI/180)+(Math.PI/2), vector);
         
     }
-    else if(this.vectors[currentTrajectory][0] <= 0 && this.vectors[currentTrajectory][2] < 0){ //ta bom
+    else if(this.vectors[currentTrajectory][0] <= 0 && this.vectors[currentTrajectory][2] <= 0){ //ta bom
         mat4.rotate(matrix, matrix, rotAng*(Math.PI/180), vector);
          
     }

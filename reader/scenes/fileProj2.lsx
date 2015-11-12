@@ -73,6 +73,7 @@
         <ANIMATION id="planeRideToRunway" span="5" type="linear" >
             <controlpoint x="-10" y="0" z="-7" />
             <controlpoint x="-10" y="0" z="0" />
+            <controlpoint x="-10" y="0" z="-7" />
             <controlpoint x="-0" y="0" z="0" />
         </ANIMATION>
         <ANIMATION id="planeLiftOff" span="3" type="linear">
@@ -87,6 +88,7 @@
             <controlpoint x="-10" y="5" z="0" />
             <controlpoint x="-5" y="0" z="0" />
             <controlpoint x="0" y="0" z="0" />
+            
         </ANIMATION>
 
     </ANIMATIONS>
