@@ -34,9 +34,10 @@ LinearAnimation.prototype.update = function(startDate,node){
         for(var i = 0; i < this.vectors.length; i++){
             mat4.translate(matrix, matrix, [this.points[this.points.length-1][0], this.points[this.points.length-1][1], this.points[this.points.length-1][2]]);
         }
-        /*var rotAng = Math.sin(this.vectors[this.vectors.length-1][0]/(Math.sqrt((this.vectors[this.vectors.length-1][2]*this.vectors[this.vectors.length-1][2]) + 
-                                                                                (this.vectors[this.vectors.length-1][0]*this.vectors[this.vectors.length-1][0]))));
-        var vector = vec3.create();
+        var hipothenuse = Math.sqrt(this.vectors[this.vectors.length-1][0]*this.vectors[this.vectors.length-1][0] + this.vectors[this.vectors.length-1][2]*this.vectors[this.vectors.length-1][2]); 
+        var rotAng = (Math.acos(this.vectors[this.vectors.length-1][0]/hipothenuse)*180)/Math.PI;
+        console.log(rotAng);
+        /*var vector = vec3.create();
         vec3.set(vector, 0, 1, 0);
         mat4.rotate(matrix, matrix, rotAng, vector);*/
         
@@ -68,9 +69,10 @@ LinearAnimation.prototype.update = function(startDate,node){
 
     
 
-    
-    /*var rotAng = Math.sin(this.vectors[currentTrajectory][0]/(Math.sqrt((this.vectors[currentTrajectory][2]*this.vectors[currentTrajectory][2]) + (this.vectors[currentTrajectory][0]*this.vectors[currentTrajectory][0]))));
-    var vector = vec3.create();
+    var hipothenuse = Math.sqrt(this.vectors[currentTrajectory][0]*this.vectors[currentTrajectory][0] + this.vectors[currentTrajectory][2]*this.vectors[currentTrajectory][2]); 
+    var rotAng = (Math.acos(this.vectors[currentTrajectory][0]/hipothenuse)*180)/Math.PI;
+    console.log(rotAng);
+    /*var vector = vec3.create();
     vec3.set(vector, 0, 1, 0);
     mat4.rotate(matrix, matrix, rotAng, vector);*/
 

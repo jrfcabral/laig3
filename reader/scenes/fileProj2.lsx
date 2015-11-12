@@ -70,10 +70,12 @@
         </ANIMATION>
         <ANIMATION id="testCirc" span="10" type="circular" center="0 1 0" radius="1" startang="0" rotang="360" />
 
-        <ANIMATION id="planeLiftOff" span="3" type="linear">
+        <ANIMATION id="planeLiftOff" span="10" type="linear">
             <controlpoint x="0" y="0" z="0" />
             <controlpoint x="5" y="0" z="0" />
             <controlpoint x="10" y="5" z="0" />
+            <!-- para testes so -->
+            <controlpoint x="5" y="5" z="5" />
         </ANIMATION>
 
         <ANIMATION id="planeFlyAround" span="10" type="circular" center="0 5 0" radius="10" startang="0" rotang="180" />
