@@ -7,7 +7,7 @@ function MySceneGraph(filename, scene) {
     scene.graph = this;
 
     //List of drawable primitives
-    this.allowedPrimitives = ['rectangle', 'sphere', 'cylinder', 'triangle'];
+    this.allowedPrimitives = ['rectangle', 'sphere', 'cylinder', 'triangle', 'plane', 'patch'];
 
     /*
 	* Queue of errors detected while loading the lsx file
@@ -70,6 +70,10 @@ function MySceneGraph(filename, scene) {
 	 * If any error occurs, the reader calls onXMLError on this object, with an error message
 	 */
 
+	/*
+	* Dictionary containing all nurbs declared
+	*/
+	this.nurbs = [];
     this.reader.open('scenes/' + filename, this);
 
 }
@@ -269,16 +273,18 @@ MySceneGraph.prototype.ParseLeaves = function(rootElement) {
         }
 
         //tokenize args value and convert it into a list of floats
-        var strargs = this.reader.getString(leaf, "args").split(" ");
-        var args = [];
+        if(this.reader.getString(leaf, "args", false)){
+			var strargs = this.reader.getString(leaf, "args").split(" ");
+			var args = [];
 
-        for (var j = 0; j < strargs.length; j++) {
-            args[j] = parseFloat(strargs[j]);
-            //check for values that can't be converted into floats
-            if (args[j] == NaN) {
-                this.errors.push("no conversion to float for argument no." + j + " of leaf with id " + leaf.id);
-                return;
-            }
+			for (var j = 0; j < strargs.length; j++) {
+				args[j] = parseFloat(strargs[j]);
+				//check for values that can't be converted into floats
+				if (args[j] == NaN) {
+					this.errors.push("no conversion to float for argument no." + j + " of leaf with id " + leaf.id);
+					return;
+				}
+			}
         }
 
 	var object;
@@ -297,6 +303,38 @@ MySceneGraph.prototype.ParseLeaves = function(rootElement) {
 
 	else if (type ==="cylinder")
 		object = new cylinder(this.scene, args[0], args[1],args[2], args[3], args[4]);
+	else if(type ==="plane"){
+		object = new Plane(this.scene, args[0],0,1,0,1);
+	}
+	else if(type ==="patch"){
+		var controlpoints = leaf.getElementsByTagName('controlpoint');
+		var order = this.reader.getInteger(leaf, "order", true);
+		if (Math.pow((order+1),2) != controlpoints.length){
+			this.errors.push("wrong number of control points for patch "+leaf.id);
+			return;
+		}
+		if (order < 1 || order > 3){
+			this.errors.push("invalid order for patch "+leaf.id);
+			return;
+		}
+		var controlvector = [];
+		var i = 0;
+		for(j=0;j<=order;j++){
+			var subvector =  [];
+			for(k=0;k<=order;k++){
+				subvector.push([parseFloat(this.reader.getFloat(controlpoints[i], "x",1)),
+									parseFloat(this.reader.getFloat(controlpoints[i], "y",1)),
+									parseFloat(this.reader.getFloat(controlpoints[i], "z",1)),
+									1]);
+				i++;
+			}
+			controlvector.push(subvector);
+		}
+		console.log(controlvector);
+		var partsU = this.reader.getInteger(leaf, "partsU", true);
+		var partsV = this.reader.getInteger(leaf, "partsV", true);
+		object = new patch(this.scene, order, partsU,partsV, controlvector);
+	}
 	else{
 		this.errors.push("Unknown primitive type on LEAF " + leaf.id)
 	}
@@ -446,11 +484,6 @@ MySceneGraph.prototype.parseLSX = function(rootElement) {
 
 }
 
-/**
-* Parses the <INITIALS> tag
-* @param initials corresponds to the <INITIALS> tag
-* 
-*/
 MySceneGraph.prototype.parseInitials = function(initials) {
     //frustum processing
     var frustum = initials.getElementsByTagName('frustum');
