@@ -48,14 +48,6 @@
         </MATERIAL> 
     </MATERIALS>
 
-    <LEAVES>
-        <LEAF id="tritri" type="triangle" args="-3.0 0 0 3.0 0 0 0 3.0 0" />
-        <LEAF id="planes" type="plane" args="100"/> <!-- divs-->
-        <LEAF id="suparficie" type="nurb" id="nurb1"/>
-
-    </LEAVES>
-
-
     <NODES>
         <ROOT id="root"/>
         <NODE id="root">
@@ -70,10 +62,25 @@
             <MATERIAL id="null" />
             <TEXTURE id="grid" />
             <DESCENDANTS>
-                <DESCENDANT id="planes" />
+                <DESCENDANT id="suparficie" />
             </DESCENDANTS>
         </NODE>
-    </NODES>    
+        
+    </NODES>   
+
+    <LEAVES>
+        <LEAF id="tritri" type="triangle" args="-3.0 0 0 3.0 0 0 0 3.0 0" />
+        <LEAF id="planes" type="plane" args="100"/> <!-- divs-->
+        <LEAF id="suparficie" type="patch" order="1" partsU="2" partsV="2">
+            <controlpoint x="0" y="0" z="0"/>
+            <controlpoint x="1" y="0" z="0"/>
+            <controlpoint x="0" y="1" z="0"/>
+            <controlpoint x="1" y="1" z="0"/>
+        </LEAF>
+
+    </LEAVES>
+
+ 
 
      
 
