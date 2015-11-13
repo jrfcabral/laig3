@@ -107,7 +107,11 @@
 
     <LEAVES>
          <LEAF id="rectangle2" type="rectangle" args="-0.5 0.5 0.5 -0.5" />
+
          <LEAF id="mountainz" type="terrain" texture="textures/samplerwyac.jpg" heightmap="textures/hm.jpg" />
+
+         <LEAF id="mountains" type="terrain" texture="textures/DecalMap.jpg" heightmap="textures/HeightMap.jpg" />
+
          <LEAF id="triangle1" type="triangle" args="0.5 0 0 0 0 1 -0.5 0 0" />
          <LEAF id="cylinder1" type="cylinder" args="1.0 1.0 1.0 40.0 40.0"/>
          <LEAF id="cylinder2" type="cylinder" args="1.0 1.0 0.6 40.0 40.0"/>
@@ -142,13 +146,15 @@
         </NODE>
 
         <NODE id="mountains-left" >
-            <MATERIAL id="null" />
-            <TEXTURE id="null" />
-            <TRANSLATION x="0" y="6.8" z="-15" />
+
+            <MATERIAL id="tar" />
+            <TEXTURE id="runway" />
+            <TRANSLATION x="0" y="0" z="30" />
             <ROTATION axis="z" angle="180" />
-            <SCALE sx="10" sy="10" sz="10" />
+            <SCALE sx="50" sy="1" sz="31" />
             <DESCENDANTS>
-                <DESCENDENT id="mountainz" />
+                <DESCENDENT id="mountains" />
+
             </DESCENDANTS>
         </NODE>
 
@@ -313,7 +319,9 @@
         <NODE id="tarmac">
              <MATERIAL id="tar" />
             <TEXTURE id="runway" />
-            <TRANSLATION x="0" y="0.01" z="0" />
+
+            <TRANSLATION x="0" y="0.05" z="0" />
+
             <ROTATION axis="x" angle="-90" />
             <SCALE sx="30" sy="4" sz="1"/>
             <DESCENDANTS>
