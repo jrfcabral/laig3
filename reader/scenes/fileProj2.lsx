@@ -94,7 +94,7 @@
     </ANIMATIONS>
 
     <LEAVES>
-         <LEAF id="rectangle2" type="terrain" texture="textures/samplerwyac.jpg" heightmap="textures/hm.jpg" />
+         <LEAF id="rectangle2" type="terrain" texture="textures/DecalMap.jpg" heightmap="textures/teste.png" />
          <LEAF id="triangle1" type="triangle" args="0.5 0 0 0 0 1 -0.5 0 0" />
          <LEAF id="cylinder1" type="cylinder" args="1.0 1.0 1.0 40.0 40.0"/>
          <LEAF id="cylinder2" type="cylinder" args="1.0 1.0 0.6 40.0 40.0"/>
@@ -289,7 +289,7 @@
              <MATERIAL id="tar" />
             <TEXTURE id="runway" />
             <TRANSLATION x="0" y="0.01" z="0" />
-            <ROTATION axis="x" angle="180" />
+            <ROTATION axis="x" angle="-180" />
             <SCALE sx="50" sy="1" sz="31"/>
             <DESCENDANTS>
                 <DESCENDENT id="rectangle2"/>

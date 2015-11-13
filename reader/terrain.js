@@ -9,7 +9,7 @@ function terrain(scene, heightmap, texture){
    
     this.shader = new CGFshader(scene.gl, "shaders/heightmap.vert", "shaders/texture.frag");
     this.shader.setUniformsValues({uSampler2:1,uSampler3:2});
-    this.plane = new Plane(this.scene, 50);
+    this.plane = new Plane(this.scene, 200);
 }
 
 terrain.prototype = Object.create(CGFobject.prototype);
