@@ -4,7 +4,7 @@ function terrain(scene, heightmap, texture){
 
     this.scene = scene;
     this.heightmap = new CGFtexture(scene,heightmap);
-    this.textured = new CGFtexture(scene,"textures/grid.jpg");
+    this.textured = new CGFtexture(scene,texture);
 
    
     this.shader = new CGFshader(scene.gl, "shaders/heightmap.vert", "shaders/texture.frag");
