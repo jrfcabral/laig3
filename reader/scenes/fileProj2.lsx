@@ -94,12 +94,12 @@
     </ANIMATIONS>
 
     <LEAVES>
-         <LEAF id="rectangle2" type="rectangle" args="-0.5 0.5 0.5 -0.5" />
+         <LEAF id="rectangle2" type="terrain" texture="textures/samplerwyac.jpg" heightmap="textures/hm.jpg" />
          <LEAF id="triangle1" type="triangle" args="0.5 0 0 0 0 1 -0.5 0 0" />
          <LEAF id="cylinder1" type="cylinder" args="1.0 1.0 1.0 40.0 40.0"/>
          <LEAF id="cylinder2" type="cylinder" args="1.0 1.0 0.6 40.0 40.0"/>
          <LEAF id="cylinder3" type="cylinder" args="1.0 1.0 0.1 40.0 40.0"/>
-         <LEAF id="superficie" type="patch" order="2" partsU="10" partsV="10">
+         <LEAF id="superficie" type="patch" order="2" partsU="50" partsV="50">
             <controlpoint x="0" y="0" z="0"/>
             <controlpoint x="-1" y="0" z="1"/>
             <controlpoint x="-2" y="0" z="0"/>
@@ -118,7 +118,6 @@
             <MATERIAL id="null" />
             <TEXTURE id="null" />
             <DESCENDANTS>
-                <DESCENDENT id="airstrip_ground" />
                 <DESCENDENT id="tarmac" />
                 <DESCENDENT id="airplane" />
                 <DESCENDENT id="hangar"/>
@@ -278,8 +277,8 @@
         <NODE id="airstrip_ground">
             <MATERIAL id="ground_dirt" />
             <TEXTURE id="clear" />
-            <ROTATION axis="x" angle="-90" />
-            <SCALE sx="30" sy="30" sz="1"/>
+            <ROTATION axis="x" angle="180" />
+            <SCALE sx="30" sy="30" sz="10"/>
             <DESCENDANTS>
                 <DESCENDENT id="rectangle2"/>
                 
@@ -290,8 +289,8 @@
              <MATERIAL id="tar" />
             <TEXTURE id="runway" />
             <TRANSLATION x="0" y="0.01" z="0" />
-            <ROTATION axis="x" angle="-90" />
-            <SCALE sx="30" sy="2" sz="1"/>
+            <ROTATION axis="x" angle="180" />
+            <SCALE sx="50" sy="1" sz="31"/>
             <DESCENDANTS>
                 <DESCENDENT id="rectangle2"/>
             </DESCENDANTS>

@@ -61,7 +61,7 @@ Plane.prototype.initBuffers = function() {
 			// As this plane is being drawn on the xy plane, the normal to the plane will be along the positive z axis.
 			// So all the vertices will have the same normal, (0, 0, 1).
 			
-			this.normals.push(0,0,1);
+			this.normals.push(0,1,0);
 
 			// texCoords should be computed here; uncomment and fill the blanks
 			this.texCoords.push(xTex,yTex);
@@ -87,26 +87,19 @@ Plane.prototype.initBuffers = function() {
 	this.indices = [];
 	var ind=0;
 
-
 	for (var j = 0; j < this.nrDivs; j++) 
 	{
-		for (var i = 0; i <= this.nrDivs; i++) 
+		for (var i = 0; i < this.nrDivs; i++) 
 		{
-			this.indices.push(ind+this.nrDivs+1);
-						this.indices.push(ind);
+			this.indices.push(ind, ind+this.nrDivs+1, ind+1);
+			this.indices.push(ind+1, ind+this.nrDivs+1, ind+this.nrDivs+2 );
 
 			ind++;
 		}
-		if (j+1 < this.nrDivs)
-		{
-			// Extra vertices to create degenerate triangles so that the strip can wrap on the next row
-			// degenerate triangles will not generate fragments
-			this.indices.push(ind+this.nrDivs);
-			this.indices.push(ind);
-		}
+		ind++;
 	}
 	
-	this.primitiveType = this.scene.gl.TRIANGLE_STRIP;
+	this.primitiveType = this.scene.gl.TRIANGLES;
 
 /* Alternative with TRIANGLES instead of TRIANGLE_STRIP. More indices, but no degenerate triangles */
 /*

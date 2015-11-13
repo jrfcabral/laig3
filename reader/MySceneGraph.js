@@ -7,7 +7,7 @@ function MySceneGraph(filename, scene) {
     scene.graph = this;
 
     //List of drawable primitives
-    this.allowedPrimitives = ['rectangle', 'sphere', 'cylinder', 'triangle', 'plane', 'patch'];
+    this.allowedPrimitives = ['rectangle', 'sphere', 'cylinder', 'triangle', 'plane', 'patch','terrain'];
 
     /*
 	* Queue of errors detected while loading the lsx file
@@ -334,6 +334,11 @@ MySceneGraph.prototype.ParseLeaves = function(rootElement) {
 		var partsU = this.reader.getInteger(leaf, "partsU", true);
 		var partsV = this.reader.getInteger(leaf, "partsV", true);
 		object = new patch(this.scene, order, partsU,partsV, controlvector);
+	}
+	else if(type==="terrain"){
+		var texture = this.reader.getString(leaf, "texture", 1);
+		var heightmap = this.reader.getString(leaf, "heightmap",1);
+		object = new terrain(this.scene, heightmap,texture);
 	}
 	else{
 		this.errors.push("Unknown primitive type on LEAF " + leaf.id)
