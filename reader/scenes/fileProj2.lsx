@@ -61,12 +61,24 @@
     </TEXTURES>
 
     <ANIMATIONS>
-        <ANIMATION id="test" span="5" type="linear">
+        <ANIMATION id="test" span="15" type="linear">
             <controlpoint x="0" y="0" z="0" />
-            <controlpoint x="-1" y="0" z="1" />
-            <controlpoint x="0" y="0" z="2" />
-            <controlpoint x="1" y="1" z="1" />
+            <controlpoint x="1" y="0" z="0" />
+            <controlpoint x="-1" y="0" z="0" />
+            <controlpoint x="0" y="0" z="0" />
+            <controlpoint x="0" y="0" z="1" />
+            <controlpoint x="0" y="0" z="-1" />
+            <controlpoint x="0" y="0" z="0" />
+            <controlpoint x="-1" y="1" z="-1" />
+            <controlpoint x="1" y="0" z="1" />
             <controlpoint x="0" y="1" z="0" />
+            <controlpoint x="-1" y="0" z="1" />
+            <controlpoint x="1" y="1" z="-1" />
+            <controlpoint x="0" y="0" z="0" />
+            <controlpoint x="-3" y="4" z="2.5" />
+            <controlpoint x="2.5" y="0" z="3" />
+            <controlpoint x="0" y="0" z="0" />
+
         </ANIMATION>
         <ANIMATION id="testCirc" span="10" type="circular" center="0 1 0" radius="1" startang="0" rotang="360" />
 
@@ -94,7 +106,8 @@
     </ANIMATIONS>
 
     <LEAVES>
-         <LEAF id="rectangle2" type="terrain" texture="textures/samplerwyac.jpg" heightmap="textures/hm.jpg" />
+         <LEAF id="rectangle2" type="rectangle" args="-0.5 0.5 0.5 -0.5" />
+         <LEAF id="mountainz" type="terrain" texture="textures/samplerwyac.jpg" heightmap="textures/hm.jpg" />
          <LEAF id="triangle1" type="triangle" args="0.5 0 0 0 0 1 -0.5 0 0" />
          <LEAF id="cylinder1" type="cylinder" args="1.0 1.0 1.0 40.0 40.0"/>
          <LEAF id="cylinder2" type="cylinder" args="1.0 1.0 0.6 40.0 40.0"/>
@@ -118,12 +131,25 @@
             <MATERIAL id="null" />
             <TEXTURE id="null" />
             <DESCENDANTS>
+                <DESCENDENT id="airstrip_ground" />
                 <DESCENDENT id="tarmac" />
                 <DESCENDENT id="airplane" />
                 <DESCENDENT id="hangar"/>
+                <DESCENDENT id="mountains-left" />
                <!-- <DESCENDENT id="testerino" />
                 <DESCENDENT id ="testerinono" />-->
             </DESCENDANTS> 
+        </NODE>
+
+        <NODE id="mountains-left" >
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <TRANSLATION x="0" y="6.8" z="-15" />
+            <ROTATION axis="z" angle="180" />
+            <SCALE sx="10" sy="10" sz="10" />
+            <DESCENDANTS>
+                <DESCENDENT id="mountainz" />
+            </DESCENDANTS>
         </NODE>
 
         <NODE id="hangar">
@@ -140,11 +166,11 @@
         <NODE id="airplane">
             <MATERIAL id="null" />
             <TEXTURE id="null" />
-            <ANIMATION id="planeRideToRunway" />
+            <!--<ANIMATION id="planeRideToRunway" />
             <ANIMATION id="planeLiftOff" />
             <ANIMATION id="planeFlyAround" />
-            <ANIMATION id="planeLand" />
-            <!--<ANIMATION id="test" />-->
+            <ANIMATION id="planeLand" />-->
+            <ANIMATION id="test" />
             <ROTATION axis="y" angle="90" />
             <DESCENDANTS>
                 <DESCENDENT id="planeBody" />
@@ -277,11 +303,10 @@
         <NODE id="airstrip_ground">
             <MATERIAL id="ground_dirt" />
             <TEXTURE id="clear" />
-            <ROTATION axis="x" angle="180" />
+            <ROTATION axis="x" angle="-90" />
             <SCALE sx="30" sy="30" sz="10"/>
             <DESCENDANTS>
-                <DESCENDENT id="rectangle2"/>
-                
+                <DESCENDENT id="rectangle2"/>      
             </DESCENDANTS>
         </NODE>
 
@@ -289,8 +314,8 @@
              <MATERIAL id="tar" />
             <TEXTURE id="runway" />
             <TRANSLATION x="0" y="0.01" z="0" />
-            <ROTATION axis="x" angle="180" />
-            <SCALE sx="50" sy="1" sz="31"/>
+            <ROTATION axis="x" angle="-90" />
+            <SCALE sx="30" sy="4" sz="1"/>
             <DESCENDANTS>
                 <DESCENDENT id="rectangle2"/>
             </DESCENDANTS>
