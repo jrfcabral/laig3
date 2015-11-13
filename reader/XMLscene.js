@@ -220,7 +220,7 @@ XMLscene.prototype.traverseGraph = function(elem){
 				this.traverseGraph(this.graph.leaves[descendants[i]]);
 			}
 			else{
-				console.log("ERROR: Non-existant descendant");
+				console.log("ERROR: Non-existant descendant "+ descendants[i]);
 				this.graph.loadedOk = false;
 				return;
 			}

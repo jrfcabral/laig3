@@ -318,15 +318,15 @@ MySceneGraph.prototype.ParseLeaves = function(rootElement) {
 			return;
 		}
 		var controlvector = [];
-		var i = 0;
+		var l = 0;
 		for(j=0;j<=order;j++){
 			var subvector =  [];
 			for(k=0;k<=order;k++){
-				subvector.push([parseFloat(this.reader.getFloat(controlpoints[i], "x",1)),
-									parseFloat(this.reader.getFloat(controlpoints[i], "y",1)),
-									parseFloat(this.reader.getFloat(controlpoints[i], "z",1)),
+				subvector.push([parseFloat(this.reader.getFloat(controlpoints[l], "x",1)),
+									parseFloat(this.reader.getFloat(controlpoints[l], "y",1)),
+									parseFloat(this.reader.getFloat(controlpoints[l], "z",1)),
 									1]);
-				i++;
+				l++;
 			}
 			controlvector.push(subvector);
 		}
