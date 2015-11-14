@@ -245,10 +245,10 @@
         <NODE id="airplane">
             <MATERIAL id="white" />
             <TEXTURE id="plane" />
-            <!--<ANIMATION id="planeRideToRunway" />
+            <ANIMATION id="planeRideToRunway" />
             <ANIMATION id="planeLiftOff" />
             <ANIMATION id="planeFlyAround" />
-            <ANIMATION id="planeLand" />-->
+            <ANIMATION id="planeLand" />
            
             <ROTATION axis="y" angle="90" />
             <DESCENDANTS>
@@ -278,8 +278,8 @@
                 <DESCENDENT id="wing0" />
                 <DESCENDENT id="wing1" />
                 <DESCENDENT id="wing2" />
-                <!--<DESCENDENT id="wing3" />
-                <DESCENDENT id="wing4" />-->
+                <DESCENDENT id="wing3" />
+                <DESCENDENT id="wing4" />
             </DESCENDANTS>
         </NODE>
 
@@ -308,7 +308,8 @@
         <NODE id="wing1">
             <MATERIAL id="null" />
             <TEXTURE id="null" />
-            <TRANSLATION x="-0.2" y="0" z="0.5" />
+            <TRANSLATION x="-0.2" y="-0.25" z="0.5" />
+            <ROTATION axis="x" angle="180" />
             <ROTATION axis="y" angle="90" />
             <ROTATION axis="z" angle="90" />
             <SCALE sx="0.25" sy="0.5" sz="1" />
@@ -332,9 +333,11 @@
          <NODE id="wing3">
             <MATERIAL id="null" />
             <TEXTURE id="null" />
-            <TRANSLATION x="-0.2" y="0" z="-1" />
+            <TRANSLATION x="-0.2" y="-0.25" z="-1" />
+            <ROTATION axis="z" angle="180" />
+            <ROTATION axis="x" angle="-90" />
             <ROTATION axis="y" angle="-90" />
-            <SCALE sx="0.5" sy="0.1" sz="0.1" />
+             <SCALE sx="0.25" sy="0.25" sz="0.5" />
             <DESCENDANTS>
                 <DESCENDENT id="wing" />
             </DESCENDANTS>
@@ -343,10 +346,10 @@
         <NODE id="wing4">
             <MATERIAL id="null" />
             <TEXTURE id="null" />
-            <TRANSLATION x="0" y="0.25" z="-1.25" />
+            <TRANSLATION x="0.125" y="0.25" z="-1.0" />
+            
             <ROTATION axis="x" angle="-90" />
-            <ROTATION axis="z" angle="-90" />
-            <SCALE sx="0.5" sy="0.1" sz="0.1" />
+            <SCALE sx="0.25" sy="0.25" sz="0.25" />
             <DESCENDANTS>
                 <DESCENDENT id="wing" />
             </DESCENDANTS>
