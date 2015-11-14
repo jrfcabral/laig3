@@ -142,6 +142,19 @@
     </ANIMATIONS>
 
     <LEAVES>
+     <LEAF id="parabola" type="patch" order="2" partsU="50" partsV="50" >
+            <controlpoint x="0" y="0" z="0" />
+            <controlpoint x="0" y="0" z="0" />
+            <controlpoint x="0" y="0" z="0" />
+
+            <controlpoint x="0" y="1" z="0" />
+            <controlpoint x="0" y="1" z="0.5" />
+            <controlpoint x="0" y="1" z="1" />
+
+            <controlpoint x="0" y="2" z="0" />
+            <controlpoint x="0" y="2" z="0" />
+            <controlpoint x="0" y="2" z="0" /> 
+     </LEAF>
      <LEAF id="wingtip" type="patch" order="3" partsU="50" partsV="50">
             <controlpoint x="-3" y="0" z="0"/>
             <controlpoint x="-3" y="0" z="0.0"/>
@@ -239,6 +252,27 @@
             <SCALE sx="5" sy="5" sz="7" />
             <DESCENDANTS>
                 <DESCENDENT id="superficie" />
+                <DESCENDENT id="hangarback0" />
+                <DESCENDENT id="hangarback1" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="hangarback0">
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <TRANSLATION x="-2" y="2" z="0" />
+            <ROTATION axis="z" angle="-90" />
+            <DESCENDANTS>
+                <DESCENDENT id="parabola" />
+            </DESCENDANTS>
+        </NODE>
+        <NODE id="hangarback1">
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <TRANSLATION x="0" y="2" z="0" />
+            <ROTATION axis="z" angle="90" />
+            <DESCENDANTS>
+                <DESCENDENT id="parabola" />
             </DESCENDANTS>
         </NODE>
 
@@ -264,9 +298,21 @@
             <TEXTURE id="null" />
             <DESCENDANTS>
                 <DESCENDENT id="mainBody" />
-                <DESCENDENT id="frontBody" /> 
+                <DESCENDENT id="frontBody" />
+                <DESCENDENT id="back" /> 
             </DESCENDANTS>
         </NODE>
+
+        <NODE id="back">
+            <MATERIAL id="null" />
+            <TEXTURE id="clear" />
+            <TRANSLATION x="0" y="0.5" z="-2.5" />
+            <SCALE sx="0.25" sy="0.25" sz="0.01" />
+            <DESCENDANTS>             
+                <DESCENDENT id="sphere1" /> 
+            </DESCENDANTS>
+        </NODE>
+
         
         <NODE id="mainBody">
             <MATERIAL id="null" />
