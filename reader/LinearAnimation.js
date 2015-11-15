@@ -1,7 +1,7 @@
 LinearAnimation.prototype = new Animation();
 LinearAnimation.prototype.constructor = LinearAnimation;
 function LinearAnimation(span, points){
-    this.span = span*1000;
+    Animation.call(this, span);
     this.points = points;
     this.dists = [];
     this.vectors = [];
