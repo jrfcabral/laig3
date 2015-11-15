@@ -1,3 +1,5 @@
+LinearAnimation.prototype = new Animation();
+LinearAnimation.prototype.constructor = LinearAnimation;
 function LinearAnimation(span, points){
     this.span = span*1000;
     this.points = points;
@@ -89,20 +91,16 @@ LinearAnimation.prototype.update = function(startDate,node){
     vec3.set(vector, 0, 1, 0);
     if(this.vectors[currentTrajectory][0] > 0 && this.vectors[currentTrajectory][2] > 0){ 
         mat4.rotate(matrix, matrix, -rotAng*(Math.PI/180), vector);
-        console.log(1);
         
     } 
     else if(this.vectors[currentTrajectory][0] <= 0 && this.vectors[currentTrajectory][2] >= 0){ 
         mat4.rotate(matrix, matrix, -rotAng*(Math.PI/180), vector);
-        console.log(2);
     }
     else if(this.vectors[currentTrajectory][0] > 0 && this.vectors[currentTrajectory][2] < 0){ 
         mat4.rotate(matrix, matrix, rotAng*(Math.PI/180), vector);
-        console.log(3);
     }
     else if(this.vectors[currentTrajectory][0] <= 0 && this.vectors[currentTrajectory][2] <= 0){ 
         mat4.rotate(matrix, matrix, rotAng*(Math.PI/180), vector);
-         console.log(4);
     }
     
 

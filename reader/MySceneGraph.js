@@ -60,6 +60,7 @@ function MySceneGraph(filename, scene) {
 	*/	
     this.linearAnimations = [];
     this.circularAnimations = [];
+    this.animations = [];
 
     // File reading
     this.reader = new CGFXMLreader();
@@ -157,7 +158,7 @@ MySceneGraph.prototype.EncodeNode = function(node) {
 			this.errors.push("Animation in node " + node.id + "has no id");
 			return;
 		}
-		else if(this.linearAnimations[anim[i].id] == null && this.circularAnimations[anim[i].id] == null){
+		else if(this.animations[anim[i].id] == null){
 			this.errors.push("node " + node.id + " references a non-existant or damaged animation");
 		}
 		nodeAnims.push(anim[i].id);
@@ -461,8 +462,6 @@ MySceneGraph.prototype.parseLSX = function(rootElement) {
     	this.parseAnims(anims);
     	console.log('Done ANIMATIONS parsing');
 	}
-
-	console.log(this.animations);
 
     this.ParseLeaves(rootElement);
     this.ParseNodes(rootElement);
@@ -845,9 +844,11 @@ MySceneGraph.prototype.parseLinearAnimation = function(animation, animSpan){
 			this.errors.push("Something went wrong instantiating animation " + animation.id);
 
 		if(animObj && controlPoints){
-			this.linearAnimations[animation.id] = {
+
+			this.animations[animation.id] = {
 				id: animation.id,
 				span: animSpan,
+				type: "linear",
 				points: controlPoints,
 				object: animObj
 			};
@@ -894,9 +895,10 @@ MySceneGraph.prototype.parseCircularAnimation = function(animation, animSpan){
 	if(animOK){
 		var animObj = new CircularAnimation(animSpan, center, radius, startAng, rotAng);
 		
-		this.circularAnimations[animation.id] = {
+		this.animations[animation.id] = {
 			id: animation.id,
-			span: animSpan, 
+			span: animSpan,
+			type: "circular", 
 			center: center,
 			radius: radius,
 			startAng: startAng,

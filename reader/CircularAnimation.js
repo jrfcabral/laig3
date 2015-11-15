@@ -1,3 +1,5 @@
+CircularAnimation.prototype = new Animation();
+CircularAnimation.prototype.constructor = CircularAnimation;
 function CircularAnimation(span, center, radius, start, rot){
     this.span = span*1000;
     this.center = center;

@@ -72,9 +72,9 @@ XMLscene.prototype.onGraphLoaded = function ()
 
 	this.gl.clearColor(this.graph.bgLight[0],this.graph.bgLight[1], this.graph.bgLight[2],this.graph.bgLight[3]);
 
-	this.lightsCheesy =  [];
+	this.lightslist =  [];
 		
-	this.lightsCheesy = {
+	this.lightslist = {
 		light0: false,
 		light1: false,
 		light2: false,
@@ -93,19 +93,16 @@ XMLscene.prototype.onGraphLoaded = function ()
 		this.lights[i].setSpecular(this.graph.lightsDic[i].specular[0], this.graph.lightsDic[i].specular[1], this.graph.lightsDic[i].specular[2], this.graph.lightsDic[i].specular[3]);
 		if(this.graph.lightsDic[i].enable == true){
 			this.lights[i].enable();
-			this.lightsCheesy["light"+i] = true;
+			this.lightslist["light"+i] = true;
 		}
 		else{
 
 		}
 		this.lights[i].setVisible(false);
 
-		this.interface.group.add(this.lightsCheesy, 'light'+i);
+		this.interface.group.add(this.lightslist, 'light'+i);
 
 	}
-
-	this.setUpdatePeriod(100);
-	console.log(this.graph.circularAnimations);
 };
 
 XMLscene.prototype.display = function () {
@@ -133,7 +130,7 @@ XMLscene.prototype.display = function () {
 	{
 
 		for(i = 0; i < ((this.graph.lightsNum > 8)? 8:this.graph.lightsNum); i++){
-			if(this.lightsCheesy['light'+i])
+			if(this.lightslist['light'+i])
 				this.lights[i].enable();
 			else
 				this.lights[i].disable();
@@ -185,11 +182,11 @@ XMLscene.prototype.traverseGraph = function(elem){
 			if(elem.animationStartTimes[elem.currentAnimation] == 0){
 				elem.animationStartTimes[elem.currentAnimation] = Date.now();
 			}
-			if(this.graph.linearAnimations[elem.animations[elem.currentAnimation]] != null){
-				var animMatrix = this.graph.linearAnimations[elem.animations[elem.currentAnimation]].object.update(elem.animationStartTimes[elem.currentAnimation], elem);
+			if(this.graph.animations[elem.animations[elem.currentAnimation]] == null){
+				console.error("Animation not found");
 			}
 			else{
-				var animMatrix = this.graph.circularAnimations[elem.animations[elem.currentAnimation]].object.update(elem.animationStartTimes[elem.currentAnimation], elem);
+				var animMatrix = this.graph.animations[elem.animations[elem.currentAnimation]].object.update(elem.animationStartTimes[elem.currentAnimation], elem);
 			}
 			if(animMatrix[0] == "done"){
 				elem.currentAnimation++;
@@ -316,9 +313,4 @@ XMLscene.prototype.applyMaterial = function(){
 */
 XMLscene.prototype.popMaterial = function(){
 	this.materialStack.pop();
-}
-
-
-XMLscene.prototype.update = function(){
-	
 }
