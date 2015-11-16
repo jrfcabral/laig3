@@ -188,7 +188,6 @@
          <LEAF id="cylinder2" type="cylinder" args="1.0 1.0 0.6 40.0 40.0"/>
          <LEAF id="cylinder3" type="cylinder" args="1.0 1.0 0.1 40.0 40.0"/>
          <LEAF id="sphere1" type="sphere" args="1.0 40.0 40.0" />
-         <LEAF id="plane1" type="plane" args="10" />
          <LEAF id="superficie" type="patch" order="2" partsU="50" partsV="50">
             <controlpoint x="0" y="0" z="0"/>
             <controlpoint x="-1" y="0" z="1"/>
