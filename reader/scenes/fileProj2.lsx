@@ -178,6 +178,7 @@
             
 
          </LEAF>
+         <LEAF id="plane1" type="plane" args="10" />    
          <LEAF id="rectangle2" type="rectangle" args="-0.5 0.5 0.5 -0.5" />
 
          <LEAF id="mountains" type="terrain" texture="textures/HeightMap.jpg" heightmap="textures/HeightMap.jpg" />
@@ -213,9 +214,7 @@
                 <DESCENDENT id="hangar"/>
                 <DESCENDENT id="mountains-left" />
                 <DESCENDENT id="moon" />
-               
-               <!-- <DESCENDENT id="testerino" />
-                <DESCENDENT id ="testerinono" />-->
+                <DESCENDENT id="plane1" />
             </DESCENDANTS> 
         </NODE>
 

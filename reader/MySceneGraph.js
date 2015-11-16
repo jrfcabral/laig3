@@ -305,7 +305,7 @@ MySceneGraph.prototype.ParseLeaves = function(rootElement) {
 	else if (type ==="cylinder")
 		object = new cylinder(this.scene, args[0], args[1],args[2], args[3], args[4]);
 	else if(type ==="plane"){
-		object = new Plane(this.scene, args[0],0,1,0,1);
+		object = new Plane(this.scene, args[0]);
 	}
 	else if(type ==="patch"){
 		var controlpoints = leaf.getElementsByTagName('controlpoint');
@@ -487,7 +487,10 @@ MySceneGraph.prototype.parseLSX = function(rootElement) {
     }
 
 }
-
+/**
+* Parses the <INITIALS> tag
+* @param initials corresponds to the <INITIALS> tag 
+*/
 MySceneGraph.prototype.parseInitials = function(initials) {
     //frustum processing
     var frustum = initials.getElementsByTagName('frustum');
@@ -691,7 +694,7 @@ MySceneGraph.prototype.parseLights = function(lights) {
 
 /**
 * Parses the <TEXTURES> tag
-* @param lights corresponds to the <TEXTURES> tag
+* @param tex corresponds to the <TEXTURES> tag
 * 
 */
 MySceneGraph.prototype.parseTex = function(tex) {
@@ -746,7 +749,7 @@ MySceneGraph.prototype.parseTex = function(tex) {
 
 /**
 * Parses the <MATERIALS> tag
-* @param lights corresponds to the <MATERIALS> tag
+* @param mat corresponds to the <MATERIALS> tag
 * 
 */
 MySceneGraph.prototype.parseMaterials = function(mat) {
@@ -796,6 +799,11 @@ MySceneGraph.prototype.parseMaterials = function(mat) {
     }
 }
 
+
+/**
+* Preliminary parsing of an <ANIMATION>
+* @param anims Array with all the animations
+*/
 MySceneGraph.prototype.parseAnims = function(anims){
 	var numAnims = anims.children.length;
 	
@@ -834,6 +842,11 @@ MySceneGraph.prototype.parseAnims = function(anims){
 	}
 }
 
+/**
+* Obtains a linear animation's control points, instantiates the linear animation object and stores the parsed information
+* @param animation the animation to process
+* @param animspan the span of the animation, obtained in the parseAnims function
+*/
 MySceneGraph.prototype.parseLinearAnimation = function(animation, animSpan){
 	var controlPoints = this.parseControlPoints(animation);
 	if(!controlPoints)
@@ -858,6 +871,12 @@ MySceneGraph.prototype.parseLinearAnimation = function(animation, animSpan){
 
 }
 
+
+/**
+* Parses all circular animation specific details, such as center and radius, instantiates the circular animation object and stores the parsed information
+* @param animation the animation to process
+* @param animspan the span of the animation, obtained in the parseAnims function
+*/
 MySceneGraph.prototype.parseCircularAnimation = function(animation, animSpan){
 	var animOK = true;
 
@@ -908,7 +927,11 @@ MySceneGraph.prototype.parseCircularAnimation = function(animation, animSpan){
 	}
 }
 
-
+/**
+* Parses the control points of the given linear animation
+* @param anim The linear animation from which to obtain the information
+* @return An array of arrays containing the (x, y, z) coordinates of a controlpoint
+*/
 MySceneGraph.prototype.parseControlPoints = function(anim){
 	var numPoints = anim.children.length;
 	if(numPoints < 2)
@@ -923,6 +946,11 @@ MySceneGraph.prototype.parseControlPoints = function(anim){
 	return this.points;
 }
 
+/**
+* Gets all coordinates (X, Y, Z)
+* @param elem Elemnet from which to extract the information
+* @return An array of length 3 ([x, y, z])
+*/
 MySceneGraph.prototype.getXYZ = function(elem){
 	this.X = this.reader.getFloat(elem, 'x', true);
 	this.Y = this.reader.getFloat(elem, 'y', true);

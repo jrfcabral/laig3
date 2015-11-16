@@ -1,3 +1,6 @@
+/**
+* This class represents a plane that shall be manipulated with the use of shaders to represent terrain
+*/
 function terrain(scene, heightmap, texture) {
     
     CGFobject.call(this, scene);

@@ -1,5 +1,5 @@
 /**
-Represents a Bezier patch with order, partsV divisions along the V coordinate, partsU divisions
+Represents a Bezier patch with order order, partsV divisions along the V coordinate, partsU divisions
 along the U coordinate and following control points controlvector
 */
 function patch(scene, order, partsU, partsV, controlvector){

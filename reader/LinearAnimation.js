@@ -9,6 +9,9 @@ function LinearAnimation(span, points){
     this.computeSpeeds();
 }
 
+/**
+* Computes a set of pertinent information, such as the total length of the animation based on the object's parameters
+*/
 LinearAnimation.prototype.computeSpeeds = function(){
     for(var i = 0; i < this.points.length-1; i++){
         //calc distance between points
@@ -19,15 +22,16 @@ LinearAnimation.prototype.computeSpeeds = function(){
         this.dists.push(dist);
         this.vectors.push([(this.points[i+1][0] - this.points[i][0]), (this.points[i+1][1] - this.points[i][1]), (this.points[i+1][2]-this.points[i][2])]);
     }
-     var speed = this.totalDist/this.span;
-    return speed;
 
 }
 
-/*
-Returns a matrix with the necessary translation based on the current time
+/**
+* Based on time the provided startDate, this function calculates where in the animation 
+* the object should be and returns a matrix with the necessary transformations to get it there
+* @param Date corresponding to the time when the animation was started by an object
+* @return An array containing the matrix with the pertinent transformations, and 0 if the animation is not over, or "done" otherwise
 */
-LinearAnimation.prototype.update = function(startDate,node){
+LinearAnimation.prototype.update = function(startDate){
     
     var elapsed = Date.now() - startDate;
     if(elapsed >= this.span){

@@ -1,5 +1,5 @@
 
-/** Represents a plane with nrDivs divisions along both axis, with center at (0,0) */
+/** Represents a plane with nrDivs divisions along both axii, with center at (0,0) */
 function Plane(scene, nrDivs) {
     CGFobject.call(this, scene);
     this.scene = scene;

@@ -15,8 +15,13 @@ CircularAnimation.prototype.compute = function(){
 
 
 }
-
-CircularAnimation.prototype.update = function(startDate, node){
+/**
+* Based on time the provided startDate, this function calculates where in the animation 
+* the object should be and returns a matrix with the necessary transformations to get it there
+* @param Date corresponding to the time when the animation was started by an object
+* @return An array containing the matrix with the pertinent transformations, and 0 if the animation is not over, or "done" otherwise
+*/
+CircularAnimation.prototype.update = function(startDate){
     var elapsed = Date.now() - startDate;
     
     
