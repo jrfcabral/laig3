@@ -4,8 +4,9 @@ function Plane(scene, nrDivs) {
     CGFobject.call(this, scene);
     this.scene = scene;
     this.nrDivs = nrDivs;
-    var controlpoints = [[[-0.5,0,-0.5,1],[-0.5,0,0.5,1]],
-                         [[0.5,0,-0.5,1],[0.5,0,0.5,1]]                         
+    var controlpoints = [
+                         [[0.5,0,-0.5,1],[0.5,0,0.5,1]] ,
+                         [[-0.5,0,-0.5,1],[-0.5,0,0.5,1]]                        
                          ];
     var nurbSurface = new CGFnurbsSurface(1,1,[0, 0, 1, 1],[0, 0, 1, 1],controlpoints);
 
