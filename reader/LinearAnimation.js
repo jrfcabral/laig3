@@ -93,6 +93,12 @@ LinearAnimation.prototype.update = function(startDate){
     
     var vector = vec3.create();
     vec3.set(vector, 0, 1, 0);
+
+    if(this.vectors[currentTrajectory][0] == 0 && this.vectors[currentTrajectory][2] == 0){
+        return [0, matrix];
+    }    
+
+
     if(this.vectors[currentTrajectory][0] > 0 && this.vectors[currentTrajectory][2] > 0){ 
         mat4.rotate(matrix, matrix, -rotAng*(Math.PI/180), vector);
         

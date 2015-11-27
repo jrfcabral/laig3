@@ -81,7 +81,7 @@
         </TEXTURE>
 
         <TEXTURE id="dirt">
-            <file path="textures/dirt.jpg" />
+            <file path="textures/dirt.JPG" />
             <amplif_factor s="1" t="1" />
         </TEXTURE>
 
@@ -98,6 +98,7 @@
 
     <ANIMATIONS>
         <ANIMATION id="test" span="15" type="linear">
+            <controlpoint x="0" y="5" z="0" />
             <controlpoint x="0" y="0" z="0" />
             <controlpoint x="1" y="0" z="0" />
             <controlpoint x="-1" y="0" z="0" />
@@ -282,7 +283,7 @@
             <ANIMATION id="planeLiftOff" />
             <ANIMATION id="planeFlyAround" />
             <ANIMATION id="planeLand" />
-           
+            
             <ROTATION axis="y" angle="90" />
             <DESCENDANTS>
                 <DESCENDENT id="planeBody" />
