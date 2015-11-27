@@ -1,0 +1,12 @@
+pergunta							respostas
+----------------------------------------
+boardstate						lista de listas
+nextaction						[Player, Action] Action can be placepiece, makemove,over
+reset							ack
+setbotdifficulty(player, diff)	ack/nack
+domove(Xi,Yi,Xf,Yf)				ack/nack
+undo(NMoves)					ack/nack
+areuthere						ack
+
+
+
