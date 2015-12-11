@@ -53,6 +53,8 @@
 		for(var j = 0; j < this.slices; j++){
 			this.indices.push( (i*(this.slices+1))+j, i*(this.slices+1)+j+1,  (i+1)*(this.slices+1)  +j);
 			this.indices.push(i*(this.slices+1)+j+1,(i+1)*(this.slices+1)  +j+1 , (i+1)*(this.slices+1)  +j )
+			this.indices.push((i+1)*(this.slices+1)  +j , i*(this.slices+1)+j+1,  (i*(this.slices+1))+j);
+			this.indices.push((i+1)*(this.slices+1)  +j,(i+1)*(this.slices+1)  +j+1 ,  i*(this.slices+1)+j+1)
 		}
 	}
 
