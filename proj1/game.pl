@@ -102,13 +102,27 @@ doPlayerMovement(Player):-
 	asserta(moved(Piece)),
 	doPlay(Xi,Yi,Xf,Yf,Player).
 
+
+	setupRemoteBoard:-
+	retractall(position(_,_,_)),
+		fillBoard,
+		asserta(position(5,5,flagship)),
+		asserta(nextPlayer(goldenPlayer)),
+		asserta(nextAction(place)),
+		asserta(silverPieces(0)),
+		asserta(goldenPieces(0)).
+
+
 setupRemoteBoard:-
+	retract(silverPieces(_)),
+	retract(goldenPieces(_)),
+	retractall(position(_,_,_)),
 	fillBoard,
 	asserta(position(5,5,flagship)),
 	asserta(nextPlayer(goldenPlayer)),
 	asserta(nextAction(place)),
 	asserta(silverPieces(0)),
-	asserta(goldenPieces(0)).	
+	asserta(goldenPieces(0)).
 
 
 setupBoard:-
@@ -155,6 +169,7 @@ placePiece(silverPlayer, N):- N1 is N+1, N< 20,
 	asserta(position(X,Y,silverPiece)),
 	printBoard,!,
 	placePiece(silverPlayer, N1).
+
 
 
 
@@ -225,6 +240,8 @@ flagshipCanEscape(X,Y):-
 
 
 placeRemotePiece(X, Y, silverPlayer):-
+	nextPlayer(silverPlayer),
+	nextAction(place),
 	validateCoordinates(X,Y,silverPlayer),
 	asserta(position(X,Y,silverPiece)),
 	retract(silverPieces(X)),
@@ -238,12 +255,14 @@ placeRemotePiece(X, Y, silverPlayer):-
 		true).
 
 placeRemotePiece(X, Y, goldenPlayer):-
+nextPlayer(goldenPlayer),
+nextAction(place),
 	validateCoordinates(X,Y,goldenPlayer),
 	asserta(position(X,Y,goldenPiece)),
-	retract(goldenPieces(X)),
-	x1 is X+1,
-	asserta(goldenPieces(X1)),
-	(X1 == 19 ->
+	retract(goldenPieces(N)),
+	N1 is N+1,
+	asserta(goldenPieces(N1)),
+	(N1 == 12 ->
 		retract(nextPlayer(_)),
 		asserta(nextPlayer(silverPlayer));
 		true).

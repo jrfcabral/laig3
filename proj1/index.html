@@ -20,7 +20,7 @@
 			{
 				var requestPort = port || 8082
 				var request = new XMLHttpRequest();
-				request.open('GET', 'http://localhost:'+requestPort+'/'+requestString, true);
+				request.open('GET', 'http://localhost:8082/'+requestString, true);
 
 				request.onload = onSuccess || function(data){console.log("Request successful. Reply: " + data.target.response);};
 				request.onerror = onError || function(){console.log("Error waiting for response");};
@@ -41,7 +41,7 @@
 			//Handle the Reply
 			function handleReply(data){
 				document.querySelector("#query_result").innerHTML=data.target.response;
-				console.log(JSON.parse(data.target.response));
+				console.log(data.target.response);
 			}
 		
 		</script>
