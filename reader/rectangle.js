@@ -21,9 +21,9 @@ function rectangle(scene, lt, br, minS, maxS, minT, maxT) {
 
 	//pre-compute length of rectangle sides
 	this.ds = Math.sqrt( Math.pow((this.br[0] - this.lt[0]),2) + Math.pow((this.br[1] - this.br[1]),2) );
-	console.log(this.ds);
+	//console.log(this.ds);
 	this.dt = Math.sqrt( Math.pow((this.lt[0] - this.lt[0]),2) + Math.pow((this.lt[1] - this.br[1]),2) );
-	console.log(this.ds);
+	//console.log(this.dt);
 
 	this.initBuffers();
 };

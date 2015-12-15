@@ -34,7 +34,11 @@ XMLscene.prototype.init = function (application) {
 	this.texturesStack = [];
 
 	this.interface;
-	
+
+	this.board = new Board(this, this.graph);
+	console.log("testing: " + this.board.board[0][2].id);
+
+	this.setPickEnabled(true);
 
 };
 
@@ -56,6 +60,25 @@ XMLscene.prototype.initCameras = function () {
 XMLscene.prototype.setDefaultAppearance = function () {
  	this.defaultAppearance.apply();
 };
+
+
+XMLscene.prototype.logPicking = function ()
+{
+	if (this.pickMode == false) {
+		if (this.pickResults != null && this.pickResults.length > 0) {
+			for (var i=0; i< this.pickResults.length; i++) {
+				var obj = this.pickResults[i][0];
+				if (obj)
+				{
+					var customId = this.pickResults[i][1];				
+					console.log("Picked object: " + obj + ", with pick id " + customId);
+				}
+			}
+			this.pickResults.splice(0,this.pickResults.length);
+		}		
+	}
+}
+
 
 // Handler called when the graph is finally loaded.
 // As loading is asynchronous, this may be called already after the application has started the run loop
@@ -107,7 +130,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 
 XMLscene.prototype.display = function () {
 	// ---- BEGIN Background, camera and axis setup
-
+	this.logPicking();
 
 	// Clear image and depth buffer everytime we update the scene
     this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
@@ -145,6 +168,9 @@ XMLscene.prototype.display = function () {
 		// Draw axis
 	    this.axis.display();
 
+		this.registerForPick(10, this.board.board[0][0].obj);
+		this.board.display();
+
 		//traverse the render tree and draw elements
 		this.traverseGraph(this.graph.nodes[this.graph.root]);
 
@@ -175,7 +201,7 @@ XMLscene.prototype.traverseGraph = function(elem){
 			if(!elem.animations[i].done)
 				this.currAnim = elem.animations[i];
 		}
-
+		
 		//apply transformations
 		this.pushMatrix();
 		if(elem.animations.length != 0){
@@ -207,6 +233,7 @@ XMLscene.prototype.traverseGraph = function(elem){
 		}
 		this.PushTexture();
 		this.ApplyTexture(elem.texture);
+
 			
 		//traverse the tree forwards
 		var descendants = elem.descendants.slice();
@@ -241,7 +268,12 @@ XMLscene.prototype.traverseGraph = function(elem){
 */
 XMLscene.prototype.DrawPrimitive = function(elem, texture){	
 	var textureId = this.currentTexture;
-		
+	
+	/*if(elem.id == "rectangle2"){
+		this.registerForPick(1000, elem.object);
+	}*/
+	//console.log(elem.id);
+
 	if (textureId !== "clear"){
 		texture = this.graph.textures[textureId];
 		elem.object.updateTexCoords(texture);
