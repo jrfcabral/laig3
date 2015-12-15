@@ -32,10 +32,14 @@ Board.prototype.display = function(){
         for(var j = 0; j < 11; j++){
             this.scene.pushMatrix();
             this.scene.translate(1.5*j, 0, 0);
+            this.scene.registerForPick(this.board[i][j].id+1, this.board[i][j].obj);
             this.board[i][j].obj.display();
+
             this.scene.popMatrix();
         }
         this.scene.popMatrix();
+                    this.scene.clearPickRegistration();
+
     }
 
 
