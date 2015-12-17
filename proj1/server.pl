@@ -118,6 +118,7 @@ parse_input(setpiece(X,Y,Player), Response):-
 	(placePieceRemote(X,Y,Player), Response = ack);Response = nack.
 
 
+
 parse_input(areuthere, ack).
 
 

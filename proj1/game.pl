@@ -16,6 +16,7 @@
 :- dynamic(moved/1).
 :- dynamic(moved/2).
 :- dynamic(captured/0).
+:- dynamic(remainingPlays/1).
 
 piece(goldenPiece).
 piece(silverPiece).
@@ -35,6 +36,48 @@ opponent(goldenPlayer, silverPlayer).
 state(begin).
 state(game).
 state(over).
+
+testeRemote:-
+	setupRemoteBoard,
+	placeRemotePiece(3,4,goldenPlayer),
+	placeRemotePiece(4,4,goldenPlayer),
+	placeRemotePiece(5,4,goldenPlayer),
+	placeRemotePiece(6,4,goldenPlayer),
+	placeRemotePiece(7,4,goldenPlayer),
+	placeRemotePiece(3,5,goldenPlayer),
+	placeRemotePiece(4,5,goldenPlayer),
+	placeRemotePiece(6,5,goldenPlayer),
+	placeRemotePiece(7,5,goldenPlayer),
+	placeRemotePiece(6,6,goldenPlayer),
+	placeRemotePiece(7,6,goldenPlayer),
+	placeRemotePiece(3,6,goldenPlayer),
+	placeRemotePiece(1,1,silverPlayer),
+	placeRemotePiece(1,2,silverPlayer),
+	placeRemotePiece(1,3,silverPlayer),
+	placeRemotePiece(1,4,silverPlayer),
+	placeRemotePiece(1,5,silverPlayer),
+	placeRemotePiece(1,6,silverPlayer),
+	placeRemotePiece(1,7,silverPlayer),
+	placeRemotePiece(1,8,silverPlayer),
+	placeRemotePiece(1,9,silverPlayer),
+	placeRemotePiece(1,10,silverPlayer),
+	placeRemotePiece(2,1,silverPlayer),
+	placeRemotePiece(2,2,silverPlayer),
+	placeRemotePiece(2,3,silverPlayer),
+	placeRemotePiece(2,4,silverPlayer),
+	placeRemotePiece(2,5,silverPlayer),
+	placeRemotePiece(2,6,silverPlayer),
+	placeRemotePiece(2,7,silverPlayer),
+	placeRemotePiece(2,8,silverPlayer),
+	placeRemotePiece(2,9,silverPlayer),
+	placeRemotePiece(2,10,silverPlayer),
+	doRemotePlay(4,4,4,0,goldenPlayer),
+	doRemotePlay(4,0,4,4,goldenPlayer),
+	doRemotePlay(1,10,0,10,silverPlayer),
+	doRemotePlay(0,10,1,10,silverPlayer).
+
+
+
 
 breakthru:-retractall(playerGolden(_)), retractall(playerSilver(_)),retractall(difficulty(_,_)),
 mainMenu.
@@ -237,6 +280,29 @@ flagshipCanEscape(X,Y):-
 		(emptySpace(Fx,Fy,0,Y), X is 0) ).
 
 
+doRemotePlay(X,Y,Xf,Yf,Player):-
+	nextPlayer(Player),
+	nextAction(play),!,
+	doPlay(X,Y,Xf,Yf,Player),
+	(captured ->
+		retract(nextPlayer(_)),
+		opponent(Player,Opponent),
+		assert(nextPlayer(Opponent)),
+		retract(remainingPlays(_)),
+		assert(remainingPlays(2));
+		retract(remainingPlays(N)),
+		N1 is N-1,
+		N1 == 0 ->
+			retract(nextPlayer(_)),
+			opponent(Player,Opponent),
+			assert(nextPlayer(Opponent)),
+			assert(remainingPlays(2));
+			assert(remainingPlays(1))
+
+		).
+
+
+
 
 
 placeRemotePiece(X, Y, silverPlayer):-
@@ -244,14 +310,15 @@ placeRemotePiece(X, Y, silverPlayer):-
 	nextAction(place),
 	validateCoordinates(X,Y,silverPlayer),
 	asserta(position(X,Y,silverPiece)),
-	retract(silverPieces(X)),
-	x1 is X+1,
-	asserta(silverPieces(X1)),
-	( X1 == 12 ->
-		retract(nextPlayer(_)),
+	retract(silverPieces(N)),
+	N1 is N+1,
+	asserta(silverPieces(N1)),
+	( N1 == 20 ->
+		retractall(nextPlayer(_)),
 		asserta(nextPlayer(goldenPlayer)),
-		retract(nextAction(_)),
-		assert(nextAction(play));
+		retractall(nextAction(_)),
+		assert(nextAction(play)),
+		assert(remainingPlays(2));
 		true).
 
 placeRemotePiece(X, Y, goldenPlayer):-
