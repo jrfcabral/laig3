@@ -2,6 +2,8 @@ function Board(scene, graph){
        this.graph = graph;
        this.scene = scene;
        this.board = this.makeBoard(11, 11);
+       this.boardTxt = this.getCleanBoard();
+       this.piece = new Piece(scene);
 }
 
 Board.prototype.makeBoard = function(width, height){
@@ -18,6 +20,10 @@ Board.prototype.makeBoard = function(width, height){
        return board;
 }
 
+Board.prototype.getCleanBoard = function(){
+    return [[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0]];
+}
 Board.prototype.display = function(){
     var degToRad = Math.PI / 180.0;
     
@@ -32,8 +38,15 @@ Board.prototype.display = function(){
         for(var j = 0; j < 11; j++){
             this.scene.pushMatrix();
             this.scene.translate(1.5*j, 0, 0);
+
+            if(this.boardTxt[i][j] != 0){
+                this.piece.display(this.boardTxt[i][j]);
+            }
+           
             this.scene.registerForPick(this.board[i][j].id+1, this.board[i][j].obj);
+            //if(this.scene.pickMode == true){ uncomment to make invisible but clickable
             this.board[i][j].obj.display();
+            //}
 
             this.scene.popMatrix();
         }
@@ -41,8 +54,6 @@ Board.prototype.display = function(){
                     this.scene.clearPickRegistration();
 
     }
-
-
     this.scene.popMatrix();
     this.scene.popMatrix();
 }

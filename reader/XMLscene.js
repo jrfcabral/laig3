@@ -36,7 +36,7 @@ XMLscene.prototype.init = function (application) {
 	this.interface;
 
 	this.board = new Board(this, this.graph);
-	console.log("testing: " + this.board.board[0][2].id);
+	
 
 	this.setPickEnabled(true);
 
@@ -169,7 +169,7 @@ XMLscene.prototype.display = function () {
 	    this.axis.display();
 
 		this.board.display();
-
+		
 		//traverse the render tree and draw elements
 		this.traverseGraph(this.graph.nodes[this.graph.root]);
 
