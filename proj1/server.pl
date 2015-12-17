@@ -115,7 +115,11 @@ parse_input(getnextaction, [NextPlayer, NextAction]):-
 
 
 parse_input(setpiece(X,Y,Player), Response):-
-	(placePieceRemote(X,Y,Player), Response = ack);Response = nack.
+	placeRemotePiece(X,Y,Player) ->
+		Response is ack;
+		Response is nack.
+
+
 
 
 
