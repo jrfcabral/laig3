@@ -103,6 +103,11 @@ print_header_line(_).
 % Require your Prolog Files here
 :- include('game.pl').
 
+codePlayer(goldenPlayer, 0).
+codePlayer(silverPlayer, 1).
+codeAction(place, 0).
+codeAction(play, 1).
+
 parse_input(handshake, handshake).
 parse_input(test(C,N), Res) :- test(C,Res,N).
 parse_input(quit, goodbye).
@@ -110,8 +115,10 @@ parse_input(reset, Response):-
 	(setupRemoteBoard,	Response = ack);Response=nack.
 
 parse_input(getnextaction, [NextPlayer, NextAction]):-
-	nextPlayer(NextPlayer),
-	nextAction(NextAction).
+	nextPlayer(NextPlayer1),
+	nextAction(NextAction1),
+	codePlayer(NextPlayer1, NextPlayer),
+	codeAction(NextAction1, NextAction).
 
 
 parse_input(setpiece(X,Y,Player), Response):-

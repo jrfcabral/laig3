@@ -36,11 +36,23 @@ XMLscene.prototype.init = function (application) {
 	this.interface;
 
 	this.board = new Board(this, this.graph);
+
+	this.connection = new SicstusConnection(8082, this);
+	this.connection.makeRequest("reset", function(){console.log("board resot");});
+	this.connection.makeRequest("boardstate", this.board.updateBoard.bind(this.board));
+
+	this.stateMachine = new StateMachine(this.connection, this);
+
+	this.setUpdatePeriod(10000);
 	
 
 	this.setPickEnabled(true);
 
 };
+
+XMLscene.prototype.update = function(){
+	this.connection.makeRequest('areuthere', function(){console.log("Iamhere");});
+}
 
 XMLscene.prototype.initLights = function () {
 
@@ -71,7 +83,7 @@ XMLscene.prototype.logPicking = function ()
 				if (obj)
 				{
 					var customId = this.pickResults[i][1];
-					console.log("Picked object: " + obj + ", with pick id " + customId);
+					this.stateMachine.handlePick(customId);
 				}
 			}
 			this.pickResults.splice(0,this.pickResults.length);

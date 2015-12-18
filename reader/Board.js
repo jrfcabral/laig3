@@ -3,6 +3,7 @@ function Board(scene, graph){
        this.scene = scene;
        this.board = this.makeBoard(11, 11);
        this.boardTxt = this.getCleanBoard();
+       this.boardHistory = []; //pilha das jogadas
        this.piece = new Piece(scene);
 }
 
@@ -23,9 +24,10 @@ Board.prototype.makeBoard = function(width, height){
 Board.prototype.getCleanBoard = function(){
     return [[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0]];
-
-Board.prototype.updateboard = function(newBoard){
-    this.boardTxt = newBoard;
+}
+Board.prototype.updateBoard = function(newBoard){
+    console.log(JSON.parse(newBoard.target.response));
+    this.boardTxt = JSON.parse(newBoard.target.response);
 }
 
 Board.prototype.display = function(){
@@ -35,6 +37,7 @@ Board.prototype.display = function(){
     this.scene.translate(0, 20, 0);
     this.scene.rotate(-90*degToRad, 1, 0, 0);
     this.scene.pushMatrix();
+                
 
     for(var i = 0; i < 11; i++){
         this.scene.pushMatrix();
