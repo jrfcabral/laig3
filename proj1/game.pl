@@ -33,6 +33,12 @@ owner(goldenPlayer, flagship).
 opponent(silverPlayer, goldenPlayer).
 opponent(goldenPlayer, silverPlayer).
 
+tojs(emptyCell, 0).
+tojs(silverPiece, 2).
+tojs(goldenPiece, 1).
+tojs(flagship, 3).
+
+
 state(begin).
 state(game).
 state(over).
@@ -278,6 +284,29 @@ flagshipCanEscape(X,Y):-
 		(emptySpace(Fx,Fy,X,0), Y is 0);
 		(emptySpace(Fx,Fy,10,Y), X is 10);
 		(emptySpace(Fx,Fy,0,Y), X is 0) ).
+
+
+sendRemoteBoard(Board):-
+	sendRemoteBoard(BoardRR, 10, 10),
+	reverse(Board,BoardRR).
+
+sendRemoteBoard([], _,-1):-!.
+sendRemoteBoard(Board, X, Y):-
+	Y1 is Y-1,
+	sendRemoteLine(BoardThis, X, Y),
+	reverse(BoardThis, BoardThat),
+	sendRemoteBoard(BoardR, X, Y1),
+	append([BoardThat], BoardR, Board).
+	
+sendRemoteLine([], -1, _):-!.
+sendRemoteLine(Line, X, Y):-
+ X1 is X-1,
+ sendRemoteLine(LineR, X1, Y),
+ position(X,Y,Peca),
+ tojs(Peca, Code),
+ append([Code], LineR, Line).
+	
+	
 
 
 doRemotePlay(X,Y,Xf,Yf,Player):-

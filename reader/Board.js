@@ -23,7 +23,11 @@ Board.prototype.makeBoard = function(width, height){
 Board.prototype.getCleanBoard = function(){
     return [[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0]];
+
+Board.prototype.updateboard = function(newBoard){
+    this.boardTxt = newBoard;
 }
+
 Board.prototype.display = function(){
     var degToRad = Math.PI / 180.0;
     
