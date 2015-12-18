@@ -116,13 +116,16 @@ parse_input(getnextaction, [NextPlayer, NextAction]):-
 
 parse_input(setpiece(X,Y,Player), Response):-
 	placeRemotePiece(X,Y,Player) ->
-		Response is ack;
-		Response is nack.
+		Response = ack;
+		Response = nack.
 
 parse_input(domove(X,Y,Xf,Yf,Player), Response):-
 	doRemotePlay(X,Y,Xf,Yf,Player) ->
-		Response is ack;
-		Response is nack.
+		Response = ack;
+		Response = nack.
+
+parse_input(boardstate, Board):-
+	sendRemoteBoard(Board).
 
 parse_input(areuthere, ack).
 
