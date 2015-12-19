@@ -136,6 +136,9 @@ parse_input(boardstate, Board):-
 
 parse_input(areuthere, ack).
 
+parse_input(list(X), ack):-
+	write(X).
+
 
 test(_,[],N) :- N =< 0.
 test(A,[A|Bs],N) :- N1 is N-1, test(A,Bs,N1).

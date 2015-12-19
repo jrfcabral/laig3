@@ -21,8 +21,8 @@ function StateMachine(connection, scene){
 }
 
 StateMachine.prototype.handlePick = function(picked){
-   var x = Math.floor(picked/10);
-   var y = Math.floor(picked % 10)-1;
+   var x = Math.floor(picked/1000);
+   var y = Math.floor(picked % 1000)-1;
    this.playerName = this.playersName[this.currentPlayer];
     switch(this.currentState)
     {

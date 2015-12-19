@@ -4,6 +4,7 @@ function Board(scene, graph){
        this.board = this.makeBoard(11, 11);
        this.boardTxt = this.getCleanBoard();
        this.boardHistory = []; //pilha das jogadas
+       this.undoCounter = 0;
        this.piece = new Piece(scene);
 }
 
@@ -12,7 +13,7 @@ Board.prototype.makeBoard = function(width, height){
        for(var i = 0; i < height; i++){
            var boardLine = [];
            for(var j = 0; j < width; j++){
-                var boardPart = new BoardPart(this.scene, (j*10)+i);
+                var boardPart = new BoardPart(this.scene, (j*1000)+i+1);
                 boardLine.push(boardPart);
            }
            board.push(boardLine);
@@ -28,6 +29,23 @@ Board.prototype.getCleanBoard = function(){
 Board.prototype.updateBoard = function(newBoard){
     console.log(JSON.parse(newBoard.target.response));
     this.boardTxt = JSON.parse(newBoard.target.response);
+}
+
+Board.prototype.undo = function(){
+    if(this.boardHistory.length == 0){
+        return;
+    }
+    this.undoCounter++;
+    //Manda o tabuleiro pro prolog, tem q haver um predicado q traduza
+    //Isto pode ou nao ser usado conforme, oq vamos fazer em termos d protocolo
+    //this.boardTxt = this.boardHistory[this.boardHistory.length -1 -this.undoCounter];
+    
+}
+
+Board.prototype.resyncHistory = function(){
+    for(var i = 0; i < this.undoCounter; i++){
+        this.boardHistory.pop();
+    }
 }
 
 Board.prototype.display = function(){
@@ -50,7 +68,7 @@ Board.prototype.display = function(){
                 this.piece.display(this.boardTxt[i][j]);
             }
            
-            this.scene.registerForPick(this.board[i][j].id+1, this.board[i][j].obj);
+            this.scene.registerForPick(this.board[i][j].id, this.board[i][j].obj);
             //if(this.scene.pickMode == true){ uncomment to make invisible but clickable
             this.board[i][j].obj.display();
             //}
