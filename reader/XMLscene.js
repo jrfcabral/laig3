@@ -35,6 +35,15 @@ XMLscene.prototype.init = function (application) {
 
 	this.interface;
 
+	this.undo = function(){
+		console.log("Le Undo");
+	}
+
+	this.HvH = true;
+	this.HvB = false;
+	this.Random = false;
+	this.Greedy = false;
+
 	this.board = new Board(this, this.graph);
 
 	this.connection = new SicstusConnection(8082, this);
@@ -42,10 +51,7 @@ XMLscene.prototype.init = function (application) {
 	this.connection.makeRequest("boardstate", this.board.updateBoard.bind(this.board));
 
 	this.stateMachine = new StateMachine(this.connection, this);
-
 	this.setUpdatePeriod(10000);
-	
-
 	this.setPickEnabled(true);
 
 };

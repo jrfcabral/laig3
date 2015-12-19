@@ -28,7 +28,44 @@ MyInterface.prototype.init = function(application) {
 
 
 	this.group = this.gui.addFolder("Lights");
+
+	this.gameOpts = this.gui.addFolder("Game Options");
+	this.gameOpts.add(this.scene, 'undo');
+
+	this.gameMode = this.gameOpts.addFolder('Game Mode')
+	this.gameMode.add(this.scene, 'HvH').listen().onChange(function(value){
+		this.object.HvB = !value;
+		if(value){
+			this.object.Random = false;
+			this.object.Greedy = false;
+		}
+	});
+	this.gameMode.add(this.scene, 'HvB').listen().onChange(function(value){
+		this.object.HvH = !value;
+		if(!value){
+			this.object.Random = false;
+			this.object.Greedy = false;
+		}
+		
+	});
+
+	this.botDiff = this.gameOpts.addFolder('Bot difficulty');
 	
+	this.botDiff.add(this.scene, 'Random').listen().onChange(function(value){
+		if(!this.object.HvB){
+			this.object.Random = false;
+		}
+		this.object.Greedy = !value;
+	});
+	this.botDiff.add(this.scene, 'Greedy').listen().onChange(function(value){
+		if(!this.object.HvB){
+			this.object.Greedy = false;
+		}
+		this.object.Random = !value;
+		
+	});
+
+
 	this.scene.interface = this;
 	
 	return true;
@@ -48,20 +85,6 @@ MyInterface.prototype.processKeyboard = function(event) {
 	// for better cross-browser support, you may also check suggestions on using event.which in http://www.w3schools.com/jsref/event_key_keycode.asp
 	switch (event.keyCode)
 	{
-		case (97):	// only works for capital 'A', as it is
-			this.scene.bot.turn(this.scene.speed * 17);
-			break;
-		case(119):
-			this.scene.bot.moveForward(this.scene.speed);			
-			break;
-		case(115):
-			this.scene.bot.moveBackward(this.scene.speed);
-			break;
-		case(100):
-			this.scene.bot.turn(-this.scene.speed*17);
-			break;
-		case(111):
-			this.scene.bot.waving = 1;
-			break;
+		case 42: console.warn*("lol xd"); break;
 	};
 };
