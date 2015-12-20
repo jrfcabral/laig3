@@ -120,6 +120,7 @@ parse_input(getnextaction, [NextPlayer, NextAction]):-
 	codePlayer(NextPlayer1, NextPlayer),
 	codeAction(NextAction1, NextAction).
 
+parse_input(teste, ack):- testeRemote.
 
 parse_input(setpiece(X,Y,Player), Response):-
 	placeRemotePiece(X,Y,Player) ->
