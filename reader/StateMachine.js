@@ -71,5 +71,15 @@ StateMachine.prototype.updateState = function(data){
     var response = JSON.parse(data.target.response);
     this.currentPlayer = response[0];
     this.currentState = response[1]; 
+
+    if (this.currentState == this.states.PLAYING){
+        if ((this.scene.GoldenPlayer == "random" || this.scene.GoldenPlayer == "greedy") && this.currentPlayer == 0){
+            this.connection.makeRequest("dobotmove("+this.currentPlayer+")", this.placePiece.bind(this));
+        }
+
+        if ((this.scene.SilverPlayer == "random" || this.scene.SilverPlayer == "greedy") && this.currentPlayer == 1){
+            this.connection.makeRequest("dobotmove("+this.currentPlayer+","+this.scene.SilverPlayer+")", this.placePiece.bind(this));
+        }
+    }
    
 }

@@ -31,39 +31,8 @@ MyInterface.prototype.init = function(application) {
 
 	this.gameOpts = this.gui.addFolder("Game Options");
 	this.gameOpts.add(this.scene, 'undo');
-
-	this.gameMode = this.gameOpts.addFolder('Game Mode')
-	this.gameMode.add(this.scene, 'HvH').listen().onChange(function(value){
-		this.object.HvB = !value;
-		if(value){
-			this.object.Random = false;
-			this.object.Greedy = false;
-		}
-	});
-	this.gameMode.add(this.scene, 'HvB').listen().onChange(function(value){
-		this.object.HvH = !value;
-		if(!value){
-			this.object.Random = false;
-			this.object.Greedy = false;
-		}
-		
-	});
-
-	this.botDiff = this.gameOpts.addFolder('Bot difficulty');
-	
-	this.botDiff.add(this.scene, 'Random').listen().onChange(function(value){
-		if(!this.object.HvB){
-			this.object.Random = false;
-		}
-		this.object.Greedy = !value;
-	});
-	this.botDiff.add(this.scene, 'Greedy').listen().onChange(function(value){
-		if(!this.object.HvB){
-			this.object.Greedy = false;
-		}
-		this.object.Random = !value;
-		
-	});
+	this.gameOpts.add(this.scene, 'GoldenPlayer', {'Human': 0, 'Random': 'random', 'Greedy':'greedy'});
+	this.gameOpts.add(this.scene, 'SilverPlayer', {'Human': 0, 'Random': 'random', 'Greedy':'greedy'});
 
 
 	this.scene.interface = this;

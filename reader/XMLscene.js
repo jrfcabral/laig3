@@ -39,10 +39,8 @@ XMLscene.prototype.init = function (application) {
 		console.log("Le Undo");
 	}
 
-	this.HvH = true;
-	this.HvB = false;
-	this.Random = false;
-	this.Greedy = false;
+	this.GoldenPlayer = 0;
+	this.SilverPlayer = 0;
 
 	this.board = new Board(this, this.graph);
 

@@ -135,6 +135,22 @@ parse_input(domove(X,Y,Xf,Yf,Player), Response):-
 parse_input(boardstate, Board):-
 	sendRemoteBoard(Board).
 
+parse_input(dobotmove(Player, Difficulty), ack):-
+	codePlayer(Player1 , Player),
+	Player1 = goldenPlayer ->
+		asserta(playerGolden(bot)),
+		asserta(difficulty(goldenPlayer, Difficulty)),
+		takeTurn(goldenPlayer, silverPlayer),
+		retract(nextPlayer(Player1)),
+		asserta(nextPlayer(silverPlayer));
+	Player1 = silverPlayer ->
+		asserta(playerSilver(bot)),
+		asserta(difficulty(silverPlayer, Difficulty)),
+		takeTurn(silverPlayer, goldenPlayer),!,write('took turn'),
+		retract(nextPlayer(Player1)),
+		asserta(nextPlayer(goldenPlayer)).
+
+
 parse_input(areuthere, ack).
 
 parse_input(list(X), ack):-
