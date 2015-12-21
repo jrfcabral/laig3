@@ -27,7 +27,6 @@ StateMachine.prototype.handlePick = function(picked){
    var x = Math.floor(picked/1000);
    var y = Math.floor(picked % 1000)-1;
    this.playerName = this.playersName[this.currentPlayer];
-   console.log(this.currentState);
     switch(this.currentState)
     {
         case this.states.PLACING:

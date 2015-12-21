@@ -72,12 +72,13 @@ Board.prototype.display = function(){
             this.scene.registerForPick(this.board[i][j].id, this.board[i][j].obj);
             //if(this.scene.pickMode == true){ uncomment to make invisible but clickable
             this.board[i][j].obj.display();
+            this.scene.clearPickRegistration();
+
             //}
 
             this.scene.popMatrix();
         }
         this.scene.popMatrix();
-                    this.scene.clearPickRegistration();
 
     }
     this.scene.popMatrix();
