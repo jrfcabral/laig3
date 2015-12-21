@@ -128,6 +128,7 @@ parse_input(setpiece(X,Y,Player), Response):-
 		Response = nack.
 
 parse_input(domove(X,Y,Xf,Yf,Player), Response):-
+	retractall(captured),
 	doRemotePlay(X,Y,Xf,Yf,Player) ->
 		Response = ack;
 		Response = nack.
@@ -136,7 +137,11 @@ parse_input(boardstate, Board):-
 	sendRemoteBoard(Board).
 
 parse_input(dobotmove(Player, Difficulty), ack):-
+	retractall(captured),
 	codePlayer(Player1 , Player),
+	retractall(difficulty(_,_)),
+	retractall(playerGolden(_)),
+	retractall(playerSilver(_)),
 	Player1 = goldenPlayer ->
 		asserta(playerGolden(bot)),
 		asserta(difficulty(goldenPlayer, Difficulty)),
