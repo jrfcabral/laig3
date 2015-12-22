@@ -6,8 +6,11 @@ function Board(scene, graph){
        this.boardHistory = []; //pilha das jogadas
        this.undoCounter = 0;
        this.piece = new Piece(scene);
+       this.whiteMat = new CGFappearance(this.scene);
+       this.whiteMat.setAmbient(1, 1, 1, 1);
+       this.whiteMat.setDiffuse(1, 1, 1, 1);
+       this.whiteMat.setSpecular(1, 1, 1, 1);
 }
-
 Board.prototype.makeBoard = function(width, height){
        var board = [];
        for(var i = 0; i < height; i++){
@@ -53,7 +56,7 @@ Board.prototype.display = function(){
     var degToRad = Math.PI / 180.0;
 
     this.scene.pushMatrix();
-    this.scene.translate(-5, 14.95, 5);
+    this.scene.translate(-5, 15.05, 5);
     this.scene.rotate(-90*degToRad, 1, 0, 0);
     this.scene.pushMatrix();
 
@@ -67,14 +70,9 @@ Board.prototype.display = function(){
 
             if(this.boardTxt[i][j] != 0){
                 this.piece.display(this.boardTxt[i][j]);
-            }
-
-            this.scene.registerForPick(this.board[i][j].id, this.board[i][j].obj);
-            //if(this.scene.pickMode == true){ uncomment to make invisible but clickable
+                this.whiteMat.apply();
+            }    
             this.board[i][j].obj.display();
-            this.scene.clearPickRegistration();
-
-            //}
 
             this.scene.popMatrix();
         }
