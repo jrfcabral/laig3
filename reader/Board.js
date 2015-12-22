@@ -53,17 +53,17 @@ Board.prototype.display = function(){
     var degToRad = Math.PI / 180.0;
 
     this.scene.pushMatrix();
-    this.scene.translate(0, 20, 0);
+    this.scene.translate(-5, 14.95, 5);
     this.scene.rotate(-90*degToRad, 1, 0, 0);
     this.scene.pushMatrix();
 
 
     for(var i = 0; i < 11; i++){
         this.scene.pushMatrix();
-        this.scene.translate(0, 1.5*i, 0);
+        this.scene.translate(0, i, 0);
         for(var j = 0; j < 11; j++){
             this.scene.pushMatrix();
-            this.scene.translate(1.5*j, 0, 0);
+            this.scene.translate(j, 0, 0);
 
             if(this.boardTxt[i][j] != 0){
                 this.piece.display(this.boardTxt[i][j]);

@@ -71,6 +71,11 @@
             <file path="textures/inox2.jpg" />
             <amplif_factor s="1" t="1" />
         </TEXTURE>
+
+        <TEXTURE id="breakthru">
+            <file path="textures/Breakthru_board.png" />
+            <amplif_factor s="1" t="1" />
+        </TEXTURE>
         
     </TEXTURES>
 
@@ -98,11 +103,20 @@
                 <DESCENDANT id="fireplace" />
                 <DESCENDANT id="table" />
                 <DESCENDANT id="lamp" />
-                
-            </DESCENDANTS>
+                <DESCENDANT id="board" />             
+           </DESCENDANTS>
         </NODE>
         
-          
+        <NODE id="board">
+            <MATERIAL id="null" />
+            <TEXTURE id="breakthru" />
+            <TRANSLATION x="0" y="15" z="0" />
+            <ROTATION axis="x" angle="-90" />
+            <SCALE sx="11" sy="11" sz="1" />
+            <DESCENDANTS>
+                <DESCENDANT id="rectangle2" />
+            </DESCENDANTS>
+        </NODE>
         
         <NODE id="lamp" >
             <MATERIAL id="null" />
