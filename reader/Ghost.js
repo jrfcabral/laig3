@@ -6,7 +6,7 @@ function Ghost(scene, id){
 }
 
 Ghost.prototype.display = function(){
-    if(this.scene.pickMode == true){
+    if(this.scene.pickMode == true){ //comment if to make visible
         this.scene.pushMatrix();
         this.scene.registerForPick(this.id, this.rect);
         this.scene.registerForPick(this.id, this.cyl);

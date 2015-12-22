@@ -69,7 +69,7 @@ Board.prototype.display = function(){
             this.scene.translate(j, 0, 0);
 
             if(this.boardTxt[i][j] != 0){
-                this.piece.display(this.boardTxt[i][j]);
+                this.piece.display(this.board[i][j].selected? 4:this.boardTxt[i][j]);
                 this.whiteMat.apply();
             }    
             this.board[i][j].obj.display();

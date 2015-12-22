@@ -36,12 +36,23 @@ StateMachine.prototype.handlePick = function(picked){
             if (this.picking === 0){
                 this.lastpicked.x = x;
                 this.lastpicked.y = y;
+                this.scene.board.board[y][x].selected = true;
                 this.picking = 1;
                 console.log(this.lastpicked);
             }
             else if (this.picking === 1){
                 this.picking = 0;
-                this.connection.makeRequest("domove("+this.lastpicked.x+","+this.lastpicked.y+","+x+","+y+","+this.playerName+")", this.doPlay.bind(this));
+                if(this.lastpicked.x == x && this.lastpicked.y == y){
+                    this.lastpicked.x = -1;
+                    this.lastpicked.y = -1;
+                    this.scene.board.board[y][x].selected = false;
+                    return;
+                }
+                else{
+                    this.connection.makeRequest("domove("+this.lastpicked.x+","+this.lastpicked.y+","+x+","+y+","+this.playerName+")", this.doPlay.bind(this));
+                }
+                this.scene.board.board[this.lastpicked.y][this.lastpicked.x].selected = false;    
+                this.scene.board.board[y][x].selected = false;
             }
     }
 }
