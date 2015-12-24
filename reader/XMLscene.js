@@ -50,6 +50,7 @@ XMLscene.prototype.init = function (application) {
 	this.stateMachine = new StateMachine(this.connection, this);
 
 	this.hud = new HUD(this, 10, 10);
+	this.hud.writeOnHUD('Fostes hackado maninho XDDDDDD', 0, 3);
 
 	this.undo = function(){
 		this.StateMachine.stepBack();
