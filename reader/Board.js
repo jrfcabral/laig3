@@ -65,11 +65,35 @@ Board.prototype.display = function(){
         this.scene.pushMatrix();
         this.scene.translate(0, i, 0);
         for(var j = 0; j < 11; j++){
+            //console.log(this.scene.connection.curr)
+            if (this.scene.stateMachine.currentState == 2 && this.scene.stateMachine.currentAnimation.xi == i 
+                && this.scene.stateMachine.currentAnimation.yi == j){
+                    var delta = Date.now() - this.scene.stateMachine.animationStart;
+                    var progress = (100*delta)/3000;
+                    var animation = this.scene.stateMachine.currentAnimation;
+                    this.scene.pushMatrix();
+                    this.scene.translate(animation.xi+(animation.xf-animation.xi)*(progress/100),animation.yi+(animation.yf-animation.yi)*(progress/100)-i,Math.cos(progress/100)*Math.PI);
+                    this.piece.display();
+                                        this.scene.popMatrix();
+
+                    console.log(animation.xf);
+                    console.log(progress);
+                    if(progress >= 100)
+                        this.scene.stateMachine.currentState = this.scene.stateMachine.oldState;
+                    continue;                    
+            }
+
+             if (this.scene.stateMachine.currentState == 2 && this.scene.stateMachine.currentAnimation.xf == i 
+                && this.scene.stateMachine.currentAnimation.yf == j)
+                continue;
+
+
             this.scene.pushMatrix();
             this.scene.translate(j, 0, 0);
 
             if(this.boardTxt[i][j] != 0){
-                this.piece.display(this.board[i][j].selected? 4:this.boardTxt[i][j]);
+                if (this.scene.pickMode == false)
+                    this.piece.display(this.board[i][j].selected? 4:this.boardTxt[i][j]);
                 this.whiteMat.apply();
             }    
             this.board[i][j].obj.display();

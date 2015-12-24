@@ -32,6 +32,7 @@ XMLscene.prototype.init = function (application) {
 	this.isTexturePresent = false;
 
 	this.texturesStack = [];
+	
 
 	this.interface;
 
@@ -41,10 +42,10 @@ XMLscene.prototype.init = function (application) {
 
 	this.GoldenPlayer = 0;
 	this.SilverPlayer = 0;
+	this.connection = new SicstusConnection(8082, this);
 
 	this.board = new Board(this, this.graph);
 
-	this.connection = new SicstusConnection(8082, this);
 	this.connection.makeRequest("teste", function(){console.log("board resot");});
 	this.connection.makeRequest("boardstate", this.board.updateBoard.bind(this.board));
 
