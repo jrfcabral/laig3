@@ -38,6 +38,8 @@ XMLscene.prototype.init = function (application) {
 
 	this.GoldenPlayer = 0;
 	this.SilverPlayer = 0;
+	this.HUD = true;
+
 	this.connection = new SicstusConnection(8082, this);
 
 	this.board = new Board(this, this.graph);
@@ -169,7 +171,9 @@ XMLscene.prototype.display = function () {
     this.loadIdentity();
 
 	//has to be here
-	this.hud.display();
+	if(this.HUD){
+		this.hud.display();
+	}
 
 	// Apply transformations corresponding to the camera position relative to the origin
 	this.applyViewMatrix();
