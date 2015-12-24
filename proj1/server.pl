@@ -105,6 +105,7 @@ print_header_line(_).
 
 codePlayer(goldenPlayer, 0).
 codePlayer(silverPlayer, 1).
+codePlayer(nobody, 2).
 codeAction(place, 0).
 codeAction(play, 1).
 
@@ -160,6 +161,10 @@ parse_input(areuthere, ack).
 
 parse_input(list(X), ack):-
 	write(X).
+
+parse_input(whoWon, Player):-
+	wonGameRemote(Player1),
+	codePlayer(Player1, Player).
 
 
 test(_,[],N) :- N =< 0.

@@ -329,6 +329,7 @@ doRemotePlay(X,Y,Xf,Yf,Player):-
 			assert(remainingPlays(1))
 
 		).
+		
 
 
 
@@ -362,3 +363,8 @@ nextAction(place),
 		retract(nextPlayer(_)),
 		asserta(nextPlayer(silverPlayer));
 		true).
+
+
+wonGameRemote(goldenPlayer):- position(_,0,flagship);position(0,_,flagship);position(10,_,flagship);position(_,10,flagship);\+position(_,_,silverPiece).
+wonGameRemote(silverPlayer):- \+position(_,_,flagship).
+wonGameRemote(nobody).

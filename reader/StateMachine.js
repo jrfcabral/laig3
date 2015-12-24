@@ -2,7 +2,8 @@ function StateMachine(connection, scene){
     this.states = {
         PLACING: 0,
         PLAYING: 1,
-        ANIMATING: 2
+        ANIMATING: 2,
+        OVER: 3
     };
     this.players = {
         GOLDEN: 0,
@@ -60,6 +61,8 @@ StateMachine.prototype.handlePick = function(picked){
                 this.scene.board.board[this.lastpicked.y][this.lastpicked.x].selected = false;    
                 this.scene.board.board[y][x].selected = false;
             }
+            break;
+        case this.states.OVER: break;
     }
 }
 
@@ -72,7 +75,7 @@ StateMachine.prototype.doPlay = function(data){
     }
     else
         console.log("falheu");
-
+    this.connection.makeRequest("whoWon", this.checkFinished.bind(this));
     this.connection.makeRequest("getnextaction", this.updateState.bind(this));
 
 }
@@ -105,4 +108,13 @@ StateMachine.prototype.updateState = function(data){
         }
     }
    
+}
+
+StateMachine.prototype.checkFinished = function(data){
+    console.log("entrei");
+    var winner = JSON.parse(data.target.response);
+    if(winner != 2){
+        this.currentState = this.states.OVER;
+        console.log(winner + " has won");
+    }
 }
