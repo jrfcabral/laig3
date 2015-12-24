@@ -47,6 +47,8 @@ XMLscene.prototype.init = function (application) {
 
 	this.stateMachine = new StateMachine(this.connection, this);
 
+	this.hud = new HUD(this, 10, 10);
+
 	this.undo = function(){
 		this.StateMachine.stepBack();
 	}
@@ -165,6 +167,9 @@ XMLscene.prototype.display = function () {
 	// Initialize Model-View matrix as identity (no transformation
 	this.updateProjectionMatrix();
     this.loadIdentity();
+
+	//has to be here
+	this.hud.display();
 
 	// Apply transformations corresponding to the camera position relative to the origin
 	this.applyViewMatrix();
