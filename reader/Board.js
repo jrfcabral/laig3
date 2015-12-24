@@ -45,6 +45,12 @@ Board.prototype.undo = function(){
     //this.boardTxt = this.boardHistory[this.boardHistory.length -1 -this.undoCounter];
 
 }
+Board.prototype.redo = function(){
+    if(this.boardHistory.length == 0 || this.undoCounter == 0){
+        return;
+    }
+    this.undoCounter--;
+}
 
 Board.prototype.resyncHistory = function(){
     for(var i = 0; i < this.undoCounter; i++){

@@ -16,12 +16,12 @@ function StateMachine(connection, scene){
     };
 
     this.connection = connection;
+    this.currentState = this.states.PLACING;
     this.connection.makeRequest("getnextaction", this.updateState.bind(this));
     this.scene = scene;
     this.picking = 0;
     this.lastpicked = {x: -1, y: -1};
     this.currentAnimation = {xi: 0, yi: 0, xf:0, yf:0};
-
 }
 
 StateMachine.prototype.handlePick = function(picked){
@@ -29,6 +29,7 @@ StateMachine.prototype.handlePick = function(picked){
    var x = Math.floor(picked/1000);
    var y = Math.floor(picked % 1000)-1;
    this.playerName = this.playersName[this.currentPlayer];
+   console.log("State is " + this.currentState);
     switch(this.currentState)
     {
         case this.states.PLACING:
@@ -92,6 +93,9 @@ StateMachine.prototype.placePiece = function(data){
 }
 
 StateMachine.prototype.updateState = function(data){
+    if(this.currentState == this.states.OVER){
+        return;
+    }
     var response = JSON.parse(data.target.response);
     this.currentPlayer = response[0];
     if (this.currentState != this.states.ANIMATING)
@@ -118,4 +122,34 @@ StateMachine.prototype.checkFinished = function(data){
         this.currentState = this.states.OVER;
         console.log(winner + " has won");
     }
+}
+
+StateMachine.prototype.resetGame = function(){
+    this.connection.makeRequest("reset", this.resetStateMachine.bind(this));    
+}
+
+StateMachine.prototype.resetStateMachine = function(data){
+    var response = data.target.response;
+    if(response != "ack"){
+        return;
+    }
+    else{
+        this.currentState = this.states.PLACING;
+        this.connection.makeRequest("getnextaction", this.updateState.bind(this));
+        this.connection.makeRequest("boardstate", this.scene.board.updateBoard.bind(this.scene.board));   
+    }
+}
+
+StateMachine.prototype.stepBack = function(){
+    //this.scene.board.undo();
+    //this.connection.makeRequest(); mandar o board o pra la
+    //this.connection.makeRequest("getnextaction", this.updateState.bind(this));
+    //this.connection.makeRequest("boardstate", this.scene.board.updateBoard.bind(this.scene.board));   
+}
+
+StateMachine.prototype.stepForward = function(){
+    //this.scene.board.redo();
+    //this.connection.makeRequest(); mandar o board o pra la
+    //this.connection.makeRequest("getnextaction", this.updateState.bind(this));
+    //this.connection.makeRequest("boardstate", this.scene.board.updateBoard.bind(this.scene.board)); 
 }

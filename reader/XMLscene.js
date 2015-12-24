@@ -36,10 +36,6 @@ XMLscene.prototype.init = function (application) {
 
 	this.interface;
 
-	this.undo = function(){
-		console.log("Le Undo");
-	}
-
 	this.GoldenPlayer = 0;
 	this.SilverPlayer = 0;
 	this.connection = new SicstusConnection(8082, this);
@@ -50,6 +46,14 @@ XMLscene.prototype.init = function (application) {
 	this.connection.makeRequest("boardstate", this.board.updateBoard.bind(this.board));
 
 	this.stateMachine = new StateMachine(this.connection, this);
+
+	this.undo = function(){
+		this.StateMachine.stepBack();
+	}
+	this.reset = function(){
+		this.stateMachine.resetGame();
+	}
+
 	this.setUpdatePeriod(10000);
 	this.setPickEnabled(true);
 
