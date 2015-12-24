@@ -66,13 +66,13 @@ Board.prototype.display = function(){
         this.scene.translate(0, i, 0);
         for(var j = 0; j < 11; j++){
             //console.log(this.scene.connection.curr)
-            if (this.scene.stateMachine.currentState == 2 && this.scene.stateMachine.currentAnimation.xi == i 
-                && this.scene.stateMachine.currentAnimation.yi == j){
+            if (this.scene.stateMachine.currentState == 2 && this.scene.stateMachine.currentAnimation.xi == j 
+                && this.scene.stateMachine.currentAnimation.yi == i){
                     var delta = Date.now() - this.scene.stateMachine.animationStart;
-                    var progress = (100*delta)/3000;
+                    var progress = (100*delta)/1500;
                     var animation = this.scene.stateMachine.currentAnimation;
                     this.scene.pushMatrix();
-                    this.scene.translate(animation.xi+(animation.xf-animation.xi)*(progress/100),animation.yi+(animation.yf-animation.yi)*(progress/100)-i,Math.cos(progress/100)*Math.PI);
+                    this.scene.translate(animation.xi+(animation.xf-animation.xi)*(progress/100),animation.yi+(animation.yf-animation.yi)*(progress/100)-i,3*Math.sin((progress/100)*Math.PI));
                     this.piece.display();
                                         this.scene.popMatrix();
 
@@ -83,8 +83,8 @@ Board.prototype.display = function(){
                     continue;                    
             }
 
-             if (this.scene.stateMachine.currentState == 2 && this.scene.stateMachine.currentAnimation.xf == i 
-                && this.scene.stateMachine.currentAnimation.yf == j)
+             if (this.scene.stateMachine.currentState == 2 && this.scene.stateMachine.currentAnimation.xf == j 
+                && this.scene.stateMachine.currentAnimation.yf == i)
                 continue;
 
 
