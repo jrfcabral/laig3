@@ -68,7 +68,8 @@ StateMachine.prototype.doPlay = function(data){
         this.connection.makeRequest("boardstate", this.scene.board.updateBoard.bind(this.scene.board));
         this.currentState = this.states.ANIMATING;
         this.oldState = this.states.PLAYING;
-        this.animationStart = Date.now();                   
+        this.animationStart = Date.now();
+        this.color = this.scene.board.boardTxt[this.currentAnimation.yi][this.currentAnimation.xi];                   
     }
     else
         console.log("falheu");
