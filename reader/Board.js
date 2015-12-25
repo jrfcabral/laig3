@@ -78,12 +78,12 @@ Board.prototype.display = function(){
                     var progress = (100*delta)/1500;
                     var animation = this.scene.stateMachine.currentAnimation;
                     this.scene.pushMatrix();
-                    this.scene.translate(animation.xi+(animation.xf-animation.xi)*(progress/100),animation.yi+(animation.yf-animation.yi)*(progress/100)-i,3*Math.sin((progress/100)*Math.PI));
+                    this.scene.translate(animation.xi+(animation.xf-animation.xi)*(progress/100),
+                        animation.yi+(animation.yf-animation.yi)*(progress/100)-i,
+                        3*Math.sin((progress/100)*Math.PI));
                     this.piece.display(this.scene.stateMachine.color);
-                                        this.scene.popMatrix();
+                    this.scene.popMatrix();
 
-                    console.log(animation.xf);
-                    console.log(progress);
                     if(progress >= 100)
                         this.scene.stateMachine.currentState = this.scene.stateMachine.oldState;
                     continue;                    
