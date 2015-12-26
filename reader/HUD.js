@@ -5,6 +5,9 @@ function HUD(scene, width, height){
 //EM ANTES DE ME JULGARES EU FIZ ISTO COM UM SCRIPT Q ME GEROU AS LINHAS, N FOI A MAO 
 //(E TARDE MAS N TENHO ASSIM TANTO SONO)
 
+//LEMBRAR FAZER HUD ESPECIAL PRA QD SE GANHA
+
+
 	this.charMap = {
 		space: [0, 2],
 		A: [1, 4],

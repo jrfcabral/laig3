@@ -49,8 +49,14 @@ XMLscene.prototype.init = function (application) {
 
 	this.stateMachine = new StateMachine(this.connection, this);
 
-	this.hud = new HUD(this, 10, 10);
-	this.hud.writeOnHUD('Fostes hackado maninho XDDDDDD', 0, 3);
+	this.hud = new HUD(this, 15, 10);
+	this.hud.writeOnHUD('Won Games', 0, 0);
+	this.hud.writeOnHUD("Golden ", 0, 1);
+	this.hud.writeOnHUD("Silver ", 0, 2);
+	this.hud.writeOnHUD("Pieces owned", 0, 4);
+	this.hud.writeOnHUD("Golden", 0, 5); 
+	this.hud.writeOnHUD("Silver", 0, 6);
+	this.hud.writeOnHUD("Taking turn", 0, 8);
 
 	this.undo = function(){
 		this.StateMachine.stepBack();

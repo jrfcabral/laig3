@@ -98,6 +98,9 @@ StateMachine.prototype.updateState = function(data){
     }
     var response = JSON.parse(data.target.response);
     this.currentPlayer = response[0];
+
+    this.updateInfo();
+    
     if (this.currentState != this.states.ANIMATING)
     this.currentState = response[1]; 
     else
@@ -121,6 +124,8 @@ StateMachine.prototype.checkFinished = function(data){
     if(winner != 2){
         this.currentState = this.states.OVER;
         console.log(winner + " has won");
+        this.scene.board.gamesWon[winner]++;
+        this.updateInfo();
     }
 }
 
@@ -152,4 +157,13 @@ StateMachine.prototype.stepForward = function(){
     //this.connection.makeRequest(); mandar o board o pra la
     //this.connection.makeRequest("getnextaction", this.updateState.bind(this));
     //this.connection.makeRequest("boardstate", this.scene.board.updateBoard.bind(this.scene.board)); 
+}
+
+StateMachine.prototype.updateInfo = function(){
+    this.scene.board.countPieces();
+    this.scene.hud.writeOnHUD(this.scene.board.gamesWon[0].toString(), 7, 1);
+    this.scene.hud.writeOnHUD(this.scene.board.gamesWon[1].toString(), 7, 2);
+    this.scene.hud.writeOnHUD(this.scene.board.pieceCount[0].toString(), 7, 5);
+    this.scene.hud.writeOnHUD(this.scene.board.pieceCount[1].toString(), 7, 6);
+    this.scene.hud.writeOnHUD(this.playersName[this.currentPlayer], 0, 9);
 }

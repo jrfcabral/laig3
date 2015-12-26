@@ -4,6 +4,8 @@ function Board(scene, graph){
        this.board = this.makeBoard(11, 11);
        this.boardTxt = this.getCleanBoard();
        this.boardHistory = []; //pilha das jogadas
+       this.pieceCount = [0, 0];
+       this.gamesWon = [0, 0]; //n sei se isto devia tar aqui...
        this.undoCounter = 0;
        this.piece = new Piece(scene);
        this.whiteMat = new CGFappearance(this.scene);
@@ -56,6 +58,22 @@ Board.prototype.resyncHistory = function(){
     for(var i = 0; i < this.undoCounter; i++){
         this.boardHistory.pop();
     }
+}
+
+Board.prototype.countPieces = function(){
+    this.pieceCount[0] = 0;
+    this.pieceCount[1] = 0;
+    for(var i = 0; i < 11; i++){
+        for(var j = 0; j < 11; j++){
+            switch(this.boardTxt[i][j]){
+                case 3:
+                case 1: this.pieceCount[0]++; break;
+                case 2: this.pieceCount[1]++; break;
+                case 0:
+                default: break;
+            }
+        }
+    }   
 }
 
 Board.prototype.display = function(){
