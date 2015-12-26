@@ -65,13 +65,22 @@ XMLscene.prototype.init = function (application) {
 		this.stateMachine.resetGame();
 	}
 
-	this.setUpdatePeriod(10000);
+	this.timeToSA = 0;
+	this.setUpdatePeriod(1000);
+	
+
 	this.setPickEnabled(true);
 
 };
 
 XMLscene.prototype.update = function(){
-	this.connection.makeRequest('areuthere', function(){console.log("Iamhere");});
+	if(this.timetoSA++ == 10){
+		this.timeToSA = 0;
+		this.connection.makeRequest('areuthere', function(){console.log("Iamhere");});	
+	}
+
+	//chamar metodo do statemachine pra ver se o turno ja acabou
+	
 }
 
 XMLscene.prototype.initLights = function () {

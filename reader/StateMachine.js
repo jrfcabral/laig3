@@ -22,6 +22,7 @@ function StateMachine(connection, scene){
     this.picking = 0;
     this.lastpicked = {x: -1, y: -1};
     this.currentAnimation = {xi: 0, yi: 0, xf:0, yf:0};
+    this.timeForTurn = 0;
 }
 
 StateMachine.prototype.handlePick = function(picked){
@@ -170,4 +171,10 @@ StateMachine.prototype.updateInfo = function(){
     this.scene.hud.writeOnHUD(this.scene.board.pieceCount[0].toString(), 7, 5);
     this.scene.hud.writeOnHUD(this.scene.board.pieceCount[1].toString(), 7, 6);
     this.scene.hud.writeOnHUD(this.playersName[this.currentPlayer], 0, 9);
+}
+
+StateMachine.prototype.updateTurnTime = function(){
+    if(this.currentState != this.state.OVER && this.timeForTurn-- == 0){
+        //por um bot a fazer a jogada pelo jogador?
+    }
 }
