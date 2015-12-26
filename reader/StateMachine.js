@@ -36,6 +36,10 @@ StateMachine.prototype.handlePick = function(picked){
             this.connection.makeRequest("setpiece("+x+","+y+","+this.playerName+")", this.placePiece.bind(this));
             break;
         case this.states.PLAYING:
+            if(((this.scene.GoldenPlayer == "random" || this.scene.GoldenPlayer == "greedy") && this.currentPlayer == 0) ||
+            ((this.scene.SilverPlayer == "random" || this.scene.SilverPlayer == "greedy") && this.currentPlayer == 1)){
+                return;
+            }
             if (this.picking === 0){
                 this.lastpicked.x = x;
                 this.lastpicked.y = y;
