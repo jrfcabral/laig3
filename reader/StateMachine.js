@@ -24,7 +24,7 @@ function StateMachine(connection, scene){
     this.picking = 0;
     this.lastpicked = {x: -1, y: -1};
     this.currentAnimation = {xi: 0, yi: 0, xf:0, yf:0};
-    this.timeForTurn = 0;
+    this.timeForTurn = 30;
     this.currentlyReplaying = -1;
 }
 
@@ -178,6 +178,8 @@ StateMachine.prototype.updateState = function(data){
             this.connection.makeRequest("dobotmove("+this.currentPlayer+","+this.scene.SilverPlayer+")", this.placePiece.bind(this));
         }
     }
+
+    this.timeForTurn = 30;
    
 }
 
@@ -208,19 +210,6 @@ StateMachine.prototype.resetStateMachine = function(data){
     }
 }
 
-StateMachine.prototype.stepBack = function(){
-    //this.scene.board.undo();
-    //this.connection.makeRequest(); mandar o board o pra la
-    //this.connection.makeRequest("getnextaction", this.updateState.bind(this));
-    //this.connection.makeRequest("boardstate", this.scene.board.updateBoard.bind(this.scene.board));   
-}
-
-StateMachine.prototype.stepForward = function(){
-    //this.scene.board.redo();
-    //this.connection.makeRequest(); mandar o board o pra la
-    //this.connection.makeRequest("getnextaction", this.updateState.bind(this));
-    //this.connection.makeRequest("boardstate", this.scene.board.updateBoard.bind(this.scene.board)); 
-}
 
 StateMachine.prototype.updateInfo = function(){
     this.scene.board.countPieces();
@@ -232,7 +221,30 @@ StateMachine.prototype.updateInfo = function(){
 }
 
 StateMachine.prototype.updateTurnTime = function(){
-    if(this.currentState != this.state.OVER && this.timeForTurn-- == 0){
-        //por um bot a fazer a jogada pelo jogador?
+    if(this.timeForTurn > 9){
+        this.scene.hud.writeOnHUD(this.timeForTurn.toString(), 13, 9);
+    }
+    else{
+        this.scene.hud.writeOnHUD(this.timeForTurn.toString()+ " ", 13, 9);
+    }
+    if(this.currentState != this.states.OVER && this.timeForTurn-- == 0){
+        if (this.currentState == this.states.PLACING|| (this.states.ANIMATING && this.oldState == this.states.PLACING)){
+            if(this.currentPlayer == 0){
+                this.connection.makeRequest("setpiecebot("+this.currentPlayer+")", this.placePiece.bind(this));
+            }
+            else if(this.currentPlayer == 1){
+                this.connection.makeRequest("setpiecebot("+this.currentPlayer+")", this.placePiece.bind(this));
+            }
+        }
+        else if (this.currentState == this.states.PLAYING || (this.states.ANIMATING && this.oldState == this.states.PLAYING)){
+            if(this.currentPlayer == 0){
+                this.connection.makeRequest("dobotmove("+this.currentPlayer+","+"greedy"+")", this.placePiece.bind(this));
+            }
+            else if(this.currentPlayer == 1){
+                this.connection.makeRequest("dobotmove("+this.currentPlayer+","+ "greedy" +")", this.placePiece.bind(this));
+            }
+        }
+
+        this.connection.makeRequest("getnextaction", this.updateState.bind(this));
     }
 }

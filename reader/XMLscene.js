@@ -95,7 +95,10 @@ XMLscene.prototype.update = function(){
 		this.connection.makeRequest('areuthere', function(){console.log("Iamhere");});
 	}
 	
-	//chamar metodo do statemachine pra ver se o turno ja acabou
+	if(this.stateMachine != undefined){
+		this.stateMachine.updateTurnTime();
+	}
+	
 	
 }
 
