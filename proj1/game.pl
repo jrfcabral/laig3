@@ -270,10 +270,10 @@ calculateDistances(Xi, Yi, Xf, Yf, DX, DY):-
 	emptyCellsBetween(X,Y,Xf,Y):-Xf1 is Xf-1, findall(Z, position(Xf,Y,Z), [emptyCell]), emptyCellsBetween(X,Y,Xf1,Y).
 
 doPlay(X,Y,Xf,Yf,Player):- validMove(X,Y,Xf,Yf,Player),
-	owner(Player,Piece),printBoard,saveState,retract(position(X,Y,Piece)),asserta(position(Xf,Yf,Piece)), asserta(moved(Xf,Yf)).
+	owner(Player,Piece),printBoard,retract(position(X,Y,Piece)),asserta(position(Xf,Yf,Piece)), asserta(moved(Xf,Yf)),saveState,savePlay(X,Y,Xf,Yf,Player).
 
 doPlay(X,Y,Xf,Yf,Player):- validCapture(X,Y,Xf,Yf,Player),
-	owner(Player,Piece), printBoard,saveState,retract(position(X,Y,Piece)),opponent(Player, Opponent), owner(Opponent,OpponentPiece), retract(position(Xf,Yf,OpponentPiece)), asserta(position(Xf,Yf,Piece)),asserta(captured), asserta(moved(Xf,Yf)).
+	owner(Player,Piece), printBoard,savePlay(X,Y,Xf,Yf,Player),retract(position(X,Y,Piece)),opponent(Player, Opponent), owner(Opponent,OpponentPiece), retract(position(Xf,Yf,OpponentPiece)), asserta(position(Xf,Yf,Piece)),asserta(captured), asserta(moved(Xf,Yf)),saveState,savePlay(X,Y,Xf,Yf,Player).
 
 validPlay(X,Y,Xf,Yf,Player):- (validMove(X,Y,Xf,Yf,Player);validCapture(X,Y,Xf,Yf,Player)),\+moved(X,Y).
 
@@ -293,16 +293,21 @@ position(Xf,Yf, emptyCell),
 findall(Z, position(Xf,Yf,Z), [emptyCell]),
 emptySpace(X,Y,Xf,Yf).
 
-saveState:-
+savePlay(X,Y,Xf,Yf,Player):-
 	retract(stateNumber(N)),
 	write('sucesso'),
 	N1 is N+1,
 	asserta(stateNumber(N1)),
+	asserta(savedPlay(X,Y,Xf,Yf,Player,N1)).
+
+saveState:-
+	stateNumber(N),
+	N1 is N+1,
 	findall([X,Y,State], position(X,Y,State), Cs),
 	nextPlayer(Player),
 	nextAction(Action),
 	remainingPlays(Plays),
-	assert(boardState(Cs, Player, Action, Plays, N1)).
+	asserta(boardState(Cs, Player, Action, Plays, N1)).
 
 restoreState(N):-
 	boardState(Cs, Player, Action,Plays, N),
@@ -350,8 +355,9 @@ sendRemoteLine(Line, X, Y):-
 
 undoPlay:-
 	stateNumber(N),
-	N1 is N-1,
-	restoreState(N),
+	N1 is N-1,!,
+	restoreState(N1),!,
+	printBoard,
 	retract(stateNumber(N)),
 	assert(stateNumber(N1)).
 

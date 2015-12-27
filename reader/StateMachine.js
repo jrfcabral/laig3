@@ -3,7 +3,9 @@ function StateMachine(connection, scene){
         PLACING: 0,
         PLAYING: 1,
         ANIMATING: 2,
-        OVER: 3
+        OVER: 3,
+        REPLAYING: 4,
+        REPLAYING_ANIMATING: 5
     };
     this.players = {
         GOLDEN: 0,
@@ -23,6 +25,7 @@ function StateMachine(connection, scene){
     this.lastpicked = {x: -1, y: -1};
     this.currentAnimation = {xi: 0, yi: 0, xf:0, yf:0};
     this.timeForTurn = 0;
+    this.currentlyReplaying = -1;
 }
 
 StateMachine.prototype.handlePick = function(picked){
@@ -75,6 +78,35 @@ StateMachine.prototype.handlePick = function(picked){
 StateMachine.prototype.undoPlay = function(){
     this.connection.makeRequest("undo", this.synchronize.bind(this));
 
+}
+
+StateMachine.prototype.replay = function(){
+    this.currentlyReplaying = 1;
+    this.oldState = this.states.REPLAYING;
+    this.doReplay(this.currentlyReplaying);
+}
+
+StateMachine.prototype.animateReplay = function(data){
+    if (data.target.response == "nack"){
+        this.currentState = this.states.PLAYING;
+        return;
+    }
+    console.log(data.target.response);
+    this.currentState = this.states.ANIMATING;
+    var play = JSON.parse(data.target.response);
+    this.currentAnimation.xi = play[0];
+    this.currentAnimation.yi = play[1];
+    this.currentAnimation.xf = play[2];
+    this.currentAnimation.yf = play[3];
+    this.color = play[4];
+    this.animationStart = Date.now();
+    window.setTimeout(this.doReplay.bind(this),3000);
+}
+
+StateMachine.prototype.doReplay = function(n){
+    this.connection.makeRequest("replay("+this.currentlyReplaying+")", this.animateReplay.bind(this));
+    this.synchronize();
+    this.currentlyReplaying++;
 }
 
 StateMachine.prototype.synchronize = function(){

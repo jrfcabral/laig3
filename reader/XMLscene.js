@@ -77,6 +77,10 @@ XMLscene.prototype.init = function (application) {
 		this.stateMachine.resetGame();
 	}
 
+	this.replay= function(){
+		this.stateMachine.replay();
+	}
+
 	this.timeToSA = 0;
 	this.setUpdatePeriod(1000);
 	

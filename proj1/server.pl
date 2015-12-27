@@ -140,6 +140,16 @@ parse_input(boardstate, Board):-
 parse_input(undo, ack):- undoPlay,!.
 parse_input(undo, nack).
 
+parse_input(replay(N), [X,Y,Xf,Yf,Player]):-
+	stateNumber(ActualN),
+	N =< ActualN,
+	restoreState(N),
+	savedPlay(X,Y,Xf,Yf,Player1,N),
+	codePlayer(Player1, Player).
+
+
+parse_input(replay(_), nack).
+
 parse_input(dobotmove(Player, Difficulty), ack):-
 	retractall(captured),
 	codePlayer(Player1 , Player),

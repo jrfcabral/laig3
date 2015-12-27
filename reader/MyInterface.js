@@ -31,6 +31,7 @@ MyInterface.prototype.init = function(application) {
 
 	this.gameOpts = this.gui.addFolder("Game Options");
 	this.gameOpts.add(this.scene, 'undo');
+	this.gameOpts.add(this.scene, 'replay');
 	this.gameOpts.add(this.scene, 'reset');
 	this.gameOpts.add(this.scene, 'HUD');
 	this.gameOpts.add(this.scene, 'GoldenPlayer', {'Human': 0, 'Random': 'random', 'Greedy':'greedy'});
