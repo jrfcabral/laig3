@@ -87,6 +87,15 @@ Board.prototype.saveBoard = function(player){
     console.log(this.boardStack);
 }
 
+Board.prototype.getPieceNumber = function(number){
+    var value = 0;
+    for(var i = 0; i < 11; i++)
+        for(var j = 0; j < 11; j++)
+            if (this.boardTxt[i][j] == number)
+                value++;
+    return value;
+}   
+
 Board.prototype.display = function(){
     var degToRad = Math.PI / 180.0;
 
@@ -94,6 +103,23 @@ Board.prototype.display = function(){
     this.scene.translate(-5, 15.05, 5);
     this.scene.rotate(-90*degToRad, 1, 0, 0);
     this.scene.pushMatrix();
+
+    var goldsOut = 12 - this.getPieceNumber(2);
+    var silversOut = 20 - this.getPieceNumber(1);
+
+    for(var i = 0; i < goldsOut;i++){
+            this.scene.pushMatrix();
+            this.scene.translate(-1,i,0);
+            this.piece.display(1);
+            this.scene.popMatrix();
+    }
+    
+       for(var i = 0; i < silversOut;i++){
+            this.scene.pushMatrix();
+            this.scene.translate(+13,i-6,0);
+            this.piece.display(2);
+            this.scene.popMatrix();
+    }
 
 
     for(var i = 0; i < 11; i++){

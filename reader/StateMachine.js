@@ -98,7 +98,7 @@ StateMachine.prototype.animateReplay = function(data){
     this.currentAnimation.yi = play[1];
     this.currentAnimation.xf = play[2];
     this.currentAnimation.yf = play[3];
-    this.color = play[4];
+    this.color = play[4]+1;
     this.animationStart = Date.now();
     window.setTimeout(this.doReplay.bind(this),3000);
 }
@@ -158,8 +158,18 @@ StateMachine.prototype.updateState = function(data){
 
     console.log("State is now " + this.currentState);
 
+    if (this.currentState == this.states.PLACING|| (this.states.ANIMATING && this.oldState == this.states.PLACING)){
+         if ((this.scene.GoldenPlayer == "random" || this.scene.GoldenPlayer == "greedy") && this.currentPlayer == 0){
+            this.connection.makeRequest("setpiecebot("+this.currentPlayer+")", this.placePiece.bind(this));
+        }
+
+        if ((this.scene.SilverPlayer == "random" || this.scene.SilverPlayer == "greedy") && this.currentPlayer == 1){
+            this.connection.makeRequest("setpiecebot("+this.currentPlayer+")", this.placePiece.bind(this));
+        }
+    }
+
+
     if (this.currentState == this.states.PLAYING || (this.states.ANIMATING && this.oldState == this.states.PLAYING)){
-        console.log("tou aqui");
         if ((this.scene.GoldenPlayer == "random" || this.scene.GoldenPlayer == "greedy") && this.currentPlayer == 0){
             this.connection.makeRequest("dobotmove("+this.currentPlayer+","+this.scene.GoldenPlayer+")", this.placePiece.bind(this));
         }
