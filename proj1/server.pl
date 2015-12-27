@@ -140,6 +140,7 @@ parse_input(boardstate, Board):-
 parse_input(dobotmove(Player, Difficulty), ack):-
 	retractall(captured),
 	codePlayer(Player1 , Player),
+	saveState,
 	retractall(difficulty(_,_)),
 	retractall(playerGolden(_)),
 	retractall(playerSilver(_)),

@@ -17,6 +17,8 @@
 :- dynamic(moved/2).
 :- dynamic(captured/0).
 :- dynamic(remainingPlays/1).
+:- dynamic(stateNumber/1).
+:- dynamic(boardState/5).
 
 piece(goldenPiece).
 piece(silverPiece).
@@ -152,8 +154,13 @@ doPlayerMovement(Player):-
 
 
 	setupRemoteBoard:-
+		retractall(remainingPlays(_)),
+		assert(remainingPlays(2)),
 	retractall(position(_,_,_)),
+	retractall(boardState(_,_,_,_,_)),
+	retractall(stateNumber(_)),
 		fillBoard,
+		assert(stateNumber(0)),
 		asserta(position(5,5,flagship)),
 		asserta(nextPlayer(goldenPlayer)),
 		asserta(nextAction(place)),
@@ -162,8 +169,16 @@ doPlayerMovement(Player):-
 
 
 setupRemoteBoard:-
+	retractall(remainingPlays(_)),
+	retractall(boardState(_,_,_,_,_)),
+	retractall(stateNumber(_)),
+	assert(remainingPlays(2)),
 	retract(silverPieces(_)),
 	retract(goldenPieces(_)),
+	retract(nextPlayer(_)),
+	assert(nextPlayer(goldenPlayer)),
+	retract(nextAction(_)),
+	retractall(remainingPlays(_)),
 	retractall(position(_,_,_)),
 	fillBoard,
 	asserta(position(5,5,flagship)),
@@ -174,6 +189,7 @@ setupRemoteBoard:-
 
 
 setupBoard:-
+	retractall(remainingPlays(_)),
 	fillBoard,
 	asserta(position(5,5,flagship)),
 	placePiece(goldenPlayer, 0).
@@ -197,7 +213,7 @@ placePiece(goldenPlayer,N):-
 	printBoard,!,
 	placePiece(goldenPlayer, N1).
 
-	placePiece(silverPlayer,N):-playerSilver(bot), difficulty(silverPlayer, greedy),blockFlagshipPlacement, N1 is N-1, printBoard, !, placePiece(silverPlayer, N-1).
+	placePiece(silverPlayer,N):-playerSilver(bot), difficulty(silverPlayer, greedy),blockFlagshipPlacement, N1 is N-1, printBoard, !, placePiece(silverPlayer, N1).
 
 	placePiece(silverPlayer,N):-
 		playerSilver(bot),
@@ -277,6 +293,33 @@ position(Xf,Yf, emptyCell),
 findall(Z, position(Xf,Yf,Z), [emptyCell]),
 emptySpace(X,Y,Xf,Yf).
 
+saveState:-
+	retract(stateNumber(N)),
+	write('sucesso'),
+	N1 is N+1,
+	asserta(stateNumber(N1)),
+	findall([X,Y,State], position(X,Y,State), Cs),
+	nextPlayer(Player),
+	nextAction(Action),
+	remainingPlays(Plays),
+	assert(boardState(Cs, Player, Action, Plays, N1)).
+
+restoreState(N):-
+	boardState(Cs, Player, Action,Plays, N),
+	retract(nextPlayer(_)),
+	retract(nextAction(_)),
+	retract(remainingPlays(_)),
+	assert(remainingPlays(Plays)),
+	retractall(position(_,_,_)),
+	assert(nextPlayer(Player)),
+	assert(nextAction(Action)),
+	assertBoard(Cs).
+
+assertBoard([]).
+assertBoard([[X,Y,State]|T]):-
+	assertz(position(X,Y,State)),
+	assertBoard(T).
+
 flagshipCanEscape(X,Y):-
 	position(Fx,Fy,flagship),
 	( ( emptySpace(Fx,Fy,X,10), Y is 10);
@@ -312,6 +355,7 @@ doRemotePlay(X,Y,Xf,Yf,Player):-
 	nextPlayer(Player),
 	nextAction(play),!,write(Player),nl,write(play),nl,!,
 	doPlay(X,Y,Xf,Yf,Player),!,write('valid play'),nl,
+	saveState,
 	(captured ->
 		retract(nextPlayer(_)),
 		retract(captured),
@@ -329,7 +373,7 @@ doRemotePlay(X,Y,Xf,Yf,Player):-
 			assert(remainingPlays(1))
 
 		).
-		
+
 
 
 

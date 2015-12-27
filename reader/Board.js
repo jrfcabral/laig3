@@ -12,6 +12,8 @@ function Board(scene, graph){
        this.whiteMat.setAmbient(1, 1, 1, 1);
        this.whiteMat.setDiffuse(1, 1, 1, 1);
        this.whiteMat.setSpecular(1, 1, 1, 1);
+       this.boardStack = [];
+       this.playStack = [];
 }
 Board.prototype.makeBoard = function(width, height){
        var board = [];
@@ -35,6 +37,10 @@ Board.prototype.getCleanBoard = function(){
 Board.prototype.updateBoard = function(newBoard){
     console.log(JSON.parse(newBoard.target.response));
     this.boardTxt = JSON.parse(newBoard.target.response);
+}
+
+Board.prototype.savePlay = function(Xi, Yi, Xf,Yf){
+    this.playStack.push([Xi,Yi,Xf,Yf]);
 }
 
 Board.prototype.undo = function(){
@@ -74,6 +80,11 @@ Board.prototype.countPieces = function(){
             }
         }
     }   
+}
+
+Board.prototype.saveBoard = function(player){
+    this.boardStack.push([this.boardTxt, player]);
+    console.log(this.boardStack);
 }
 
 Board.prototype.display = function(){

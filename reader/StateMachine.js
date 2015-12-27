@@ -74,6 +74,7 @@ StateMachine.prototype.handlePick = function(picked){
 
 StateMachine.prototype.doPlay = function(data){
     if (data.target.response == "ack"){
+        this.scene.board.saveBoard(this.currentPlayer);
         this.connection.makeRequest("boardstate", this.scene.board.updateBoard.bind(this.scene.board));
         this.currentState = this.states.ANIMATING;
         this.oldState = this.states.PLAYING;
