@@ -123,15 +123,15 @@ parse_input(getnextaction, [NextPlayer, NextAction]):-
 
 parse_input(teste, ack):- testeRemote.
 
-parse_input(setpiecebot(Player), ack):-
+parse_input(setpiecebot(Player), [X,Y,Player]):-
 	codePlayer(APlayer, Player),
-	placeRemotePiece(APlayer).
+	placeRemotePiece(APlayer,X,Y).
 
 
 
 parse_input(setpiece(X,Y,Player), Response):-
 	placeRemotePiece(X,Y,Player) ->
-		Response = ack;
+		Response = [X,Y,Player];
 		Response = nack.
 
 parse_input(domove(X,Y,Xf,Yf,Player), Response):-

@@ -389,7 +389,7 @@ doRemotePlay(X,Y,Xf,Yf,Player):-
 		).
 
 
-placeRemotePiece(silverPlayer):-
+placeRemotePiece(silverPlayer, X, Y):-
 	randomPlacement(silverPlayer, X, Y),
 	asserta(position(X,Y,silverPiece)),
 	retract(silverPieces(N)),
@@ -404,7 +404,7 @@ placeRemotePiece(silverPlayer):-
 		true).
 
 
-		placeRemotePiece(goldenPlayer):-
+		placeRemotePiece(goldenPlayer,X,Y):-
 			nextPlayer(goldenPlayer),
 			nextAction(place),
 				randomPlacement(goldenPlayer,X,Y),
