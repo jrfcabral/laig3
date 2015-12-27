@@ -269,11 +269,11 @@ calculateDistances(Xi, Yi, Xf, Yf, DX, DY):-
 	emptyCellsBetween(X,Y,Xf,Y):-X>Xf,X1 is X-1, findall(Z, position(X,Y,Z), [emptyCell]), emptyCellsBetween(X1,Y,Xf,Y).
 	emptyCellsBetween(X,Y,Xf,Y):-Xf1 is Xf-1, findall(Z, position(Xf,Y,Z), [emptyCell]), emptyCellsBetween(X,Y,Xf1,Y).
 
-doPlay(X,Y,Xf,Yf,Player):- validMove(X,Y,Xf,Yf,Player),write('move valid'),!,
-	owner(Player,Piece),retract(position(X,Y,Piece)),asserta(position(Xf,Yf,Piece)), asserta(moved(Xf,Yf)).
+doPlay(X,Y,Xf,Yf,Player):- validMove(X,Y,Xf,Yf,Player),
+	owner(Player,Piece),printBoard,saveState,retract(position(X,Y,Piece)),asserta(position(Xf,Yf,Piece)), asserta(moved(Xf,Yf)).
 
 doPlay(X,Y,Xf,Yf,Player):- validCapture(X,Y,Xf,Yf,Player),
-	owner(Player,Piece), retract(position(X,Y,Piece)),opponent(Player, Opponent), owner(Opponent,OpponentPiece), retract(position(Xf,Yf,OpponentPiece)), asserta(position(Xf,Yf,Piece)),asserta(captured), asserta(moved(Xf,Yf)).
+	owner(Player,Piece), printBoard,saveState,retract(position(X,Y,Piece)),opponent(Player, Opponent), owner(Opponent,OpponentPiece), retract(position(Xf,Yf,OpponentPiece)), asserta(position(Xf,Yf,Piece)),asserta(captured), asserta(moved(Xf,Yf)).
 
 validPlay(X,Y,Xf,Yf,Player):- (validMove(X,Y,Xf,Yf,Player);validCapture(X,Y,Xf,Yf,Player)),\+moved(X,Y).
 
@@ -348,6 +348,13 @@ sendRemoteLine(Line, X, Y):-
  tojs(Peca, Code),
  append([Code], LineR, Line).
 
+undoPlay:-
+	stateNumber(N),
+	N1 is N-1,
+	restoreState(N),
+	retract(stateNumber(N)),
+	assert(stateNumber(N1)).
+
 
 
 
@@ -355,7 +362,6 @@ doRemotePlay(X,Y,Xf,Yf,Player):-
 	nextPlayer(Player),
 	nextAction(play),!,write(Player),nl,write(play),nl,!,
 	doPlay(X,Y,Xf,Yf,Player),!,write('valid play'),nl,
-	saveState,
 	(captured ->
 		retract(nextPlayer(_)),
 		retract(captured),

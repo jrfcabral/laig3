@@ -70,7 +70,8 @@ XMLscene.prototype.init = function (application) {
 	}
 
 	this.undo = function(){
-		this.StateMachine.stepBack();
+		this.stateMachine.undoPlay();
+
 	}
 	this.reset = function(){
 		this.stateMachine.resetGame();

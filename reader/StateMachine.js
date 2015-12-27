@@ -72,6 +72,16 @@ StateMachine.prototype.handlePick = function(picked){
     }
 }
 
+StateMachine.prototype.undoPlay = function(){
+    this.connection.makeRequest("undo", this.synchronize.bind(this));
+
+}
+
+StateMachine.prototype.synchronize = function(){
+      this.connection.makeRequest("boardstate", this.scene.board.updateBoard.bind(this.scene.board));
+      this.connection.makeRequest("getnextaction", this.updateState.bind(this));
+}
+
 StateMachine.prototype.doPlay = function(data){
     if (data.target.response == "ack"){
         this.scene.board.saveBoard(this.currentPlayer);
