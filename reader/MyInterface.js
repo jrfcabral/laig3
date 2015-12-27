@@ -36,6 +36,10 @@ MyInterface.prototype.init = function(application) {
 	this.gameOpts.add(this.scene, 'GoldenPlayer', {'Human': 0, 'Random': 'random', 'Greedy':'greedy'});
 	this.gameOpts.add(this.scene, 'SilverPlayer', {'Human': 0, 'Random': 'random', 'Greedy':'greedy'});
 
+	this.camControls = this.gameOpts.addFolder("Camera Controls");
+	this.camControls.add(this.scene, 'RotateLeft');
+	this.camControls.add(this.scene, 'RotateRight');
+
 
 	this.scene.interface = this;
 	
@@ -44,7 +48,6 @@ MyInterface.prototype.init = function(application) {
 
 
 MyInterface.prototype.setActiveCamera = function(cam){
-	console.log("TOU A SETTAR A CAMARA");
 	CGFinterface.prototype.setActiveCamera.call(this, cam);
 }
 

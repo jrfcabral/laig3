@@ -60,6 +60,15 @@ XMLscene.prototype.init = function (application) {
 	this.hud.writeOnHUD("Silver", 0, 6);
 	this.hud.writeOnHUD("Taking turn", 0, 8);
 
+	this.camHelper = new CameraHelper(this, this.camera);
+
+	this.RotateLeft = function(){
+		this.camHelper.animatePointTransition(Math.PI/2, 1000);
+	}
+	this.RotateRight = function(){
+		this.camHelper.animatePointTransition(-Math.PI/2, 1000);
+	}
+
 	this.undo = function(){
 		this.StateMachine.stepBack();
 	}
@@ -98,6 +107,8 @@ XMLscene.prototype.initLights = function () {
 
 XMLscene.prototype.initCameras = function () {
     this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(25, 15, 25), vec3.fromValues(0, 0, 0));
+    this.camera.zoom(-20);
+    this.camera.pan(vec3.fromValues(0, -5, 0));
 };
 
 XMLscene.prototype.setDefaultAppearance = function () {
@@ -172,7 +183,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 		this.lights[i].setVisible(false);
 
 		this.interface.group.add(this.lightslist, 'light'+i);
-		//this.interface.setActiveCamera(this.leCamera);
+		this.interface.setActiveCamera(this.leCamera);
 
 	}
 };
@@ -191,6 +202,9 @@ XMLscene.prototype.display = function () {
 
 	//has to be here
 	if(this.HUD){
+		if(this.camHelper.animating){
+			this.camHelper.animatePointTransition();
+		}
 		this.hud.display();
 	}
 	
