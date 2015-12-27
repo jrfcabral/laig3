@@ -33,8 +33,10 @@ XMLscene.prototype.init = function (application) {
 
 	this.texturesStack = [];
 	
-
 	this.interface;
+
+	this.leCamera = new CGFcamera(0.4, 0.1, 800, vec3.fromValues(25, 25, 25), vec3.fromValues(0, 0, 16));
+
 
 	this.GoldenPlayer = 0;
 	this.SilverPlayer = 0;
@@ -74,11 +76,11 @@ XMLscene.prototype.init = function (application) {
 };
 
 XMLscene.prototype.update = function(){
-	if(this.timetoSA++ == 10){
+	if(this.timeToSA++ == 10){
 		this.timeToSA = 0;
-		this.connection.makeRequest('areuthere', function(){console.log("Iamhere");});	
+		this.connection.makeRequest('areuthere', function(){console.log("Iamhere");});
 	}
-
+	
 	//chamar metodo do statemachine pra ver se o turno ja acabou
 	
 }
@@ -95,7 +97,7 @@ XMLscene.prototype.initLights = function () {
 };
 
 XMLscene.prototype.initCameras = function () {
-    this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
+    this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(25, 15, 25), vec3.fromValues(0, 0, 0));
 };
 
 XMLscene.prototype.setDefaultAppearance = function () {
@@ -170,6 +172,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 		this.lights[i].setVisible(false);
 
 		this.interface.group.add(this.lightslist, 'light'+i);
+		//this.interface.setActiveCamera(this.leCamera);
 
 	}
 };
@@ -190,11 +193,11 @@ XMLscene.prototype.display = function () {
 	if(this.HUD){
 		this.hud.display();
 	}
-
+	
 	// Apply transformations corresponding to the camera position relative to the origin
 	this.applyViewMatrix();
 	this.setDefaultAppearance();
-
+	
 	// ---- END Background, camera and axis setup
 
 	// it is important that things depending on the proper loading of the graph

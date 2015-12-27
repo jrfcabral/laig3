@@ -42,6 +42,12 @@ MyInterface.prototype.init = function(application) {
 	return true;
 };
 
+
+MyInterface.prototype.setActiveCamera = function(cam){
+	console.log("TOU A SETTAR A CAMARA");
+	CGFinterface.prototype.setActiveCamera.call(this, cam);
+}
+
 /**
  * processKeyboard
  * @param event {Event}
@@ -56,6 +62,6 @@ MyInterface.prototype.processKeyboard = function(event) {
 	// for better cross-browser support, you may also check suggestions on using event.which in http://www.w3schools.com/jsref/event_key_keycode.asp
 	switch (event.keyCode)
 	{
-		case 42: console.warn*("lol xd"); break;
+		case 97: this.scene.camera.orbit(CGFcameraAxisID.Y, 0.001*Math.PI); break;
 	};
 };
