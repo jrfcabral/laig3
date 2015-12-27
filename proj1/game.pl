@@ -273,7 +273,7 @@ doPlay(X,Y,Xf,Yf,Player):- validMove(X,Y,Xf,Yf,Player),
 	owner(Player,Piece),printBoard,retract(position(X,Y,Piece)),asserta(position(Xf,Yf,Piece)), asserta(moved(Xf,Yf)),saveState,savePlay(X,Y,Xf,Yf,Player).
 
 doPlay(X,Y,Xf,Yf,Player):- validCapture(X,Y,Xf,Yf,Player),
-	owner(Player,Piece), printBoard,savePlay(X,Y,Xf,Yf,Player),retract(position(X,Y,Piece)),opponent(Player, Opponent), owner(Opponent,OpponentPiece), retract(position(Xf,Yf,OpponentPiece)), asserta(position(Xf,Yf,Piece)),asserta(captured), asserta(moved(Xf,Yf)),saveState,savePlay(X,Y,Xf,Yf,Player).
+	owner(Player,Piece), printBoard,savePlay(X,Y,Xf,Yf,Player),retract(position(X,Y,Piece)),opponent(Player, Opponent), owner(Opponent,OpponentPiece), retract(position(Xf,Yf,OpponentPiece)), asserta(position(Xf,Yf,Piece)),asserta(captured), asserta(moved(Xf,Yf)),savePlay(X,Y,Xf,Yf,Player).
 
 validPlay(X,Y,Xf,Yf,Player):- (validMove(X,Y,Xf,Yf,Player);validCapture(X,Y,Xf,Yf,Player)),\+moved(X,Y).
 
@@ -314,11 +314,13 @@ restoreState(N):-
 	retract(nextPlayer(_)),
 	retract(nextAction(_)),
 	retract(remainingPlays(_)),
-	assert(remainingPlays(Plays)),
+	assertNext(Plays, Player),
 	retractall(position(_,_,_)),
-	assert(nextPlayer(Player)),
 	assert(nextAction(Action)),
 	assertBoard(Cs).
+
+	assertNext(2, Player):- asserta(nextPlayer(Player)), asserta(remainingPlays(1)).
+	assertNext(1, Player):- opponent(OPlayer, Player), asserta(nextPlayer(OPlayer)), asserta(remainingPlays(2)).
 
 assertBoard([]).
 assertBoard([[X,Y,State]|T]):-
@@ -386,6 +388,34 @@ doRemotePlay(X,Y,Xf,Yf,Player):-
 
 		).
 
+
+placeRemotePiece(silverPlayer):-
+	randomPlacement(silverPlayer, X, Y),
+	asserta(position(X,Y,silverPiece)),
+	retract(silverPieces(N)),
+	N1 is N+1,
+	asserta(silverPieces(N1)),
+	( N1 == 20 ->
+		retractall(nextPlayer(_)),
+		asserta(nextPlayer(goldenPlayer)),
+		retractall(nextAction(_)),
+		assert(nextAction(play)),
+		assert(remainingPlays(2));
+		true).
+
+
+		placeRemotePiece(goldenPlayer):-
+			nextPlayer(goldenPlayer),
+			nextAction(place),
+				randomPlacement(goldenPlayer,X,Y),
+				asserta(position(X,Y,goldenPiece)),
+				retract(goldenPieces(N)),
+				N1 is N+1,
+				asserta(goldenPieces(N1)),
+				(N1 == 12 ->
+					retract(nextPlayer(_)),
+					asserta(nextPlayer(silverPlayer));
+					true).
 
 
 

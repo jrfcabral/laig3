@@ -158,7 +158,7 @@ StateMachine.prototype.updateState = function(data){
 
     console.log("State is now " + this.currentState);
 
-    if (this.currentState == this.states.PLAYING || this.states.ANIMATING){
+    if (this.currentState == this.states.PLAYING || (this.states.ANIMATING && this.oldState == this.states.PLAYING)){
         console.log("tou aqui");
         if ((this.scene.GoldenPlayer == "random" || this.scene.GoldenPlayer == "greedy") && this.currentPlayer == 0){
             this.connection.makeRequest("dobotmove("+this.currentPlayer+","+this.scene.GoldenPlayer+")", this.placePiece.bind(this));
