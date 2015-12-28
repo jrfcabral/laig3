@@ -166,7 +166,7 @@ Board.prototype.display = function(){
             if (this.scene.stateMachine.currentState == 2  && this.scene.stateMachine.currentAnimation.xi == j 
                 && this.scene.stateMachine.currentAnimation.yi == i && this.scene.stateMachine.moveAnimationEnabled){
                     var delta = Date.now() - this.scene.stateMachine.animationStart;
-                    var progress = (100*delta)/200;
+                    var progress = (100*delta)/2000;
                     var animation = this.scene.stateMachine.currentAnimation;
                     this.scene.pushMatrix();
                     this.scene.translate(animation.xi+(animation.xf-animation.xi)*(progress/100),

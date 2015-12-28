@@ -106,12 +106,7 @@ StateMachine.prototype.animateReplay = function(data){
     console.log(data.target.response);
     this.currentState = this.states.ANIMATING;
     var play = JSON.parse(data.target.response);
-    this.currentAnimation.xi = play[0];
-    this.currentAnimation.yi = play[1];
-    this.currentAnimation.xf = play[2];
-    this.currentAnimation.yf = play[3];
-    this.color = play[4]+1;
-    this.animationStart = Date.now();
+    this.startMoveAnimation(play[0], play[1], play[2], play[3], play[4]);
     window.setTimeout(this.doReplay.bind(this),3000);
 }
 
