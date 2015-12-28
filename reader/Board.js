@@ -126,7 +126,7 @@ Board.prototype.display = function(){
             this.scene.stateMachine.enteringAnimationEnabled){
                 console.log("entrei");
                     var delta = Date.now() - this.scene.stateMachine.animationStart;
-                    var progress = delta/200;
+                    var progress = delta/20;
                     var animation = this.scene.stateMachine.enteringAnimation;
                     console.log(progress);
                     if(this.scene.stateMachine.enteringAnimation.player == 0){

@@ -113,7 +113,7 @@ parse_input(handshake, handshake).
 parse_input(test(C,N), Res) :- test(C,Res,N).
 parse_input(quit, goodbye).
 parse_input(reset, Response):-
-	(setupRemoteBoard,	Response = ack);Response=nack.
+	(setupRemoteBoard, retractall(nextAction(_)), assert(nextAction(place)),	Response = ack);Response=nack.
 
 parse_input(getnextaction, [NextPlayer, NextAction]):-
 	nextPlayer(NextPlayer1),
