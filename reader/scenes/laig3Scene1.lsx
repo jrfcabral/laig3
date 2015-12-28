@@ -77,6 +77,31 @@
             <amplif_factor s="1" t="1" />
         </TEXTURE>
         
+        <TEXTURE id="stump">
+            <file path="textures/treeStump.jpg" />
+            <amplif_factor s="1" t="1" />
+        </TEXTURE>
+
+        <TEXTURE id="dirtFloor">
+            <file path="textures/dirt.JPG" />
+            <amplif_factor s="1" t="1" />
+        </TEXTURE>
+
+        <TEXTURE id="cabinWall">
+            <file path="textures/cabinWall.jpg" />
+            <amplif_factor s="1" t="1" />
+        </TEXTURE>
+        
+        <TEXTURE id="door">
+            <file path="textures/door.jpg" />
+            <amplif_factor s="1" t="1" />
+        </TEXTURE>
+
+        <TEXTURE id="stumpTop">
+            <file path="textures/stumpTop.jpg" />
+            <amplif_factor s="1" t="1" />
+        </TEXTURE>
+
     </TEXTURES>
 
     <ANIMATIONS>
@@ -88,7 +113,7 @@
         <LEAF id="cylinder2" type="cylinder" args="1.0 2.0 0.6 40.0 40.0"/>
         <LEAF id="cylinder3" type="cylinder" args="1.0 1.0 0.1 40.0 40.0"/>
         <LEAF id="cylinder4" type="cylinder" args="2.0 2.0 0.1 40.0 40.0"/>
-        <LEAD id="boardPiece" type="rectangle" args="-0.5 0.5 0.5 -0.5" />
+        <LEAF id="circle1" type="circle" args="40" />
     </LEAVES>
 
     <NODES>
@@ -97,17 +122,113 @@
             <MATERIAL id="null" />
             <TEXTURE id="null" />
             <DESCENDANTS>
+               <DESCENDANT id="scene1" /> 
+           </DESCENDANTS>
+        </NODE>
+    
+
+        <NODE id="scene2" >
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <DESCENDANTS>
+                <DESCENDANT id="floor2" />
+                <DESCENDANT id="stump" />
+                <DESCENDANT id="board" />
+                <DESCENDANT id="wall3" />
+                <DESCENDANT id="wall6" />
+                <DESCENDANT id="wall7" />
+                <DESCENDANT id="wall8" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="stump">
+            <MATERIAL id="null" />
+            <TEXTURE id="stump" />
+            <ROTATION axis="x" angle="-90" />
+            <SCALE sx="10" sy="10" sz="14.5" />
+            <DESCENDANTS>
+                <DESCENDANT id="cylinder1" />
+                <DESCENDANT id="stumpTop" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="stumpTop">
+            <MATERIAL id="null" />
+            <TEXTURE id="stumpTop" />
+            <TRANSLATION x="0" y="0" z="1" />
+            <DESCENDANTS>
+                <DESCENDANT id="circle1" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="wall3">
+            <MATERIAL id="null" />
+            <TEXTURE id="cabinWall" />
+            <TRANSLATION x="-37.5" y="18.75" z="0" />
+            <ROTATION axis="y" angle="90" />
+            <SCALE sx="75" sy="37.5" sz="1"/>
+            <DESCENDANTS>
+                <DESCENDANT id="rectangle2" />
+            </DESCENDANTS>
+        </NODE>
+
+         <NODE id="wall6">
+            <MATERIAL id="null" />
+            <TEXTURE id="cabinWall" />
+            <TRANSLATION x="0" y="37.5" z="0" />
+            <ROTATION axis="z" angle="180" />
+            <ROTATION axis="y" angle="-90" />
+            <DESCENDANTS>
+                <DESCENDANT id="wall3" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="wall7">
+            <MATERIAL id="null" />
+            <TEXTURE id="cabinWall" />
+             <TRANSLATION x="0" y="37.5" z="0" />
+            <ROTATION axis="z" angle="180" />
+            <ROTATION axis="y" angle="90" />
+            <DESCENDANTS>
+                <DESCENDANT id="wall3" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="wall8">
+            <MATERIAL id="null" />
+            <TEXTURE id="cabinWall" />
+            <ROTATION axis="y" angle="180" />
+            <DESCENDANTS>
+                <DESCENDANT id="wall3" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="floor2" >
+            <MATERIAL id="null" />
+            <TEXTURE id="dirtFloor" />
+            <ROTATION axis="x" angle="-90" />
+            <SCALE sx="75" sy="75" sz="1"/>
+            <DESCENDANTS>
+                <DESCENDANT id="rectangle2"/>
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="scene1" >
+             <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <DESCENDANTS>
                 <DESCENDANT id="floor"/>
                 <DESCENDANT id="wall1" />
                 <DESCENDANT id="wall2" />
+                <DESCENDANT id="wall4" />
+                <DESCENDANT id="wall5" />
                 <DESCENDANT id="fireplace" />
                 <DESCENDANT id="table" />
                <!-- <DESCENDANT id="lamp" />-->
-                <DESCENDANT id="board" />             
+                <DESCENDANT id="board" />
+                <DESCENDANT id="door" />             
            </DESCENDANTS>
         </NODE>
-
-        
         
         <NODE id="board">
             <MATERIAL id="null" />
@@ -272,6 +393,39 @@
             <SCALE sx="75" sy="37.5" sz="1"/>
             <DESCENDANTS>
                 <DESCENDANT id="rectangle2"/>
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="wall4" >
+            <MATERIAL id="null" />
+            <TEXTURE id="modernWallpaper" />
+            <TRANSLATION x="0" y="18.75" z="37.5" />
+            <ROTATION axis="y" angle="180" />
+            <SCALE sx="75" sy="37.5" sz="1"/>
+            <DESCENDANTS>
+                <DESCENDANT id="rectangle2"/>
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="door">
+            <MATERIAL id="null" />
+            <TEXTURE id="door" />
+            <TRANSLATION x="0" y="15.75" z="37" />
+            <ROTATION axis="y" angle="180" />
+            <SCALE sx="10" sy="30" sz="1"/>
+            <DESCENDANTS>
+                <DESCENDANT id="rectangle2" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="wall5" >
+            <MATERIAL id="null" />
+            <TEXTURE id="modernWallpaper" />
+           <TRANSLATION x="0" y="0" z="0" />
+            <ROTATION axis="y" angle="180" />
+            
+            <DESCENDANTS>
+                <DESCENDANT id="wall1"/>
             </DESCENDANTS>
         </NODE>
 

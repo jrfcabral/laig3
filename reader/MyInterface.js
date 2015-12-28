@@ -66,6 +66,9 @@ MyInterface.prototype.processKeyboard = function(event) {
 	// for better cross-browser support, you may also check suggestions on using event.which in http://www.w3schools.com/jsref/event_key_keycode.asp
 	switch (event.keyCode)
 	{
-		case 97: this.scene.camera.orbit(CGFcameraAxisID.Y, 0.001*Math.PI); break;
+		case 97: this.setActiveCamera(this.scene.camera); break;
+		case 98: this.setActiveCamera(this.scene.leCamera); break;
+		case 49: this.scene.loadScene1(); break;
+		case 50: this.scene.loadScene2(); break;
 	};
 };

@@ -83,7 +83,6 @@ XMLscene.prototype.init = function (application) {
 
 	this.timeToSA = 0;
 	this.setUpdatePeriod(1000);
-	
 
 	this.setPickEnabled(true);
 
@@ -193,8 +192,21 @@ XMLscene.prototype.onGraphLoaded = function ()
 		this.interface.group.add(this.lightslist, 'light'+i);
 		this.interface.setActiveCamera(this.leCamera);
 
+		console.log(this.graph.nodes[this.graph.root]);
+
 	}
 };
+
+XMLscene.prototype.loadScene1 = function(){
+	console.log("tou a loadar");
+	this.graph.nodes[this.graph.root].descendants[0] = "scene1";
+}
+XMLscene.prototype.loadScene2 = function(){
+	console.log("tou a loadar2");
+	this.graph.nodes[this.graph.root].descendants[0] = "scene2";
+	console.log(this.graph.nodes[this.graph.root]);
+}
+
 
 XMLscene.prototype.display = function () {
 	// ---- BEGIN Background, camera and axis setup
