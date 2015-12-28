@@ -1,7 +1,7 @@
 function Piece(scene){
     this.scene = scene;
     this.toDisplay = true;
-    this.obj = new cylinder(scene, 2, 0.4, 0.4, 40, 40);
+    this.head = new sphere(this.scene, 0.5, 40, 40);
 
     this.goldenMat = new CGFappearance(this.scene);
     this.goldenMat.setAmbient(1, 215/255, 0);
@@ -26,6 +26,8 @@ Piece.prototype.display = function(mat){
     var mat = mat || 0;
     this.scene.pushMatrix();
     
+    this.scene.rotate(Math.PI/2, 1, 0, 0);
+    this.scene.scale(0.4, 0.4, 0.4);
     switch(mat){
         case 0: break;
         case 1: this.goldenMat.apply(); break;
@@ -33,7 +35,23 @@ Piece.prototype.display = function(mat){
         case 4: this.selectedMat.apply(); break;
         default: break;
     }
-    this.obj.display();
-    
+
+    this.scene.pushMatrix();
+    this.scene.translate(1.5, -0, 0.65);
+    this.scene.graph.leaves["patch1"].object.display();
+    this.scene.popMatrix();
+
+    this.scene.pushMatrix();
+    this.scene.translate(-1.5, 0, -0.55); 
+    this.scene.rotate(Math.PI, 0, 1, 0);
+    this.scene.graph.leaves["patch1"].object.display();
+    this.scene.popMatrix();
+
+    this.scene.pushMatrix();
+    this.scene.translate(0, 3, 0);
+    this.scene.scale(1.2, 1.2, 1.2);
+    this.head.display();
+    this.scene.popMatrix();
+
     this.scene.popMatrix();
 }

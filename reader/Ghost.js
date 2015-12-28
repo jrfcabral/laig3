@@ -3,7 +3,7 @@ function Ghost(scene, id){
     this.x = Math.floor(id/1000);
     this.y = Math.floor(id % 1000)-1;
     this.rect = new rectangle(scene, [-0.5, 0.5],[0.5, -0.5]);
-    this.cyl = new cylinder(scene, 2, 0.5, 0.5, 40, 40);
+    this.cyl = new cylinder(scene, 1.5, 0.4, 0.4, 40, 40);
     this.id = id;
 }
 
@@ -18,5 +18,5 @@ Ghost.prototype.display = function(){
             this.cyl.display();
         this.scene.clearPickRegistration();
         this.scene.popMatrix();
-    }
+   }
 }

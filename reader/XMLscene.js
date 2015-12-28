@@ -237,8 +237,7 @@ XMLscene.prototype.display = function () {
 	// it is important that things depending on the proper loading of the graph
 	// only get executed after the graph has loaded correctly.
 	// This is one possible way to do it
-	if (this.graph.loadedOk)
-	{
+	if (this.graph.loadedOk){
 
 		for(i = 0; i < ((this.graph.lightsNum > 8)? 8:this.graph.lightsNum); i++){
 			if(this.lightslist['light'+i])
