@@ -115,17 +115,17 @@ wonGame(silverPlayer):- \+position(_,_,flagship).
 takeTurn(goldenPlayer, silverPlayer):-
 playerGolden(human), doPlayerMovement(goldenPlayer), printBoard,( (\+moved(flagship), \+captured, printBoard, doPlayerMovement(goldenPlayer)); (moved(flagship);captured)),!.
 
-takeTurn(goldenPlayer, silverPlayer, [Pred1, Pred2]):-
-playerGolden(bot), difficulty(goldenPlayer, random), randomPlay(goldenPlayer, Pred1), Pred =.. Pred1, Pred, printBoard,
-((\+moved(flagship),\+captured, randomMove(goldenPlayer, Pred2), PredD =.. Pred2, PredD);((moved(flagship);captured), printBoard, Pred2 = -1)), !.
+takeTurn(goldenPlayer, silverPlayer, [[Xi1,Yi1,Xf1,Yf1, 0], [Xi2,Yi2,Xf2,Yf2, 0]]):-
+playerGolden(bot), difficulty(goldenPlayer, random), write('vou começar'), randomPlay(goldenPlayer, Pred1),write('achei'), Pred =.. Pred1, Pred,Pred1 = [_,Xi1,Yi1,Xf1,Yf1,_], write('primeira jogada'),
+((\+moved(flagship),\+captured, randomMove(goldenPlayer, Pred2), PredD =.. Pred2, PredD,write('segunda jogada feita'),Pred2 = [_,Xi2,Yi2,Xf2,Yf2,_],write('segunda jogada unificada'));((moved(flagship);captured),  [Xi2,Yi2,Xf2,Yf2, 0] = [-1,-1,-1,-1,0])), !.
 
-takeTurn(goldenPlayer, silverPlayer, [Pred1, Pred2]):-
+takeTurn(goldenPlayer, silverPlayer, [[Xi1,Yi1,Xf1,Yf1, 1], [Xi2,Yi2,Xf2,Yf2, 1]]):-
 	 playerGolden(bot), difficulty(goldenPlayer, greedy),
-	 ((flagshipCanEscape(Xf, Yf), position(X, Y, flagship), doPlay(X, Y, Xf, Yf, goldenPlayer));
-	 (validCapture(X,Y,Xf,Yf, goldenPlayer), doPlay(X,Y,Xf,Yf, goldenPlayer));
-	 (randomMove(goldenPlayer, Pred1), Pred =.. Pred1, Pred)),!,
-	 (  (moved(flagship);captured;wonGame(_)),Pred2 = 	-1;
-	 	 (\+captured,\+moved(flagship),\+wonGame(_), randomMove(goldenPlayer, Pred2), PredD =.. Pred2, PredD)),!.
+	 ((flagshipCanEscape(Xf1, Yf1), position(Xi1, Yi1, flagship), doPlay(Xi1, Yi1, Xf1, Yf1, goldenPlayer));
+	 (validCapture(Xi1,Yi1,Xf1,Yf1, goldenPlayer), doPlay(Xi1,Yi1,Xf1,Yf1, goldenPlayer));
+	 (randomMove(goldenPlayer, Pred1), Pred =.. Pred1, Pred1 = [_,Xi1,Yi1,Xf1,Yf1,_], Pred)),!,
+	 (  (moved(flagship);captured;wonGame(_)),[Xi2,Yi2,Xf2,Yf2, 0] = [-1,-1,-1,-1,0];
+	 	 (\+captured,\+moved(flagship),\+wonGame(_), randomMove(goldenPlayer, Pred2), PredD =.. Pred2,Pred2 = [_,Xi2,Yi2,Xf2,Yf2,_], PredD)),!.
 
 
 takeTurn(silverPlayer, goldenPlayer):-
@@ -133,7 +133,7 @@ playerSilver(human), doPlayerMovement(silverPlayer), printBoard, ((\+captured,do
 
 takeTurn(silverPlayer, goldenPlayer, [[Xi1,Yi1,Xf1,Yf1, 1], [Xi2,Yi2,Xf2,Yf2, 1]]):-
 playerSilver(bot), difficulty(silverPlayer, random), randomPlay(silverPlayer, Pred1), Pred =.. Pred1, Pred, Pred1 = [_,Xi1,Yi1,Xf1,Yf1,_],
-((captured,Pred2 = -1);(\+captured,randomMove(silverPlayer, Pred2), PredD =.. Pred2, PredD,Pred2 = [_,Xi2,Yi2,Xf2,Yf2,_])), printBoard, !.
+((captured,[Xi2,Yi2,Xf2,Yf2, 1] = [-1,-1,-1,-1,1]);(\+captured,randomMove(silverPlayer, Pred2), PredD =.. Pred2, PredD,Pred2 = [_,Xi2,Yi2,Xf2,Yf2,_])), printBoard, !.
 
 takeTurn(silverPlayer, goldenPlayer, [[Xi1,Yi1,Xf1,Yf1, 1], [Xi2,Yi2,Xf2,Yf2, 1]]):-playerSilver(bot), difficulty(silverPlayer, greedy),
 ( ( blockFlagship(Xi1,Yi1,Xf1,Yf1), doPlay(Xi1,Yi1,Xf1,Yf1,silverPlayer) );

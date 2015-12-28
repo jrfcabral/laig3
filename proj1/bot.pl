@@ -9,6 +9,7 @@ append([doPlay], AlmostPred, Pred).
 randomPlay(CurrPlayer, Pred):-
 findall([Xi,Yi,Xf,Yf], validPlay(Xi,Yi,Xf,Yf,CurrPlayer), Possiveis),
 length(Possiveis, N),
+write(N),nl,
 random(0, N, NList),
 nth0(NList, Possiveis, ChosenPlay),
 append(ChosenPlay, [CurrPlayer], AlmostPred),

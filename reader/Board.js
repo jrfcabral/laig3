@@ -126,7 +126,7 @@ Board.prototype.display = function(){
             this.scene.stateMachine.enteringAnimationEnabled){
                 console.log("entrei");
                     var delta = Date.now() - this.scene.stateMachine.animationStart;
-                    var progress = delta/500;
+                    var progress = delta/200;
                     var animation = this.scene.stateMachine.enteringAnimation;
                     console.log(progress);
                     if(this.scene.stateMachine.enteringAnimation.player == 0){
@@ -166,9 +166,8 @@ Board.prototype.display = function(){
             if (this.scene.stateMachine.currentState == 2  && this.scene.stateMachine.currentAnimation.xi == j 
                 && this.scene.stateMachine.currentAnimation.yi == i && this.scene.stateMachine.moveAnimationEnabled){
                     var delta = Date.now() - this.scene.stateMachine.animationStart;
-                    var progress = (100*delta)/500;
+                    var progress = (100*delta)/200;
                     var animation = this.scene.stateMachine.currentAnimation;
-                    console.log(animation);
                     this.scene.pushMatrix();
                     this.scene.translate(animation.xi+(animation.xf-animation.xi)*(progress/100),
                         animation.yi+(animation.yf-animation.yi)*(progress/100)-i,

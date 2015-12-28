@@ -178,6 +178,7 @@ StateMachine.prototype.movePieceBot = function(data){
         var placed = JSON.parse(data.target.response);
         console.log("chamado");
         this.connection.makeRequest("boardstate", this.scene.board.updateBoard.bind(this.scene.board));   
+        this.oldState = this.states.PLAYING;
         this.startMoveAnimation(placed[0][0],placed[0][1],placed[0][2],placed[0][3],placed[0][4]);
         this.nextAnimation.xi = placed[1][0];
         this.nextAnimation.yi = placed[1][1];
@@ -231,7 +232,8 @@ StateMachine.prototype.updateState = function(data){
         }
     }
 
-
+    console.log(this.currentState);
+    console.log(this.oldState);
     if (this.currentState == this.states.PLAYING || (this.states.ANIMATING && this.oldState == this.states.PLAYING)){
         if ((this.scene.GoldenPlayer == "random" || this.scene.GoldenPlayer == "greedy") && this.currentPlayer == 0){
             this.connection.makeRequest("dobotmove("+this.currentPlayer+","+this.scene.GoldenPlayer+")", this.movePieceBot.bind(this));
