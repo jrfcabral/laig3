@@ -25,6 +25,7 @@ function StateMachine(connection, scene){
     this.lastpicked = {x: -1, y: -1};
     this.currentAnimation = {xi: 0, yi: 0, xf:0, yf:0};
     this.timeForTurn = 30;
+    this.enteringAnimation = {x: -1, y:-1, player:-1};
     this.currentlyReplaying = -1;
 }
 
@@ -65,6 +66,7 @@ StateMachine.prototype.handlePick = function(picked){
                     this.currentAnimation.yi = this.lastpicked.y;
                     this.currentAnimation.xf = x;
                     this.currentAnimation.yf = y;
+                    this.moveAnimationEnabled = true;
                     this.connection.makeRequest("domove("+this.lastpicked.x+","+this.lastpicked.y+","+x+","+y+","+this.playerName+")", this.doPlay.bind(this));
                 }
                 this.scene.board.board[this.lastpicked.y][this.lastpicked.x].selected = false;    
@@ -130,6 +132,28 @@ StateMachine.prototype.doPlay = function(data){
 
 }
 
+StateMachine.prototype.startEnteringAnimation=function(x, y, player){
+     this.animationStart = Date.now();
+    this.enteringAnimationEnabled = true;
+    this.currentState = this.states.ANIMATING;
+    this.oldState = this.states.PLACING;
+    this.enteringAnimation.x = x;
+    this.enteringAnimation.y = y;
+    console.log(this.enteringAnimation);
+    this.enteringAnimation.player = player;
+}
+
+StateMachine.prototype.clearEntering = function(data){
+    this.enteringAnimationEnabled = false;
+}
+
+StateMachine.prototype.placePieceBot = function(data){
+    var placed = JSON.parse(data.target.response);
+    this.connection.makeRequest("boardstate", this.scene.board.updateBoard.bind(this.scene.board));
+    this.startEnteringAnimation(placed[0],placed[1], placed[2]);
+
+}
+
 StateMachine.prototype.placePiece = function(data){
     if (data.target.response == "ack"){
         this.connection.makeRequest("boardstate", this.scene.board.updateBoard.bind(this.scene.board));   
@@ -158,13 +182,13 @@ StateMachine.prototype.updateState = function(data){
 
     console.log("State is now " + this.currentState);
 
-    if (this.currentState == this.states.PLACING|| (this.states.ANIMATING && this.oldState == this.states.PLACING)){
+    if (this.currentState == this.states.PLACING){
          if ((this.scene.GoldenPlayer == "random" || this.scene.GoldenPlayer == "greedy") && this.currentPlayer == 0){
-            this.connection.makeRequest("setpiecebot("+this.currentPlayer+")", this.placePiece.bind(this));
+            this.connection.makeRequest("setpiecebot("+this.currentPlayer+")", this.placePieceBot.bind(this));
         }
 
         if ((this.scene.SilverPlayer == "random" || this.scene.SilverPlayer == "greedy") && this.currentPlayer == 1){
-            this.connection.makeRequest("setpiecebot("+this.currentPlayer+")", this.placePiece.bind(this));
+            this.connection.makeRequest("setpiecebot("+this.currentPlayer+")", this.placePieceBot.bind(this));
         }
     }
 

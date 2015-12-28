@@ -104,8 +104,8 @@ Board.prototype.display = function(){
     this.scene.rotate(-90*degToRad, 1, 0, 0);
     this.scene.pushMatrix();
 
-    var goldsOut = 12 - this.getPieceNumber(2);
-    var silversOut = 20 - this.getPieceNumber(1);
+    var goldsOut = 12 - this.getPieceNumber(1);
+    var silversOut = 20 - this.getPieceNumber(2);
 
     for(var i = 0; i < goldsOut;i++){
             this.scene.pushMatrix();
@@ -121,14 +121,51 @@ Board.prototype.display = function(){
             this.scene.popMatrix();
     }
 
+    //pieces entering the field
+      if ( this.scene.stateMachine.currentState == 2 &&
+            this.scene.stateMachine.enteringAnimationEnabled){
+                console.log("entrei");
+                    var delta = Date.now() - this.scene.stateMachine.animationStart;
+                    var progress = delta/1500;
+                    var animation = this.scene.stateMachine.enteringAnimation;
+                    console.log(progress);
+                    if(this.scene.stateMachine.enteringAnimation.player == 0){
+                        this.scene.pushMatrix();
+                        this.scene.translate(
+                            -1+((animation.x+1)*progress),
+                            (goldsOut-1)+((animation.y-(goldsOut-1))*progress),
+                             10*Math.sin((progress)*Math.PI)
+                        );
+                        this.piece.display(animation.player+1);
+                        this.scene.popMatrix();
+                       
+                    }
+                    else{
+                         this.scene.pushMatrix();
+                        this.scene.translate(
+                            +13+((animation.x-13)*progress),
+                            (silversOut-7)+((animation.y-(silversOut-7))*progress),
+                             10*Math.sin((progress)*Math.PI)
+                        );
+                        this.piece.display(animation.player+1);
+                        this.scene.popMatrix();
+                    }
+
+                     if (progress > 1){
+                            this.scene.stateMachine.synchronize();
+                            this.scene.stateMachine.currentState = this.scene.stateMachine.oldState;
+                            this.scene.stateMachine.enteringAnimationEnabled=false;
+                     }
+            }
+
 
     for(var i = 0; i < 11; i++){
         this.scene.pushMatrix();
         this.scene.translate(0, i, 0);
         for(var j = 0; j < 11; j++){
             //console.log(this.scene.connection.curr)
-            if (this.scene.stateMachine.currentState == 2 && this.scene.stateMachine.currentAnimation.xi == j 
-                && this.scene.stateMachine.currentAnimation.yi == i){
+            if (this.scene.stateMachine.currentState == 2  && this.scene.stateMachine.currentAnimation.xi == j 
+                && this.scene.stateMachine.currentAnimation.yi == i && this.scene.stateMachine.moveAnimationEnabled){
                     var delta = Date.now() - this.scene.stateMachine.animationStart;
                     var progress = (100*delta)/1500;
                     var animation = this.scene.stateMachine.currentAnimation;
@@ -139,15 +176,24 @@ Board.prototype.display = function(){
                     this.piece.display(this.scene.stateMachine.color);
                     this.scene.popMatrix();
 
-                    if(progress >= 100)
+                    if(progress >= 100){
                         this.scene.stateMachine.currentState = this.scene.stateMachine.oldState;
+                        this.scene.stateMachine.moveAnimationEnabled = false;
+                    }
                     continue;                    
             }
 
-             if (this.scene.stateMachine.currentState == 2 && this.scene.stateMachine.currentAnimation.xf == j 
-                && this.scene.stateMachine.currentAnimation.yf == i)
+             if ( (this.scene.stateMachine.currentState == 2 && this.scene.stateMachine.currentAnimation.xf == j 
+                && this.scene.stateMachine.currentAnimation.yf == i))
                 continue;
 
+          
+            if(this.scene.stateMachine.currentState == 2 && this.scene.stateMachine.enteringAnimationEnabled && this.scene.stateMachine.enteringAnimation.x ==j&&
+            this.scene.stateMachine.enteringAnimation.y == i){
+                    
+                continue;
+            }
+                
 
             this.scene.pushMatrix();
             this.scene.translate(j, 0, 0);
