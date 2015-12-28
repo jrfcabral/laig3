@@ -24,6 +24,7 @@ function StateMachine(connection, scene){
     this.picking = 0;
     this.lastpicked = {x: -1, y: -1};
     this.currentAnimation = {xi: 0, yi: 0, xf:0, yf:0};
+    this.nextAnimation = {xi: -1, yi: -1, xf:-1,yf:-1};
     this.timeForTurn = 30;
     this.enteringAnimation = {x: -1, y:-1, player:-1};
     this.currentlyReplaying = -1;
@@ -50,7 +51,7 @@ StateMachine.prototype.handlePick = function(picked){
                 this.lastpicked.y = y;
                 this.scene.board.board[y][x].selected = true;
                 this.picking = 1;
-                console.log(this.lastpicked);
+                console.log(this.lastpicked);2
             }
             else if (this.picking === 1){
                 this.picking = 0;
@@ -80,6 +81,15 @@ StateMachine.prototype.handlePick = function(picked){
 StateMachine.prototype.undoPlay = function(){
     this.connection.makeRequest("undo", this.synchronize.bind(this));
 
+}
+
+StateMachine.prototype.nextAnimationerino = function(){
+    console.log(this.nextAnimation);
+    if(this.nextAnimation.xi !== -1){
+        console.log("setting the next thing");
+        this.startMoveAnimation(this.nextAnimation.xi, this.nextAnimation.yi, this.nextAnimation.xf, this.nextAnimation.yf, this.color);
+        this.nextAnimation = {xi:-1,yi:-1,xf:-1,yf:-1};
+    }
 }
 
 StateMachine.prototype.replay = function(){
@@ -118,7 +128,6 @@ StateMachine.prototype.synchronize = function(){
 
 StateMachine.prototype.doPlay = function(data){
     if (data.target.response == "ack"){
-        this.scene.board.saveBoard(this.currentPlayer);
         this.connection.makeRequest("boardstate", this.scene.board.updateBoard.bind(this.scene.board));
         this.currentState = this.states.ANIMATING;
         this.oldState = this.states.PLAYING;
@@ -139,7 +148,6 @@ StateMachine.prototype.startEnteringAnimation=function(x, y, player){
     this.oldState = this.states.PLACING;
     this.enteringAnimation.x = x;
     this.enteringAnimation.y = y;
-    console.log(this.enteringAnimation);
     this.enteringAnimation.player = player;
 }
 
@@ -152,6 +160,35 @@ StateMachine.prototype.placePieceBot = function(data){
     this.connection.makeRequest("boardstate", this.scene.board.updateBoard.bind(this.scene.board));
     this.startEnteringAnimation(placed[0],placed[1], placed[2]);
 
+}
+
+StateMachine.prototype.startMoveAnimation = function(x,y,xf,yf,color){
+        this.currentState = this.states.ANIMATING;
+        this.currentAnimation.xi = x;
+        this.currentAnimation.yi = y;
+        this.currentAnimation.xf = xf;
+        this.currentAnimation.yf = yf;
+        this.color = color+1;
+        this.moveAnimationEnabled = true;
+        this.animationStart = Date.now();
+}
+
+StateMachine.prototype.movePieceBot = function(data){
+    if (data.target.response !== "ack"){
+        var placed = JSON.parse(data.target.response);
+        console.log("chamado");
+        this.connection.makeRequest("boardstate", this.scene.board.updateBoard.bind(this.scene.board));   
+        this.startMoveAnimation(placed[0][0],placed[0][1],placed[0][2],placed[0][3],placed[0][4]);
+        this.nextAnimation.xi = placed[1][0];
+        this.nextAnimation.yi = placed[1][1];
+        this.nextAnimation.xf = placed[1][2];
+        this.nextAnimation.yf = placed[1][3];
+       // window.setTimeout(500, this.startMoveAnimation(placed[1][0],placed[1][1],placed[1][2],placed[1][3],placed[1][4]));
+    }
+    else
+        console.log("falheu");
+    
+    this.connection.makeRequest("getnextaction", this.updateState.bind(this));
 }
 
 StateMachine.prototype.placePiece = function(data){
@@ -197,12 +234,12 @@ StateMachine.prototype.updateState = function(data){
 
     if (this.currentState == this.states.PLAYING || (this.states.ANIMATING && this.oldState == this.states.PLAYING)){
         if ((this.scene.GoldenPlayer == "random" || this.scene.GoldenPlayer == "greedy") && this.currentPlayer == 0){
-            this.connection.makeRequest("dobotmove("+this.currentPlayer+","+this.scene.GoldenPlayer+")", this.placePiece.bind(this));
+            this.connection.makeRequest("dobotmove("+this.currentPlayer+","+this.scene.GoldenPlayer+")", this.movePieceBot.bind(this));
             this.connection.makeRequest("whoWon", this.checkFinished.bind(this));
         }
 
         if ((this.scene.SilverPlayer == "random" || this.scene.SilverPlayer == "greedy") && this.currentPlayer == 1){
-            this.connection.makeRequest("dobotmove("+this.currentPlayer+","+this.scene.SilverPlayer+")", this.placePiece.bind(this));
+            this.connection.makeRequest("dobotmove("+this.currentPlayer+","+this.scene.SilverPlayer+")", this.movePieceBot.bind(this));
             this.connection.makeRequest("whoWon", this.checkFinished.bind(this));
         }
     }
@@ -266,10 +303,10 @@ StateMachine.prototype.updateTurnTime = function(){
         }
         else if (this.currentState == this.states.PLAYING || (this.states.ANIMATING && this.oldState == this.states.PLAYING)){
             if(this.currentPlayer == 0){
-                this.connection.makeRequest("dobotmove("+this.currentPlayer+","+"greedy"+")", this.placePiece.bind(this));
+                this.connection.makeRequest("dobotmove("+this.currentPlayer+","+"greedy"+")", this.movePieceBot.bind(this));
             }
             else if(this.currentPlayer == 1){
-                this.connection.makeRequest("dobotmove("+this.currentPlayer+","+ "greedy" +")", this.placePiece.bind(this));
+                this.connection.makeRequest("dobotmove("+this.currentPlayer+","+ "greedy" +")", this.movePieceBot.bind(this));
             }
         }
 

@@ -163,12 +163,12 @@ Board.prototype.display = function(){
         this.scene.pushMatrix();
         this.scene.translate(0, i, 0);
         for(var j = 0; j < 11; j++){
-            //console.log(this.scene.connection.curr)
             if (this.scene.stateMachine.currentState == 2  && this.scene.stateMachine.currentAnimation.xi == j 
                 && this.scene.stateMachine.currentAnimation.yi == i && this.scene.stateMachine.moveAnimationEnabled){
                     var delta = Date.now() - this.scene.stateMachine.animationStart;
                     var progress = (100*delta)/500;
                     var animation = this.scene.stateMachine.currentAnimation;
+                    console.log(animation);
                     this.scene.pushMatrix();
                     this.scene.translate(animation.xi+(animation.xf-animation.xi)*(progress/100),
                         animation.yi+(animation.yf-animation.yi)*(progress/100)-i,
@@ -179,6 +179,7 @@ Board.prototype.display = function(){
                     if(progress >= 100){
                         this.scene.stateMachine.currentState = this.scene.stateMachine.oldState;
                         this.scene.stateMachine.moveAnimationEnabled = false;
+                        this.scene.stateMachine.nextAnimationerino();
                     }
                     continue;                    
             }
@@ -187,7 +188,9 @@ Board.prototype.display = function(){
                 && this.scene.stateMachine.currentAnimation.yf == i))
                 continue;
 
-          
+            if(this.scene.stateMachine.currentState == 2 && this.scene.stateMachine.nextAnimation.xf == j && this.scene.stateMachine.nextAnimation.yf ==i)
+                continue;
+                          
             if(this.scene.stateMachine.currentState == 2 && this.scene.stateMachine.enteringAnimationEnabled && this.scene.stateMachine.enteringAnimation.x ==j&&
             this.scene.stateMachine.enteringAnimation.y == i){
                     
