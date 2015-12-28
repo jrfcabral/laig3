@@ -280,8 +280,19 @@ StateMachine.prototype.updateInfo = function(){
     this.scene.board.countPieces();
     this.scene.hud.writeOnHUD(this.scene.board.gamesWon[0].toString(), 7, 1);
     this.scene.hud.writeOnHUD(this.scene.board.gamesWon[1].toString(), 7, 2);
-    this.scene.hud.writeOnHUD(this.scene.board.pieceCount[0].toString(), 7, 5);
-    this.scene.hud.writeOnHUD(this.scene.board.pieceCount[1].toString(), 7, 6);
+    if(this.scene.board.pieceCount[0] < 10){
+        this.scene.hud.writeOnHUD(" " + this.scene.board.pieceCount[0].toString(), 7, 5);
+    }
+    else{
+         this.scene.hud.writeOnHUD(this.scene.board.pieceCount[0].toString(), 7, 5);
+    }
+
+    if(this.scene.board.pieceCount[1] < 10){
+        this.scene.hud.writeOnHUD(" " + this.scene.board.pieceCount[1].toString(), 7, 6);   
+    }
+    else{
+        this.scene.hud.writeOnHUD(this.scene.board.pieceCount[1].toString(), 7, 6);
+    }
     this.scene.hud.writeOnHUD(this.playersName[this.currentPlayer], 0, 9);
 }
 
