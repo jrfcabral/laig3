@@ -131,7 +131,8 @@ parse_input(setpiecebot(Player), [X,Y,Player]):-
 
 parse_input(setpiece(X,Y,Player), Response):-
 	placeRemotePiece(X,Y,Player) ->
-		Response = [X,Y,Player];
+		codePlayer(Player, CPlayer),
+		Response = [X,Y,CPlayer];
 		Response = nack.
 
 parse_input(domove(X,Y,Xf,Yf,Player), Response):-

@@ -43,7 +43,7 @@ StateMachine.prototype.handlePick = function(picked){
         case this.states.PLAYING:
             if(((this.scene.GoldenPlayer == "random" || this.scene.GoldenPlayer == "greedy") && this.currentPlayer == 0) ||
             ((this.scene.SilverPlayer == "random" || this.scene.SilverPlayer == "greedy") && this.currentPlayer == 1)){
-                return;
+               // return;
             }
             if (this.picking === 0){
                 this.lastpicked.x = x;
@@ -155,7 +155,9 @@ StateMachine.prototype.placePieceBot = function(data){
 }
 
 StateMachine.prototype.placePiece = function(data){
-    if (data.target.response == "ack"){
+    if (data.target.response !== "nack"){
+        var placed = JSON.parse(data.target.response);
+        this.startEnteringAnimation(placed[0],placed[1],placed[2]);
         this.connection.makeRequest("boardstate", this.scene.board.updateBoard.bind(this.scene.board));   
     }
     else
