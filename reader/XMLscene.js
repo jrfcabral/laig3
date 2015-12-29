@@ -206,7 +206,7 @@ XMLscene.prototype.loadScene1 = function(){
 	var n2=2;
 	var n5=5;
 	var n6=6;
-	var n8=7
+	var n7=7;
 	this.lightslist["light"+n2] = true;
 	this.lightslist["light"+n5] = false;
 	this.lightslist["light"+n6] = false;
@@ -217,12 +217,23 @@ XMLscene.prototype.loadScene2 = function(){
 	var n2=2;
 	var n5=5;
 	var n6=6;
+	var n7=7;
 	this.lightslist["light"+n2] = false;
 	this.lightslist["light"+n5] = true;
 	this.lightslist["light"+n6] = true;
 	this.lightslist["light"+n7] = true;
 }
-
+XMLscene.prototype.loadScene3 = function(){
+	this.graph.nodes[this.graph.root].descendants[0] = "scene3";
+	var n2=2;
+	var n5=5;
+	var n6=6;
+	var n7=7;
+	this.lightslist["light"+n2] = false;
+	this.lightslist["light"+n5] = false;
+	this.lightslist["light"+n6] = false;
+	this.lightslist["light"+n7] = false;
+}
 
 XMLscene.prototype.display = function () {
 	// ---- BEGIN Background, camera and axis setup

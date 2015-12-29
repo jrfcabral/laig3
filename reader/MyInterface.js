@@ -70,5 +70,7 @@ MyInterface.prototype.processKeyboard = function(event) {
 		case 98: this.setActiveCamera(this.scene.leCamera); break;
 		case 49: this.scene.loadScene1(); break;
 		case 50: this.scene.loadScene2(); break;
+		case 51: this.scene.loadScene3(); break;
+
 	};
 };

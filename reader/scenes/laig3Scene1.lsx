@@ -193,6 +193,31 @@
             <amplif_factor s="1" t="1" />
         </TEXTURE>
 
+        <TEXTURE id="space0" >
+            <file path="textures/skybox/sky_neg_z.jpg" />
+            <amplif_factor s="1" t="1" />
+        </TEXTURE>
+
+         <TEXTURE id="space1" >
+            <file path="textures/skybox/sky_pos_x.jpg" />
+            <amplif_factor s="1" t="1" />
+        </TEXTURE>
+
+         <TEXTURE id="space2" >
+            <file path="textures/skybox/sky_neg_x.jpg" />
+            <amplif_factor s="1" t="1" />
+        </TEXTURE>
+
+         <TEXTURE id="space3" >
+            <file path="textures/skybox/sky_pos_z.jpg" />
+            <amplif_factor s="1" t="1" />
+        </TEXTURE>
+
+         <TEXTURE id="space4" >
+            <file path="textures/skybox/sky_neg_y.jpg" />
+            <amplif_factor s="1" t="1" />
+        </TEXTURE>
+
     </TEXTURES>
 
     <ANIMATIONS>
@@ -238,7 +263,75 @@
                <DESCENDANT id="scene1" /> 
            </DESCENDANTS>
         </NODE>
+
+        <NODE id="scene3" >
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <DESCENDANTS>
+                <DESCENDANT id="floor3" />
+                <!--<DESCENDANT id="table2" />-->
+                <DESCENDANT id="board" />
+                <DESCENDANT id="wall9" />
+                <DESCENDANT id="wall10" />
+                <DESCENDANT id="wall11" />
+                <DESCENDANT id="wall12" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="floor3">
+            <MATERIAL id="polishedWood" />
+            <TEXTURE id="space4" />
+            <TRANSLATION x="0" y="0" z="0" />
+            <ROTATION axis="x" angle="-90" />
+            <SCALE sx="37.5" sy="37.5" sz="1"/>
+            <DESCENDANTS>
+                <DESCENDANT id="rectangle2" />
+            </DESCENDANTS>
+        </NODE>
+
+         <NODE id="wall9">
+            <MATERIAL id="polishedWood" />
+            <TEXTURE id="space0" />
+            <TRANSLATION x="-18.75" y="18.75" z="0" />
+            <ROTATION axis="y" angle="90" />
+            <SCALE sx="37.5" sy="37.5" sz="1"/>
+            <DESCENDANTS>
+                <DESCENDANT id="rectangle2" />
+            </DESCENDANTS>
+        </NODE>
+
+         <NODE id="wall10">
+            <MATERIAL id="polishedWood" />
+            <TEXTURE id="space1" />
+            <TRANSLATION x="0" y="18.75" z="-18.75" />
+            <SCALE sx="37.5" sy="37.5" sz="1"/>
+            <DESCENDANTS>
+                <DESCENDANT id="rectangle2" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="wall11">
+            <MATERIAL id="polishedWood" />
+            <TEXTURE id="space2" />
+             <TRANSLATION x="0" y="18.75" z="18.75" />
+            <ROTATION axis="y" angle="180" />
+             <SCALE sx="37.5" sy="37.5" sz="1"/>
+            <DESCENDANTS>
+                <DESCENDANT id="rectangle2" />
+            </DESCENDANTS>
+        </NODE>    
     
+         <NODE id="wall12">
+            <MATERIAL id="polishedWood" />
+            <TEXTURE id="space3" />
+            <TRANSLATION x="18.75" y="18.75" z="0" />
+            <ROTATION axis="y" angle="-90" />
+            <SCALE sx="37.5" sy="37.5" sz="1" />
+            <DESCENDANTS>
+                <DESCENDANT id="rectangle2" />
+            </DESCENDANTS>
+        </NODE>
+
 
         <NODE id="scene2" >
             <MATERIAL id="null" />
@@ -280,7 +373,7 @@
             <MATERIAL id="polishedWood" />
             <TEXTURE id="stump" />
             <ROTATION axis="x" angle="-90" />
-            <SCALE sx="10" sy="10" sz="14.5" />
+            <SCALE sx="14" sy="14" sz="14.5" />
             <DESCENDANTS>
                 <DESCENDANT id="cylinder1" />
                 <DESCENDANT id="stumpTop" />
