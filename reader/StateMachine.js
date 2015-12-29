@@ -312,10 +312,13 @@ StateMachine.prototype.updateTurnTime = function(){
         else if (this.currentState == this.states.PLAYING || (this.states.ANIMATING && this.oldState == this.states.PLAYING)){
             if(this.currentPlayer == 0){
                 this.connection.makeRequest("dobotmove("+this.currentPlayer+","+"greedy"+")", this.movePieceBot.bind(this));
+
             }
             else if(this.currentPlayer == 1){
                 this.connection.makeRequest("dobotmove("+this.currentPlayer+","+ "greedy" +")", this.movePieceBot.bind(this));
             }
+
+            this.connection.makeRequest("whoWon", this.checkFinished.bind(this));
         }
 
         this.connection.makeRequest("getnextaction", this.updateState.bind(this));
