@@ -197,7 +197,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 	}
 
 	this.lights[1].setLinearAttenuation(0.1);
-	
+	this.loadScene1();
 	
 };
 

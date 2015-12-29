@@ -19,7 +19,7 @@
     <LIGHTS>
         <LIGHT id="l01">
             <enable value = "1" />
-            <position x="0" y="25.0" z="0" w="1.0" />
+            <position x="0" y="23.0" z="0" w="1.0" />
              <ambient r="1" g="1" b="1" a="1.0" />
             <diffuse r="1" g="1" b="1" a="1.0" />
             <specular r="1" g="1" b="1" a="1.0" />
@@ -31,6 +31,14 @@
              <ambient r="1" g="1" b="1" a="1.0" />
             <diffuse r="1" g="1" b="1" a="1.0" />
             <specular r="1" g="1" b="1" a="1.0" />
+        </LIGHT>
+
+        <LIGHT id="l03">
+              <enable value ="1" />
+            <position x="0" y="10.0" z="-33.5" w="1.0" />
+             <ambient r="0" g="0" b="0.0" a="1.0" />
+            <diffuse r="1" g="0.42" b="0.02" a="1.0" />
+            <specular r="1" g="0.42" b="0.02" a="1.0" />   
         </LIGHT>
 
     </LIGHTS>
@@ -268,7 +276,8 @@
                 <DESCENDANT id="wall4" />
                 <DESCENDANT id="wall5" />
                 <DESCENDANT id="table" />
-               <!-- <DESCENDANT id="lamp" />-->
+                <DESCENDANT id="lamp" />
+                <DESCENDANT id="fireplace" />
                 <DESCENDANT id="board" />
                 <DESCENDANT id="door" />             
            </DESCENDANTS>
@@ -286,7 +295,7 @@
         </NODE>
         
         <NODE id="lamp" >
-            <MATERIAL id="null" />
+            <MATERIAL id="metal" />
             <TEXTURE id="null" />
             <TRANSLATION x="-12" y="0" z="0" /> 
             <ROTATION axis="y" angle="-90" />
@@ -301,7 +310,7 @@
         <NODE id="lampHead" >
             <MATERIAL id="null" />
             <TEXTURE id="null" />
-            
+            <TRANSLATION x="0" y="2.5" z="0" />
             <DESCENDANTS>
                 <DESCENDANT id="lampHeadArm" />
                 <DESCENDANT id="lampHeadHead" />
@@ -313,7 +322,7 @@
             <TEXTURE id="null" />
             <TRANSLATION x="0" y="9.5" z="26" />
             <ROTATION axis="x" angle="180" />
-            <SCALE sx="0.1" sy="0.1" sz="4" />
+            <SCALE sx="0.1" sy="0.1" sz="2" />
             <DESCENDANTS>
                 <DESCENDANT id="cylinder1" />
             </DESCENDANTS>
@@ -334,7 +343,7 @@
             <TEXTURE id="null" />
             <TRANSLATION x="0" y="-2" z="26" />
             <ROTATION axis="x" angle="-90" />
-            <SCALE sx="0.1" sy="0.1" sz="12" />
+            <SCALE sx="0.1" sy="0.1" sz="14" />
             <DESCENDANTS>
                 <DESCENDANT id="cylinder1" />
             </DESCENDANTS>
