@@ -76,9 +76,18 @@ XMLscene.prototype.init = function (application) {
 	this.reset = function(){
 		this.stateMachine.resetGame();
 	}
-
 	this.replay= function(){
 		this.stateMachine.replay();
+	}
+	
+	this.Scene1 = function(){
+		this.loadScene1();
+	}
+	this.Scene2 = function(){
+		this.loadScene2();
+	}
+	this.Scene3 = function(){
+		this.loadScene3();
 	}
 
 	this.timeToSA = 0;
