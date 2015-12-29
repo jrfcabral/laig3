@@ -269,7 +269,7 @@
             <TEXTURE id="null" />
             <DESCENDANTS>
                 <DESCENDANT id="floor3" />
-                <!--<DESCENDANT id="table2" />-->
+                <DESCENDANT id="table2" />
                 <DESCENDANT id="board" />
                 <DESCENDANT id="wall9" />
                 <DESCENDANT id="wall10" />
@@ -278,12 +278,44 @@
             </DESCENDANTS>
         </NODE>
 
+
+
+        <NODE id="table2" >
+            <MATERIAL id="null" />
+            <TEXTURE id="null" />
+            <ROTATION axis="x" angle="-90" />
+            <DESCENDANTS>
+                <DESCENDANT id="spaceTableTop" />
+                <DESCENDANT id="spaceTable" />a
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="spaceTableTop" >
+            <MATERIAL id="metal" />
+            <TEXTURE id="null" />
+            <TRANSLATION x="0" y="0" z="14.9" />
+            <SCALE sx="14" sy="14" sz="1" />
+            <DESCENDANTS>
+                <DESCENDANT id="circle1" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="spaceTable" >
+            <MATERIAL id="metal" />
+            <TEXTURE id="null" />
+            <TRANSLATION x="0" y="0" z="13.9" />
+            <SCALE sx="14" sy="14" sz="1" />
+            <DESCENDANTS>
+                <DESCENDANT id="cylinder1" />
+            </DESCENDANTS>
+        </NODE>
+
         <NODE id="floor3">
             <MATERIAL id="polishedWood" />
             <TEXTURE id="space4" />
-            <TRANSLATION x="0" y="0" z="0" />
+            <TRANSLATION x="0" y="-30" z="0" />
             <ROTATION axis="x" angle="-90" />
-            <SCALE sx="37.5" sy="37.5" sz="1"/>
+            <SCALE sx="75" sy="75" sz="1"/>
             <DESCENDANTS>
                 <DESCENDANT id="rectangle2" />
             </DESCENDANTS>
@@ -292,9 +324,9 @@
          <NODE id="wall9">
             <MATERIAL id="polishedWood" />
             <TEXTURE id="space0" />
-            <TRANSLATION x="-18.75" y="18.75" z="0" />
+            <TRANSLATION x="-37.5" y="7.5" z="0" />
             <ROTATION axis="y" angle="90" />
-            <SCALE sx="37.5" sy="37.5" sz="1"/>
+            <SCALE sx="75" sy="75" sz="1"/>
             <DESCENDANTS>
                 <DESCENDANT id="rectangle2" />
             </DESCENDANTS>
@@ -303,8 +335,8 @@
          <NODE id="wall10">
             <MATERIAL id="polishedWood" />
             <TEXTURE id="space1" />
-            <TRANSLATION x="0" y="18.75" z="-18.75" />
-            <SCALE sx="37.5" sy="37.5" sz="1"/>
+            <TRANSLATION x="0" y="7.5" z="-37.5" />
+            <SCALE sx="75" sy="75" sz="1"/>
             <DESCENDANTS>
                 <DESCENDANT id="rectangle2" />
             </DESCENDANTS>
@@ -313,9 +345,9 @@
         <NODE id="wall11">
             <MATERIAL id="polishedWood" />
             <TEXTURE id="space2" />
-             <TRANSLATION x="0" y="18.75" z="18.75" />
+             <TRANSLATION x="0" y="7.5" z="37.5" />
             <ROTATION axis="y" angle="180" />
-             <SCALE sx="37.5" sy="37.5" sz="1"/>
+             <SCALE sx="75" sy="75" sz="1"/>
             <DESCENDANTS>
                 <DESCENDANT id="rectangle2" />
             </DESCENDANTS>
@@ -324,9 +356,9 @@
          <NODE id="wall12">
             <MATERIAL id="polishedWood" />
             <TEXTURE id="space3" />
-            <TRANSLATION x="18.75" y="18.75" z="0" />
+            <TRANSLATION x="37.5" y="7.5" z="0" />
             <ROTATION axis="y" angle="-90" />
-            <SCALE sx="37.5" sy="37.5" sz="1" />
+            <SCALE sx="75" sy="75" sz="1" />
             <DESCENDANTS>
                 <DESCENDANT id="rectangle2" />
             </DESCENDANTS>
