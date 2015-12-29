@@ -202,13 +202,25 @@ XMLscene.prototype.onGraphLoaded = function ()
 };
 
 XMLscene.prototype.loadScene1 = function(){
-	console.log("tou a loadar");
 	this.graph.nodes[this.graph.root].descendants[0] = "scene1";
+	var n2=2;
+	var n5=5;
+	var n6=6;
+	var n8=7
+	this.lightslist["light"+n2] = true;
+	this.lightslist["light"+n5] = false;
+	this.lightslist["light"+n6] = false;
+	this.lightslist["light"+n7] = false;
 }
 XMLscene.prototype.loadScene2 = function(){
-	console.log("tou a loadar2");
 	this.graph.nodes[this.graph.root].descendants[0] = "scene2";
-	console.log(this.graph.nodes[this.graph.root]);
+	var n2=2;
+	var n5=5;
+	var n6=6;
+	this.lightslist["light"+n2] = false;
+	this.lightslist["light"+n5] = true;
+	this.lightslist["light"+n6] = true;
+	this.lightslist["light"+n7] = true;
 }
 
 

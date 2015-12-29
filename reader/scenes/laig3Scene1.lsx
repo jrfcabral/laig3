@@ -37,9 +37,50 @@
               <enable value ="1" />
             <position x="0" y="10.0" z="-33.5" w="1.0" />
              <ambient r="0" g="0" b="0.0" a="1.0" />
-            <diffuse r="1" g="0.42" b="0.02" a="1.0" />
-            <specular r="1" g="0.42" b="0.02" a="1.0" />   
+            <diffuse r="0.8" g="0.22" b="0.0" a="1.0" />
+            <specular r="0.8" g="0.32" b="0.0" a="1.0" />   
         </LIGHT>
+        
+        <LIGHT id="l04">
+            <enable value ="1" />
+            <position x="0" y="20.0" z="8" w="1.0" />
+             <ambient r="1" g="1" b="1" a="1.0" />
+            <diffuse r="1" g="1" b="1" a="1.0" />
+            <specular r="1" g="1" b="1" a="1.0" />
+        </LIGHT>
+
+        <LIGHT id="l05">
+            <enable value ="1" />
+            <position x="0" y="20.0" z="-8" w="1.0" />
+             <ambient r="1" g="1" b="1" a="1.0" />
+            <diffuse r="1" g="1" b="1" a="1.0" />
+            <specular r="1" g="1" b="1" a="1.0" />
+        </LIGHT>
+
+        <LIGHT id="l06">
+            <enable value ="1" />
+            <position x="15" y="5.0" z="0" w="1.0" />
+             <ambient r="1" g="1" b="1" a="1.0" />
+            <diffuse r="1" g="1" b="1" a="1.0" />
+            <specular r="1" g="1" b="1" a="1.0" />
+        </LIGHT>
+
+        <LIGHT id="l07">
+            <enable value ="1" />
+            <position x="-15" y="5.0" z="0" w="1.0" />
+             <ambient r="1" g="1" b="1" a="1.0" />
+            <diffuse r="1" g="1" b="1" a="1.0" />
+            <specular r="1" g="1" b="1" a="1.0" />
+        </LIGHT>
+
+         <LIGHT id="l08">
+            <enable value ="1" />
+            <position x="-20" y="15" z="-33" w="1.0" />
+             <ambient r="1" g="1" b="1" a="1.0" />
+            <diffuse r="1" g="1" b="1" a="1.0" />
+            <specular r="1" g="1" b="1" a="1.0" />
+        </LIGHT>
+
 
     </LIGHTS>
 
@@ -74,6 +115,14 @@
             <diffuse r="0.3" g="0.3" b="0.3" a="1.0" />
             <ambient r="0" g="0" b="0" a="1.0" />
             <emission r="0" g="0" b="0" a="1.0" />
+        </MATERIAL>
+
+        <MATERIAL id="unpolishedWood" >
+               <shininess value="40.0" />
+            <specular r="0.1" g="0.1" b="0.1" a="1.0" />
+            <diffuse r="0.1" g="0.1" b="0.1" a="1.0" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <emission r="0" g="0" b="0" a="1.0" /> 
         </MATERIAL>
     
     </MATERIALS>
@@ -134,6 +183,16 @@
             <amplif_factor s="1" t="1" />
         </TEXTURE>
 
+        <TEXTURE id="paperLamp" >
+            <file path="textures/paperLamp.jpg" />
+            <amplif_factor s="1" t="1" />
+        </TEXTURE>
+
+        <TEXTURE id="window">
+            <file path="textures/window.jpg" />
+            <amplif_factor s="1" t="1" />
+        </TEXTURE>
+
     </TEXTURES>
 
     <ANIMATIONS>
@@ -146,6 +205,7 @@
         <LEAF id="cylinder3" type="cylinder" args="1.0 1.0 0.1 40.0 40.0"/>
         <LEAF id="cylinder4" type="cylinder" args="2.0 2.0 0.1 40.0 40.0"/>
         <LEAF id="circle1" type="circle" args="40" />
+        <LEAF id="sphere1" type="sphere" args="1.0, 40, 40" />
         <LEAF id="patch1" type="patch" order="3" partsU="50" partsV="50" >
             <controlpoint x="-0.5" y="0" z="-0.6"/>
             <controlpoint x="-1" y="0" z="0.6"/>
@@ -191,11 +251,33 @@
                 <DESCENDANT id="wall6" />
                 <DESCENDANT id="wall7" />
                 <DESCENDANT id="wall8" />
+                <!--<DESCENDANT id="sphereLamp" />-->
+                <DESCENDANT id="window" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="window">
+            <MATERIAL id="null"/>
+            <TEXTURE id="window" />
+            <TRANSLATION x="-20" y="15" z="-37.4" />
+            <SCALE sx="25" sy="20" sz="1" />
+            <DESCENDANTS>
+                <DESCENDANT id="rectangle2" />
+            </DESCENDANTS>
+        </NODE>
+
+        <NODE id="sphereLamp">
+            <MATERIAL id="polishedWood"/>
+            <TEXTURE id="paperLamp" />
+            <TRANSLATION x="0" y="26" z="0" />
+            <SCALE sx="4" sy="4" sz="4" />
+            <DESCENDANTS>
+                <DESCENDANT id="sphere1" />
             </DESCENDANTS>
         </NODE>
 
         <NODE id="stump">
-            <MATERIAL id="null" />
+            <MATERIAL id="polishedWood" />
             <TEXTURE id="stump" />
             <ROTATION axis="x" angle="-90" />
             <SCALE sx="10" sy="10" sz="14.5" />
@@ -206,7 +288,7 @@
         </NODE>
 
         <NODE id="stumpTop">
-            <MATERIAL id="null" />
+            <MATERIAL id="polishedWood" />
             <TEXTURE id="stumpTop" />
             <TRANSLATION x="0" y="0" z="1" />
             <DESCENDANTS>
@@ -215,7 +297,7 @@
         </NODE>
 
         <NODE id="wall3">
-            <MATERIAL id="null" />
+            <MATERIAL id="polishedWood" />
             <TEXTURE id="cabinWall" />
             <TRANSLATION x="-37.5" y="18.75" z="0" />
             <ROTATION axis="y" angle="90" />
@@ -226,7 +308,7 @@
         </NODE>
 
          <NODE id="wall6">
-            <MATERIAL id="null" />
+            <MATERIAL id="polishedWood" />
             <TEXTURE id="cabinWall" />
             <TRANSLATION x="0" y="37.5" z="0" />
             <ROTATION axis="z" angle="180" />
@@ -237,7 +319,7 @@
         </NODE>
 
         <NODE id="wall7">
-            <MATERIAL id="null" />
+            <MATERIAL id="polishedWood" />
             <TEXTURE id="cabinWall" />
              <TRANSLATION x="0" y="37.5" z="0" />
             <ROTATION axis="z" angle="180" />
@@ -248,7 +330,7 @@
         </NODE>
 
         <NODE id="wall8">
-            <MATERIAL id="null" />
+            <MATERIAL id="polishedWood" />
             <TEXTURE id="cabinWall" />
             <ROTATION axis="y" angle="180" />
             <DESCENDANTS>
@@ -257,7 +339,7 @@
         </NODE>
 
         <NODE id="floor2" >
-            <MATERIAL id="null" />
+            <MATERIAL id="brick" />
             <TEXTURE id="dirtFloor" />
             <ROTATION axis="x" angle="-90" />
             <SCALE sx="75" sy="75" sz="1"/>
@@ -394,7 +476,7 @@
             <MATERIAL id="polishedWood" />
             <TEXTURE id="tableTopTex" />
             <TRANSLATION x="0" y="0" z="6" />
-            <SCALE sx="10" sy="10" sz="0.5" />
+            <SCALE sx="10" sy="12" sz="0.5" />
             <DESCENDANTS>
                 <DESCENDANT id="unitcube" />
             </DESCENDANTS>
