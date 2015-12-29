@@ -41,6 +41,10 @@ MyInterface.prototype.init = function(application) {
 	this.camControls.add(this.scene, 'RotateLeft');
 	this.camControls.add(this.scene, 'RotateRight');
 
+	this.sceneSelect = this.gameOpts.addFolder("Scenes");
+	this.sceneSelect.add(this.scene, 'Scene1');
+	this.sceneSelect.add(this.scene, 'Scene2');
+	this.sceneSelect.add(this.scene, 'Scene3');
 
 	this.scene.interface = this;
 	
