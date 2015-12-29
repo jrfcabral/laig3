@@ -35,6 +35,7 @@ CameraHelper.prototype.animatePointTransition = function(angle, time){ //angle i
     }
 
     if(Date.now() - this.animInfo[0] >= this.animInfo[1]){
+        this.camera.orbit(CGFcameraAxisID.Y, this.animInfo[2] - this.animInfo[3]);
         this.animating = false;
         this.animInfo = 0;
         return;
@@ -50,6 +51,7 @@ CameraHelper.prototype.animatePointTransition = function(angle, time){ //angle i
 
     this.camera.orbit(CGFcameraAxisID.Y, angleToOrbit);
     this.animInfo[3] = expectedAngle;
+    console.log(this.animInfo[3]);
     return;
 
 }

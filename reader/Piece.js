@@ -4,14 +4,19 @@ function Piece(scene){
     this.head = new sphere(this.scene, 0.5, 40, 40);
 
     this.goldenMat = new CGFappearance(this.scene);
-    this.goldenMat.setAmbient(1, 215/255, 0);
+    this.goldenMat.setAmbient(0, 0, 0);
     this.goldenMat.setDiffuse(1, 215/255, 0);
     this.goldenMat.setSpecular(1, 215/255, 0);
 
     this.silverMat = new CGFappearance(this.scene);
-    this.silverMat.setAmbient(192/255, 192/255, 192/255);
+    this.silverMat.setAmbient(0, 0, 0);
     this.silverMat.setDiffuse(192/255, 192/255, 192/255);
     this.silverMat.setSpecular(192/255, 192/255, 192/255);
+
+    this.flagMat = new CGFappearance(this.scene);
+    this.flagMat.setAmbient(0, 0, 0);
+    this.flagMat.setDiffuse(254/255, 153/255, 0/255);
+    this.flagMat.setSpecular(204/255, 153/255, 0/255);
 
     this.selectedMat = new CGFappearance(this.scene);
     this.selectedMat.setAmbient(1, 0, 0);
@@ -32,6 +37,7 @@ Piece.prototype.display = function(mat){
         case 0: break;
         case 1: this.goldenMat.apply(); break;
         case 2: this.silverMat.apply(); break;
+        case 3: this.flagMat.apply(); break;
         case 4: this.selectedMat.apply(); break;
         default: break;
     }

@@ -113,7 +113,7 @@ XMLscene.prototype.initLights = function () {
 };
 
 XMLscene.prototype.initCameras = function () {
-    this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(25, 15, 25), vec3.fromValues(0, 0, 0));
+    this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(25, 15, 25), vec3.fromValues(0, -5, 0));
     this.camera.zoom(-20);
     this.camera.pan(vec3.fromValues(0, -5, 0));
 };
@@ -187,7 +187,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 		else{
 
 		}
-		this.lights[i].setVisible(false);
+		this.lights[i].setVisible(true);
 
 		this.interface.group.add(this.lightslist, 'light'+i);
 		this.interface.setActiveCamera(this.leCamera);
@@ -195,6 +195,10 @@ XMLscene.prototype.onGraphLoaded = function ()
 		console.log(this.graph.nodes[this.graph.root]);
 
 	}
+
+	this.lights[1].setLinearAttenuation(0.1);
+	
+	
 };
 
 XMLscene.prototype.loadScene1 = function(){
