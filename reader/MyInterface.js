@@ -40,6 +40,9 @@ MyInterface.prototype.init = function(application) {
 	this.camControls = this.gameOpts.addFolder("Camera Controls");
 	this.camControls.add(this.scene, 'RotateLeft');
 	this.camControls.add(this.scene, 'RotateRight');
+	this.camControls.add(this.scene, 'camHeight', -20, 0).listen().onChange(function(value){
+		this.object.camera.setTarget(vec3.fromValues(0, value, 0));
+	});
 
 	this.sceneSelect = this.gameOpts.addFolder("Scenes");
 	this.sceneSelect.add(this.scene, 'Scene1');

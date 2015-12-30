@@ -43,6 +43,8 @@ XMLscene.prototype.init = function (application) {
 	this.SilverPlayer = 0;
 	this.HUD = true;
 
+	this.camHeight = -10;
+
 	this.connection = new SicstusConnection(8082, this);
 
 	this.board = new Board(this, this.graph);
