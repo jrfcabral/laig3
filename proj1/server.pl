@@ -144,8 +144,8 @@ parse_input(domove(X,Y,Xf,Yf,Player), Response):-
 parse_input(boardstate, Board):-
 	sendRemoteBoard(Board).
 
-parse_input(undo, ack):- undoPlay,!.
-parse_input(undo, nack).
+parse_input(undo(Player), ack):- undoPlay(Player),!.
+parse_input(undo(_), nack).
 
 parse_input(replay(N), [X,Y,Xf,Yf,Player]):-
 	stateNumber(ActualN),

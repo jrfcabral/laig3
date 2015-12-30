@@ -79,7 +79,7 @@ StateMachine.prototype.handlePick = function(picked){
 }
 
 StateMachine.prototype.undoPlay = function(){
-    this.connection.makeRequest("undo", this.synchronize.bind(this));
+    this.connection.makeRequest("undo("+this.currentPlayer+")", this.synchronize.bind(this));
 
 }
 
@@ -113,7 +113,7 @@ StateMachine.prototype.animateReplay = function(data){
         this.startMoveAnimation(play[0], play[1], play[2], play[3], play[4]);
     else
         this.startEnteringAnimation(play[0],play[1],play[4]);
-    window.setTimeout(this.doReplay.bind(this),1000);
+    window.setTimeout(this.doReplay.bind(this),3000);
 }
 
 StateMachine.prototype.doReplay = function(n){

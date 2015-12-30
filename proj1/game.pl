@@ -322,8 +322,10 @@ saveState:-
 	remainingPlays(Plays),
 	asserta(boardState(Cs, Player, Action, Plays, N1)).
 
-restoreState(N):-
-	boardState(Cs, Player, Action,Plays, N),
+restoreState(N,ChosenPlayer,Numb):-
+	codePlayer(OChosenPlayer, ChosenPlayer),
+	boardState(Cs, OChosenPlayer, Action,Plays, Numb),
+	Numb =< N,
 	retract(nextPlayer(_)),
 	retract(nextAction(_)),
 	retract(remainingPlays(_)),
@@ -345,6 +347,40 @@ restoreState(N):-
 	assertBoard(Cs),
 	remainingPlays(N4),
 	write(N4), write(' plays remaining'),nl.
+
+	testeReplay:- parse_input(teste, ack),
+		parse_input(domove(5,4,5,3,goldenPlayer), _),
+		parse_input(domove(6,4,6,3,goldenPlayer), _),
+		parse_input(dobotmove(1,random),_),
+		parse_input(undo(0), ack),
+		parse_input(domove(6,4,6,3,goldenPlayer), _),
+		parse_input(dobotmove(1,random),_),
+		parse_input(undo(0), ack).
+
+
+	restoreState(N):-
+		boardState(Cs, Player, Action,Plays, N),
+		retract(nextPlayer(_)),
+		retract(nextAction(_)),
+		retract(remainingPlays(_)),
+		retractall(silverPieces(_)),
+		retractall(goldenPieces(_)),
+		findall([X,Y], member([X,Y,silverPiece],Cs), LP),
+		findall([X1,Y1], member([X1,Y1,goldenPiece],Cs), LG),
+		length(LP, SilverPieces),
+		length(LG, GoldenPieces),
+		assert(silverPieces(SilverPieces)),
+		assert(goldenPieces(GoldenPieces)),
+		(Action == place ->
+			assert(nextPlayer(Player)),
+			asserta(remainingPlays(2));
+			(Action == play ->
+			assertNext(Plays, Player))),
+		retractall(position(_,_,_)),
+		assert(nextAction(Action)),
+		assertBoard(Cs),
+		remainingPlays(N4),
+		write(N4), write(' plays remaining'),nl.
 
 	assertNext(2, Player):- asserta(nextPlayer(Player)), asserta(remainingPlays(2)).
 	assertNext(1, Player):- opponent(OPlayer, Player), asserta(nextPlayer(Player)), asserta(remainingPlays(1)).
@@ -382,13 +418,13 @@ sendRemoteLine(Line, X, Y):-
  tojs(Peca, Code),
  append([Code], LineR, Line).
 
-undoPlay:-
+undoPlay(Player):-
 	stateNumber(N),
 	N1 is N-1,!,
-	restoreState(N1),!,
+	restoreState(N1,Player,Numb),!,
 
 	retract(stateNumber(N)),
-	assert(stateNumber(N1)).
+	assert(stateNumber(Numb)).
 
 
 
