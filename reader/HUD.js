@@ -2,11 +2,8 @@ function HUD(scene, width, height){
     this.scene = scene;
     this.width = width;
     this.height = height;
-//EM ANTES DE ME JULGARES EU FIZ ISTO COM UM SCRIPT Q ME GEROU AS LINHAS, N FOI A MAO 
-//(E TARDE MAS N TENHO ASSIM TANTO SONO)
-
-//LEMBRAR FAZER HUD ESPECIAL PRA QD SE GANHA
-
+	
+	this.transValues = [-3.5, 1, -10];
 
 	this.charMap = {
 		space: [0, 2],
@@ -86,6 +83,13 @@ function HUD(scene, width, height){
 	this.textShader.setUniformsValues({'dims': [16, 16]});
 
 	
+}
+
+HUD.prototype.moveHUD = function(x, y, z){
+	this.transValues[0] += x;
+	this.transValues[1] += y;
+	this.transValues[2] += z;
+
 }
 
 HUD.prototype.makeScreen = function(width, height){
@@ -200,7 +204,9 @@ HUD.prototype.writeOnHUD = function(str, widthSt, heightSt){
 
 HUD.prototype.display = function(){
     this.scene.pushMatrix();
-    this.scene.translate(-3.5, 1, -10);
+
+    this.scene.translate(this.transValues[0], this.transValues[1], this.transValues[2]);
+    
     this.scene.scale(0.1, 0.1, 1);
     this.appearance.apply();
     this.scene.setActiveShader(this.textShader);

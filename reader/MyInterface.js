@@ -70,11 +70,15 @@ MyInterface.prototype.processKeyboard = function(event) {
 	// for better cross-browser support, you may also check suggestions on using event.which in http://www.w3schools.com/jsref/event_key_keycode.asp
 	switch (event.keyCode)
 	{
-		case 97: this.setActiveCamera(this.scene.camera); break;
-		case 98: this.setActiveCamera(this.scene.leCamera); break;
+		case 119: this.scene.hud.moveHUD(0, 0.5, 0); break;
+		case 115: this.scene.hud.moveHUD(0, -0.5, 0); break;
+		case 97: this.scene.hud.moveHUD(-0.5, 0, 0); break;
+		case 100: this.scene.hud.moveHUD(0.5, 0, 0); break;
 		case 49: this.scene.loadScene1(); break;
 		case 50: this.scene.loadScene2(); break;
 		case 51: this.scene.loadScene3(); break;
+		
 
 	};
+	console.log(event.keyCode);
 };
