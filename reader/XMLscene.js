@@ -27,6 +27,7 @@ XMLscene.prototype.init = function (application) {
     this.defaultAppearance.setShininess(10.0);
     this.defaultAppearance.setTextureWrap("REPEAT", "REPEAT");
 
+	this.textShader=new CGFshader(this.gl, "shaders/font.vert", "shaders/font.frag");
 
 	this.currentTexture = "clear";
 	this.isTexturePresent = false;
@@ -46,7 +47,7 @@ XMLscene.prototype.init = function (application) {
 
 	this.board = new Board(this, this.graph);
 
-	this.connection.makeRequest("teste", function(){console.log("board resot");});
+	this.connection.makeRequest("reset", function(){console.log("board resot");});
 	this.connection.makeRequest("boardstate", this.board.updateBoard.bind(this.board));
 
 	this.stateMachine = new StateMachine(this.connection, this);
@@ -264,11 +265,11 @@ XMLscene.prototype.display = function () {
 
 	//has to be here
 	if(this.HUD){
-		if(this.camHelper.animating){
-			this.camHelper.animatePointTransition();
-		}
 		this.hud.display();
 	}
+	if(this.camHelper.animating){
+			this.camHelper.animatePointTransition();
+		}
 	
 	// Apply transformations corresponding to the camera position relative to the origin
 	this.applyViewMatrix();

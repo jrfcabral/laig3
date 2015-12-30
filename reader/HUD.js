@@ -76,11 +76,14 @@ function HUD(scene, width, height){
     this.screenMap = this.makeCleanScreenMap(width, height);
 
     this.appearance = new CGFappearance(this.scene);
+    this.appearance.setAmbient(0.3, 0.3, 0.3, 1);
+	this.appearance.setDiffuse(0.7, 0.7, 0.7, 1);
+	this.appearance.setSpecular(0.0, 0.0, 0.0, 1);	
     this.fontTexture = new CGFtexture(this.scene, "textures/oolite-font.png");
 	this.appearance.setTexture(this.fontTexture);
 
-	this.textShader=new CGFshader(this.scene.gl, "shaders/font.vert", "shaders/font.frag");
-	this.textShader.setUniformsValues({'dims': [16, 16]});
+	
+	this.scene.textShader.setUniformsValues({'dims': [16, 16]});
 
 	
 }
@@ -208,23 +211,23 @@ HUD.prototype.display = function(){
     this.scene.translate(this.transValues[0], this.transValues[1], this.transValues[2]);
     
     this.scene.scale(0.1, 0.1, 1);
-    this.appearance.apply();
-    this.scene.setActiveShader(this.textShader);
-    
+   
+    this.scene.setActiveShaderSimple(this.scene.textShader);
+     this.appearance.apply();
     for(var i = 0; i < this.height; i++){
         this.scene.pushMatrix();
         this.scene.translate(0, i, 0);
         for(var j = 0; j < this.width; j++){
             this.scene.pushMatrix();
             this.scene.translate(j, 0, 0);
-            this.textShader.setUniformsValues({'charCoords': this.screenMap[i][j]});
+            this.scene.textShader.setUniformsValues({'charCoords': this.screenMap[i][j]});
             this.screen[i][j].display();
             this.scene.popMatrix();
         }
         this.scene.popMatrix();
     }
     
-    this.scene.setActiveShader(this.scene.defaultShader);
+    this.scene.setActiveShaderSimple(this.scene.defaultShader);
     //this.screen[0][0].display();
 
     this.scene.popMatrix();
