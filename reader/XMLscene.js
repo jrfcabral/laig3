@@ -80,10 +80,10 @@ XMLscene.prototype.init = function (application) {
 	this.camHelper = new CameraHelper(this, this.camera);
 
 	this.RotateLeft = function(){
-		this.camHelper.animatePointTransition(Math.PI/4, 1000);
+		this.camHelper.animatePointTransition(Math.PI/2, 1000);
 	}
 	this.RotateRight = function(){
-		this.camHelper.animatePointTransition(-Math.PI/4, 1000);
+		this.camHelper.animatePointTransition(-Math.PI/2, 1000);
 	}
 
 	this.undo = function(){
@@ -139,9 +139,9 @@ XMLscene.prototype.initLights = function () {
 };
 
 XMLscene.prototype.initCameras = function () {
-    this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(25, 15, 25), vec3.fromValues(0, -5, 0));
+    this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(25, 15, 25), vec3.fromValues(0, -10, 0));
     this.camera.zoom(-20);
-    this.camera.pan(vec3.fromValues(0, -5, 0));
+    this.camera.pan(vec3.fromValues(0, 0, 0));
 };
 
 XMLscene.prototype.setDefaultAppearance = function () {
