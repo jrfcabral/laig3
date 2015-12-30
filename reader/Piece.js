@@ -14,8 +14,8 @@ function Piece(scene){
     this.silverMat.setSpecular(192/255, 192/255, 192/255);
 
     this.flagMat = new CGFappearance(this.scene);
-    this.flagMat.setAmbient(0, 0, 0);
-    this.flagMat.setDiffuse(254/255, 153/255, 0/255);
+    this.flagMat.setAmbient(254/255*0.1, 153/255*0.1, 0/255*0.1);
+    this.flagMat.setDiffuse(254/255, 100/255, 0/255);
     this.flagMat.setSpecular(204/255, 153/255, 0/255);
 
     this.selectedMat = new CGFappearance(this.scene);

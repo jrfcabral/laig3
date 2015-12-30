@@ -229,7 +229,8 @@ StateMachine.prototype.updateState = function(data){
 
     console.log(this.currentState);
     console.log(this.oldState);
-    if (this.currentState == this.states.PLAYING || (this.states.ANIMATING && this.oldState == this.states.PLAYING)){
+    if (this.currentState == this.states.PLAYING || (this.currentState == this.states.ANIMATING && this.oldState == this.states.PLAYING)){
+        console.log("PASSEI AQUI");
         if ((this.scene.GoldenPlayer == "random" || this.scene.GoldenPlayer == "greedy") && this.currentPlayer == 0){
             this.connection.makeRequest("dobotmove("+this.currentPlayer+","+this.scene.GoldenPlayer+")", this.movePieceBot.bind(this));
             this.connection.makeRequest("whoWon", this.checkFinished.bind(this));
@@ -310,6 +311,7 @@ StateMachine.prototype.updateTurnTime = function(){
             }
         }
         else if (this.currentState == this.states.PLAYING || (this.states.ANIMATING && this.oldState == this.states.PLAYING)){
+            
             if(this.currentPlayer == 0){
                 this.connection.makeRequest("dobotmove("+this.currentPlayer+","+"greedy"+")", this.movePieceBot.bind(this));
 
