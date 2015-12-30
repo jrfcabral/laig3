@@ -1,0 +1,49 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%               Breakthru                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Manual de utilização
+
+Índice
+1 - Jogadas
+2 - Interface
+3 - HUD
+
+1 - Jogadas
+
+O Breakthru tem duas fases de jogo distintas: a fase de posicionamento das peças e a fase de jogo.
+O jogo começa sempre na fase de posicionamento, com todas as peças fora do tabuleiro exceto a flagship, cuja posição é predefinida.
+Tendo em conta a informação apresentada na Head-up Display (daqui em diante denominada HUD) referente ao jogador cujo turno está a decorrer,
+o jogador deve indicar a célula onde pretende por a peça com um clique do rato em cima da célula escolhida. O posicionamento será validado pelo servidor de PROLOG,
+não ocorrendo se este o classificar como inválido.
+
+Postas todas as peças em jogo, o jogador poderá selecionar a peça a mexer através de um clique de rato na mesma, ou na célula onde esta se encontra.
+Com um outro clique de rato em cima da célula para onde se pretende mexer, ou na peça que pretende capturar, fica efetuada uma jogada, que será avaliada pelo servidor,
+podendo não ocorrer se este o classificar como inválido.
+
+Quando um posicionamento ou jogada não são efetuados no espaço de 30 segundos, é efetuada uma jogada pelo bot no lugar do jogador, de forma a avançar o jogo com alguma fluidez.
+
+Efetuada uma jogada que resulte na vitória de um dos jogadores, o contador de vitórias do mesmo incrementará, sendo possível carregar no botão "reset" da interface para repor
+o jogo ao estado inicial.
+
+2 - Interface
+
+Esta secção explica as funcionalidades disponíveis na interface do jogo.
+
+Realça-se antes de mais a possibilidade de movimentar a HUD, através das teclas WASD, de forma a ser possível posicioná-lo de forma confortável.
+Se por algum motivo o utilizador perder a HUD, é possível reavê-la através da tecla Q do teclado, que trás a HUD para o centro do ecrã.
+
+Na secção game options poderão ser encontrados os seguintes botões:
+
+  - undo: volta uma jogada atrás
+  - replay: mostra o filme da cena
+  - reset: reinicializa o jogo, voltando tudo aos estados e valores iniciais, exceto os contadores de vitórias
+  - HUD: quando "checked" a HUD é desenhada, quando "unchecked" a HUD não é desenhada
+  - GoldenPlayer e SilverPlayer: permite escolher o modo de jogo de cada jogador, sendo que as opções "Random" e "Greedy" são correspondentes aos dois níveis de dificuldade do bot.
+
+Na secção Camera Controls existem dois botões que permitem a rotação da câmara entre quatro pontos pré-definidos, correspondentes aos quatro cantos do tabuleiro.
+Na secção Scenes existem três botões que permitem transitar entre cenas. Isto também é possível através das taclas 1, 2, e 3 do teclado.
+
+3 - HUD
+A HUD apresenta (por ordem de cima para baixo), um contador de vitórias para cada jogador, um contador de peças em campo para cada jogador e
+um indicador do jogador cujo turno está correntemente a decorrer, seguido de um contador dos segundos que o mesmo tem para fazer a jogada. 

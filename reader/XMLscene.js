@@ -67,6 +67,16 @@ XMLscene.prototype.init = function (application) {
 	this.invalidPlayHUD.moveHUD(-0.5, 0, 0);
 	this.displayInvalidMessage = [false, 0];
 
+	this.winnerHUD = new HUD(this, 12, 2);
+	this.winnerHUD.resetHUDPosition();
+	this.winnerHUD.moveHUD(-0.5, 0.2, 0);
+
+	this.tellToResetHUD = new HUD(this, 26, 1);
+	this.tellToResetHUD.writeOnHUD("Press reset to play again", 0, 0);
+	this.tellToResetHUD.resetHUDPosition();
+	this.tellToResetHUD.moveHUD(-1.1, -0.4, 0);
+	this.shouldDisplayWin = false;
+
 	this.camHelper = new CameraHelper(this, this.camera);
 
 	this.RotateLeft = function(){
@@ -278,6 +288,13 @@ XMLscene.prototype.display = function () {
 			this.displayInvalidMessage[0] = false;
 		}
 		this.invalidPlayHUD.display();
+	}
+	if(this.shouldDisplayWin){
+		this.pushMatrix();
+		this.scale(3, 3, 1);
+		this.winnerHUD.display();
+		this.popMatrix();
+		this.tellToResetHUD.display();
 	}
 	if(this.camHelper.animating){
 			this.camHelper.animatePointTransition();

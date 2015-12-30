@@ -68,7 +68,8 @@ function HUD(scene, width, height){
 		six: [6, 3],
 		seven: [7, 3],
 		eight: [8, 3],
-		nine: [9, 3]
+		nine: [9, 3],
+		exclamation: [1, 2]
 	};
 
     
@@ -202,7 +203,9 @@ HUD.prototype.writeOnHUD = function(str, widthSt, heightSt){
 			case '7': this.screenMap[this.height-1-heightCount][widthCount++] = this.charMap.seven; break;
 			case '8': this.screenMap[this.height-1-heightCount][widthCount++] = this.charMap.eight; break;
 			case '9': this.screenMap[this.height-1-heightCount][widthCount++] = this.charMap.nine; break;
+			case '!': this.screenMap[this.height-1-heightCount][widthCount++] = this.charMap.exclamation; break;
 		}
+		//these lines were generated with a script.
 		if(widthCount > this.width-1){
 			widthCount = 0;
 			heightCount++;

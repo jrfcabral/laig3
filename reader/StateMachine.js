@@ -258,14 +258,17 @@ StateMachine.prototype.checkFinished = function(data){
     var winner = JSON.parse(data.target.response);
     if(winner != 2){
         this.currentState = this.states.OVER;
-        console.log(winner + " has won");
+        this.scene.winnerHUD.writeOnHUD(this.playersName[winner], 0, 0);
+        this.scene.winnerHUD.writeOnHUD("has won!", 2, 1);
+        this.scene.shouldDisplayWin = true;
         this.scene.board.gamesWon[winner]++;
         this.updateInfo();
     }
 }
 
 StateMachine.prototype.resetGame = function(){
-    this.connection.makeRequest("reset", this.resetStateMachine.bind(this));    
+    this.connection.makeRequest("reset", this.resetStateMachine.bind(this)); 
+    this.scene.shouldDisplayWin = false;
 }
 
 StateMachine.prototype.resetStateMachine = function(data){
