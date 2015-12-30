@@ -279,6 +279,7 @@ StateMachine.prototype.resetStateMachine = function(data){
         return;
     }
     else{
+            this.moveAnimationEnabled=false;
         this.currentState = this.states.PLACING;
         this.connection.makeRequest("getnextaction", this.updateState.bind(this));
         this.connection.makeRequest("boardstate", this.scene.board.updateBoard.bind(this.scene.board));   
