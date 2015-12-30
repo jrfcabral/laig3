@@ -108,8 +108,11 @@ StateMachine.prototype.animateReplay = function(data){
     console.log(data.target.response);
     this.currentState = this.states.ANIMATING;
     var play = JSON.parse(data.target.response);
-    this.startMoveAnimation(play[0], play[1], play[2], play[3], play[4]);
-    window.setTimeout(this.doReplay.bind(this),3000);
+    if (play[2] !== -1)
+        this.startMoveAnimation(play[0], play[1], play[2], play[3], play[4]);
+    else
+        this.startEnteringAnimation(play[0],play[1],play[4]);
+    window.setTimeout(this.doReplay.bind(this),1000);
 }
 
 StateMachine.prototype.doReplay = function(n){
@@ -146,8 +149,9 @@ StateMachine.prototype.doPlay = function(data){
 StateMachine.prototype.startEnteringAnimation=function(x, y, player){
      this.animationStart = Date.now();
     this.enteringAnimationEnabled = true;
+    this.oldState = this.currentState;
+
     this.currentState = this.states.ANIMATING;
-    this.oldState = this.states.PLACING;
     this.enteringAnimation.x = x;
     this.enteringAnimation.y = y;
     this.enteringAnimation.player = player;

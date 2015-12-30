@@ -78,11 +78,11 @@ testeRemote:-
 	placeRemotePiece(2,7,silverPlayer),
 	placeRemotePiece(2,8,silverPlayer),
 	placeRemotePiece(2,9,silverPlayer),
-	placeRemotePiece(2,10,silverPlayer),
-	doRemotePlay(4,4,4,0,goldenPlayer),
-	doRemotePlay(4,0,4,4,goldenPlayer),
-	doRemotePlay(1,10,0,10,silverPlayer),
-	doRemotePlay(0,10,1,10,silverPlayer).
+	placeRemotePiece(2,10,silverPlayer).
+%	doRemotePlay(4,4,4,0,goldenPlayer),
+%	doRemotePlay(4,0,4,4,goldenPlayer),
+%	doRemotePlay(1,10,0,10,silverPlayer),
+%	doRemotePlay(0,10,1,10,silverPlayer).
 
 
 
@@ -161,6 +161,8 @@ doPlayerMovement(Player):-
 	retractall(position(_,_,_)),
 	retractall(boardState(_,_,_,_,_)),
 	retractall(stateNumber(_)),
+	retractall(nextPlayer),
+	retractall(nextAction),
 		fillBoard,
 		assert(stateNumber(0)),
 		asserta(position(5,5,flagship)),
@@ -176,10 +178,11 @@ setupRemoteBoard:-
 	retractall(stateNumber(_)),
 	assert(remainingPlays(2)),
 	retract(silverPieces(_)),
-	retract(goldenPieces(_)),
-	retract(nextPlayer(_)),
+	retractall(goldenPieces),
+	retractall(nextPlayer(_)),
+	retractall(nextAction),
 	assert(nextPlayer(goldenPlayer)),
-	retract(nextAction(_)),
+	retractall(nextAction(_)),
 	retractall(remainingPlays(_)),
 	retractall(position(_,_,_)),
 	fillBoard,
@@ -297,7 +300,6 @@ emptySpace(X,Y,Xf,Yf).
 
 savePlay(X,Y,Xf,Yf,Player):-
 	retract(stateNumber(N)),
-	write('sucesso'),
 	N1 is N+1,
 	asserta(stateNumber(N1)),
 	asserta(savedPlay(X,Y,Xf,Yf,Player,N1)).
@@ -316,7 +318,19 @@ restoreState(N):-
 	retract(nextPlayer(_)),
 	retract(nextAction(_)),
 	retract(remainingPlays(_)),
-	assertNext(Plays, Player),
+	retractall(silverPieces(_)),
+	retractall(goldenPieces(_)),
+	findall([X,Y], member([X,Y,silverPiece],Cs), LP),
+	findall([X1,Y1], member([X1,Y1,goldenPiece],Cs), LG),
+	length(LP, SilverPieces),
+	length(LG, GoldenPieces),
+	assert(silverPieces(SilverPieces)),
+	assert(goldenPieces(GoldenPieces)),
+	(Action == place ->
+		assert(nextPlayer(Player)),
+		asserta(remainingPlays(2));
+		(Action == play ->
+		assertNext(Plays, Player))),
 	retractall(position(_,_,_)),
 	assert(nextAction(Action)),
 	assertBoard(Cs).
@@ -403,7 +417,9 @@ placeRemotePiece(silverPlayer, X, Y):-
 		retractall(nextAction(_)),
 		assert(nextAction(play)),
 		assert(remainingPlays(2));
-		true).
+		true),
+		saveState,
+		savePlay(X,Y,-1,-1,silverPlayer).
 
 
 		placeRemotePiece(goldenPlayer,X,Y):-
@@ -417,7 +433,9 @@ placeRemotePiece(silverPlayer, X, Y):-
 				(N1 == 12 ->
 					retract(nextPlayer(_)),
 					asserta(nextPlayer(silverPlayer));
-					true).
+					true),
+					saveState,
+					savePlay(X,Y,-1,-1,goldenPlayer).
 
 
 
@@ -437,12 +455,15 @@ placeRemotePiece(X, Y, silverPlayer):-
 		retractall(nextAction(_)),
 		assert(nextAction(play)),
 		assert(remainingPlays(2));
-		true).
+		true),
+		saveState,
+		savePlay(X,Y,-1,-1,silverPlayer).
 
 placeRemotePiece(X, Y, goldenPlayer):-
 nextPlayer(goldenPlayer),
 nextAction(place),
 	validateCoordinates(X,Y,goldenPlayer),
+
 	asserta(position(X,Y,goldenPiece)),
 	retract(goldenPieces(N)),
 	N1 is N+1,
@@ -450,7 +471,9 @@ nextAction(place),
 	(N1 == 12 ->
 		retract(nextPlayer(_)),
 		asserta(nextPlayer(silverPlayer));
-		true).
+		true),
+		saveState,
+		savePlay(X,Y,-1,-1,goldenPlayer).
 
 
 wonGameRemote(goldenPlayer):- position(_,0,flagship);position(0,_,flagship);position(10,_,flagship);position(_,10,flagship);\+position(_,_,silverPiece).
