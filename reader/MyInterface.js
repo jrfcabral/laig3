@@ -74,6 +74,7 @@ MyInterface.prototype.processKeyboard = function(event) {
 		case 115: this.scene.hud.moveHUD(0, -0.5, 0); break;
 		case 97: this.scene.hud.moveHUD(-0.5, 0, 0); break;
 		case 100: this.scene.hud.moveHUD(0.5, 0, 0); break;
+		case 113: this.scene.hud.resetHUDPosition();
 		case 49: this.scene.loadScene1(); break;
 		case 50: this.scene.loadScene2(); break;
 		case 51: this.scene.loadScene3(); break;

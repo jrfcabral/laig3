@@ -95,6 +95,12 @@ HUD.prototype.moveHUD = function(x, y, z){
 
 }
 
+HUD.prototype.resetHUDPosition = function(){
+	this.transValues[0] = 0;
+	this.transValues[1] = 0;
+	this.transValues[2] = -10;
+}
+
 HUD.prototype.makeScreen = function(width, height){
     var screen = []
     for(var i = 0; i < height; i++){
