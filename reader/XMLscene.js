@@ -61,6 +61,12 @@ XMLscene.prototype.init = function (application) {
 	this.hud.writeOnHUD("Silver", 0, 6);
 	this.hud.writeOnHUD("Taking turn", 0, 8);
 
+	this.invalidPlayHUD = new HUD(this, 12, 1);
+	this.invalidPlayHUD.writeOnHUD("Invalid Play", 0, 0);
+	this.invalidPlayHUD.resetHUDPosition();
+	this.invalidPlayHUD.moveHUD(-0.5, 0, 0);
+	this.displayInvalidMessage = [false, 0];
+
 	this.camHelper = new CameraHelper(this, this.camera);
 
 	this.RotateLeft = function(){
@@ -266,6 +272,12 @@ XMLscene.prototype.display = function () {
 	//has to be here
 	if(this.HUD){
 		this.hud.display();
+	}
+	if(this.displayInvalidMessage[0]){
+		if(Date.now() - this.displayInvalidMessage[1] > 1000){
+			this.displayInvalidMessage[0] = false;
+		}
+		this.invalidPlayHUD.display();
 	}
 	if(this.camHelper.animating){
 			this.camHelper.animatePointTransition();

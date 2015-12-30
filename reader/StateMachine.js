@@ -129,8 +129,13 @@ StateMachine.prototype.doPlay = function(data){
         this.animationStart = Date.now();
         this.color = this.scene.board.boardTxt[this.currentAnimation.yi][this.currentAnimation.xi];                   
     }
-    else
-        console.log("falheu");
+    else{
+        this.scene.displayInvalidMessage[0] = true;
+        this.scene.displayInvalidMessage[1] = Date.now();
+
+        
+    }
+        
     this.connection.makeRequest("whoWon", this.checkFinished.bind(this));
     this.connection.makeRequest("getnextaction", this.updateState.bind(this));
 
@@ -193,8 +198,10 @@ StateMachine.prototype.placePiece = function(data){
         this.startEnteringAnimation(placed[0],placed[1],placed[2]);
         this.connection.makeRequest("boardstate", this.scene.board.updateBoard.bind(this.scene.board));   
     }
-    else
-        console.log("falheu");
+    else{
+         this.scene.displayInvalidMessage[0] = true;
+        this.scene.displayInvalidMessage[1] = Date.now();
+    }
     
     this.connection.makeRequest("getnextaction", this.updateState.bind(this));
 }
@@ -302,7 +309,7 @@ StateMachine.prototype.updateTurnTime = function(){
         this.scene.hud.writeOnHUD(this.timeForTurn.toString()+ " ", 13, 9);
     }
     if(this.currentState != this.states.OVER && this.timeForTurn-- == 0){
-        if (this.currentState == this.states.PLACING|| (this.states.ANIMATING && this.oldState == this.states.PLACING)){
+        if (this.currentState == this.states.PLACING|| (this.currentState == this.states.ANIMATING && this.oldState == this.states.PLACING)){
             if(this.currentPlayer == 0){
                 this.connection.makeRequest("setpiecebot("+this.currentPlayer+")", this.placePiece.bind(this));
             }
@@ -310,7 +317,7 @@ StateMachine.prototype.updateTurnTime = function(){
                 this.connection.makeRequest("setpiecebot("+this.currentPlayer+")", this.placePiece.bind(this));
             }
         }
-        else if (this.currentState == this.states.PLAYING || (this.states.ANIMATING && this.oldState == this.states.PLAYING)){
+        else if (this.currentState == this.states.PLAYING || (this.currentState == this.states.ANIMATING && this.oldState == this.states.PLAYING)){
             
             if(this.currentPlayer == 0){
                 this.connection.makeRequest("dobotmove("+this.currentPlayer+","+"greedy"+")", this.movePieceBot.bind(this));
