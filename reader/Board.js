@@ -48,9 +48,6 @@ Board.prototype.undo = function(){
         return;
     }
     this.undoCounter++;
-    //Manda o tabuleiro pro prolog, tem q haver um predicado q traduza
-    //Isto pode ou nao ser usado conforme, oq vamos fazer em termos d protocolo
-    //this.boardTxt = this.boardHistory[this.boardHistory.length -1 -this.undoCounter];
 
 }
 Board.prototype.redo = function(){
@@ -126,7 +123,7 @@ Board.prototype.display = function(){
             this.scene.stateMachine.enteringAnimationEnabled){
                 console.log("entrei");
                     var delta = Date.now() - this.scene.stateMachine.animationStart;
-                    var progress = delta/20;
+                    var progress = delta/2000;
                     var animation = this.scene.stateMachine.enteringAnimation;
                     console.log(progress);
                     if(this.scene.stateMachine.enteringAnimation.player == 0){
@@ -178,7 +175,7 @@ Board.prototype.display = function(){
                     if(progress >= 100){
                         this.scene.stateMachine.currentState = this.scene.stateMachine.oldState;
                         this.scene.stateMachine.moveAnimationEnabled = false;
-                        this.scene.stateMachine.nextAnimationerino();
+                        this.scene.stateMachine.nextAnimationerino();                        
                     }
                     continue;                    
             }
