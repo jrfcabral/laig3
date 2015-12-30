@@ -105,7 +105,7 @@ assert(currentPlayer(Player)),
 	retractall(moved(_)), retractall(moved(_,_)),retractall(captured),
 	takeTurn(CurrentPlayer, NewPlayer),
 	assert(currentPlayer(NewPlayer)),
-	printBoard,
+
 	wonGame(Victor),!, clearScreen,
 	write(Victor),write(' won the game!').
 
@@ -113,11 +113,11 @@ wonGame(goldenPlayer):- position(_,0,flagship);position(0,_,flagship);position(1
 wonGame(silverPlayer):- \+position(_,_,flagship).
 
 takeTurn(goldenPlayer, silverPlayer):-
-playerGolden(human), doPlayerMovement(goldenPlayer), printBoard,( (\+moved(flagship), \+captured, printBoard, doPlayerMovement(goldenPlayer)); (moved(flagship);captured)),!.
+playerGolden(human), doPlayerMovement(goldenPlayer),   ( (\+moved(flagship), \+captured,    doPlayerMovement(goldenPlayer)); (moved(flagship);captured)),!.
 
 takeTurn(goldenPlayer, silverPlayer, [[Xi1,Yi1,Xf1,Yf1, 0], [Xi2,Yi2,Xf2,Yf2, 0]]):-
-playerGolden(bot), difficulty(goldenPlayer, random), write('vou começar'), randomPlay(goldenPlayer, Pred1),write('achei'), Pred =.. Pred1, Pred,Pred1 = [_,Xi1,Yi1,Xf1,Yf1,_], write('primeira jogada'),
-((\+moved(flagship),\+captured, randomMove(goldenPlayer, Pred2), PredD =.. Pred2, PredD,write('segunda jogada feita'),Pred2 = [_,Xi2,Yi2,Xf2,Yf2,_],write('segunda jogada unificada'));((moved(flagship);captured),  [Xi2,Yi2,Xf2,Yf2, 0] = [-1,-1,-1,-1,0])), !.
+playerGolden(bot), difficulty(goldenPlayer, random), write('vou começar'), randomPlay(goldenPlayer, Pred1),write('achei'), Pred =.. Pred1, Pred,Pred1 = [_,Xi1,Yi1,Xf1,Yf1,_],
+((\+moved(flagship),\+captured,saveState(goldenPlayer, 1), savePlay(Xi1,Yi1,Xf1,Yf1,goldenPlayer), randomMove(goldenPlayer, Pred2), PredD =.. Pred2, PredD,write('segunda jogada feita'),Pred2 = [_,Xi2,Yi2,Xf2,Yf2,_],saveState(silverPlayer,2), savePlay(Xi2,Yi2,Xf2,Yf2,goldenPlayer));((moved(flagship);captured),  [Xi2,Yi2,Xf2,Yf2, 0] = [-1,-1,-1,-1,0],saveState(silverPlayer, 2), savePlay(Xi1,Yi1,Xf1,Yf1,silverPlayer))), !.
 
 takeTurn(goldenPlayer, silverPlayer, [[Xi1,Yi1,Xf1,Yf1, 1], [Xi2,Yi2,Xf2,Yf2, 1]]):-
 	 playerGolden(bot), difficulty(goldenPlayer, greedy),
@@ -129,19 +129,19 @@ takeTurn(goldenPlayer, silverPlayer, [[Xi1,Yi1,Xf1,Yf1, 1], [Xi2,Yi2,Xf2,Yf2, 1]
 
 
 takeTurn(silverPlayer, goldenPlayer):-
-playerSilver(human), doPlayerMovement(silverPlayer), printBoard, ((\+captured,doPlayerMovement(silverPlayer));captured),!.
+playerSilver(human), doPlayerMovement(silverPlayer),    ((\+captured,doPlayerMovement(silverPlayer));captured),!.
 
 takeTurn(silverPlayer, goldenPlayer, [[Xi1,Yi1,Xf1,Yf1, 1], [Xi2,Yi2,Xf2,Yf2, 1]]):-
 playerSilver(bot), difficulty(silverPlayer, random), randomPlay(silverPlayer, Pred1), Pred =.. Pred1, Pred, Pred1 = [_,Xi1,Yi1,Xf1,Yf1,_],
-((captured,[Xi2,Yi2,Xf2,Yf2, 1] = [-1,-1,-1,-1,1]);(\+captured,randomMove(silverPlayer, Pred2), PredD =.. Pred2, PredD,Pred2 = [_,Xi2,Yi2,Xf2,Yf2,_])), printBoard, !.
+((captured,[Xi2,Yi2,Xf2,Yf2, 1] = [-1,-1,-1,-1,1],saveState(goldenPlayer, 2), savePlay(Xi1,Yi1,Xf1,Yf1,silverPlayer));(\+captured,saveState(silverPlayer, 1), savePlay(Xi1,Yi1,Xf1,Yf1,silverPlayer),randomMove(silverPlayer, Pred2), PredD =.. Pred2, PredD,Pred2 = [_,Xi2,Yi2,Xf2,Yf2,_],saveState(goldenPlayer, 2), savePlay(Xi2,Yi2,Xf2,Yf2,silverPlayer))),    !.
 
 takeTurn(silverPlayer, goldenPlayer, [[Xi1,Yi1,Xf1,Yf1, 1], [Xi2,Yi2,Xf2,Yf2, 1]]):-playerSilver(bot), difficulty(silverPlayer, greedy),
-( ( blockFlagship(Xi1,Yi1,Xf1,Yf1), doPlay(Xi1,Yi1,Xf1,Yf1,silverPlayer) );
-	(validCapture(Xi1,Yi1,Xf1,Yf1, silverPlayer), doPlay(Xi1,Yi1,Xf1,Yf1,silverPlayer));
-	(randomMove(silverPlayer, Pred1), Pred =.. Pred1, Pred, Pred1 = [_,Xi1,Yi1,Xf1,Yf1,_] )),!,
+( ( blockFlagship(Xi1,Yi1,Xf1,Yf1), doPlay(Xi1,Yi1,Xf1,Yf1,silverPlayer), saveState(silverPlayer, 1), savePlay(Xi1,Yi1,Xf1,Yf1,silverPlayer));
+	(validCapture(Xi1,Yi1,Xf1,Yf1, silverPlayer), doPlay(Xi1,Yi1,Xf1,Yf1,silverPlayer), saveState(goldenPlayer, 2), savePlay(Xi1,Yi1,Xf1,Yf1,goldenPlayer));
+	(randomMove(silverPlayer, Pred1), Pred =.. Pred1, Pred, Pred1 = [_,Xi1,Yi1,Xf1,Yf1,_] ), saveState(silverPlayer, 1), savePlay(Xi1,Yi1,Xf1,Yf1,silverPlayer)),!,
 (  (captured,[Xi2,Yi2,Xf2,Yf2, 1] = [-1,-1,-1,-1,1]);
-	 (\+captured, blockFlagship(Xi2,Yi2,Xf2,Yf2), doPlay(Xi2,Yi2,Xf2,Yf2,silverPlayer));
-	 (\+captured, randomMove(silverPlayer, Pred2), PredD =.. Pred2, PredD, Pred2 = [_,Xi2,Yi2,Xf2,Yf2,_])),!.
+	 (\+captured, blockFlagship(Xi2,Yi2,Xf2,Yf2), doPlay(Xi2,Yi2,Xf2,Yf2,silverPlayer),Pred2 = [_,Xi2,Yi2,Xf2,Yf2,_],saveState(goldenPlayer, 2), savePlay(Xi2,Yi2,Xf2,Yf2,goldenPlayer));
+	 (\+captured, randomMove(silverPlayer, Pred2), PredD =.. Pred2, PredD, Pred2 = [_,Xi2,Yi2,Xf2,Yf2,_],saveState(goldenPlayer, 2), savePlay(Xi2,Yi2,Xf2,Yf2,goldenPlayer))),!.
 
 doPlayerMovement(Player):-
 	repeat,write(Player), write(' chooses a piece to move:'), nl,
@@ -207,7 +207,7 @@ placePiece(goldenPlayer, N):-playerGolden(human),
 	readCoordinates(X,Y),
 	validateCoordinates(X,Y, goldenPlayer),!,
 	asserta(position(X,Y,goldenPiece)),
-	printBoard,!,
+	  !,
 	placePiece(goldenPlayer, N1).
 
 placePiece(goldenPlayer,N):-
@@ -215,17 +215,17 @@ placePiece(goldenPlayer,N):-
 	N1 is N+1, N < 12,
 	randomPlacement(goldenPlayer, X, Y),
 	asserta(position(X,Y,goldenPiece)),
-	printBoard,!,
+	  !,
 	placePiece(goldenPlayer, N1).
 
-	placePiece(silverPlayer,N):-playerSilver(bot), difficulty(silverPlayer, greedy),blockFlagshipPlacement, N1 is N-1, printBoard, !, placePiece(silverPlayer, N1).
+	placePiece(silverPlayer,N):-playerSilver(bot), difficulty(silverPlayer, greedy),blockFlagshipPlacement, N1 is N-1,    !, placePiece(silverPlayer, N1).
 
 	placePiece(silverPlayer,N):-
 		playerSilver(bot),
 		N1 is N+1, N < 20,
 		randomPlacement(silverPlayer, X, Y),
 		asserta(position(X,Y,silverPiece)),
-		printBoard,!,
+		  !,
 		placePiece(silverPlayer, N1).
 
 
@@ -236,7 +236,7 @@ placePiece(silverPlayer, N):- N1 is N+1, N< 20,
 	readCoordinates(X,Y),
 	validateCoordinates(X,Y, silverPlayer),!,
 	asserta(position(X,Y,silverPiece)),
-	printBoard,!,
+	  !,
 	placePiece(silverPlayer, N1).
 
 
@@ -275,10 +275,10 @@ calculateDistances(Xi, Yi, Xf, Yf, DX, DY):-
 	emptyCellsBetween(X,Y,Xf,Y):-Xf1 is Xf-1, findall(Z, position(Xf,Y,Z), [emptyCell]), emptyCellsBetween(X,Y,Xf1,Y).
 
 doPlay(X,Y,Xf,Yf,Player):- validMove(X,Y,Xf,Yf,Player),
-	owner(Player,Piece),printBoard,retract(position(X,Y,Piece)),asserta(position(Xf,Yf,Piece)), asserta(moved(Xf,Yf)),saveState,savePlay(X,Y,Xf,Yf,Player).
+	owner(Player,Piece),  retract(position(X,Y,Piece)),asserta(position(Xf,Yf,Piece)), asserta(moved(Xf,Yf)).
 
 doPlay(X,Y,Xf,Yf,Player):- validCapture(X,Y,Xf,Yf,Player),
-	owner(Player,Piece), printBoard,savePlay(X,Y,Xf,Yf,Player),retract(position(X,Y,Piece)),opponent(Player, Opponent), owner(Opponent,OpponentPiece), retract(position(Xf,Yf,OpponentPiece)), asserta(position(Xf,Yf,Piece)),asserta(captured), asserta(moved(Xf,Yf)),savePlay(X,Y,Xf,Yf,Player).
+	owner(Player,Piece),   retract(position(X,Y,Piece)),opponent(Player, Opponent), owner(Opponent,OpponentPiece), retract(position(Xf,Yf,OpponentPiece)), asserta(position(Xf,Yf,Piece)),asserta(captured), asserta(moved(Xf,Yf)).
 
 validPlay(X,Y,Xf,Yf,Player):- (validMove(X,Y,Xf,Yf,Player);validCapture(X,Y,Xf,Yf,Player)),\+moved(X,Y).
 
@@ -303,6 +303,15 @@ savePlay(X,Y,Xf,Yf,Player):-
 	N1 is N+1,
 	asserta(stateNumber(N1)),
 	asserta(savedPlay(X,Y,Xf,Yf,Player,N1)).
+
+
+	saveState(Player, Plays):-
+		stateNumber(N),
+		N1 is N+1,
+		findall([X,Y,State], position(X,Y,State), Cs),
+		nextAction(Action),
+		asserta(boardState(Cs, Player, Action, Plays, N1)).
+
 
 saveState:-
 	stateNumber(N),
@@ -333,10 +342,12 @@ restoreState(N):-
 		assertNext(Plays, Player))),
 	retractall(position(_,_,_)),
 	assert(nextAction(Action)),
-	assertBoard(Cs).
+	assertBoard(Cs),
+	remainingPlays(N4),
+	write(N4), write(' plays remaining'),nl.
 
-	assertNext(2, Player):- asserta(nextPlayer(Player)), asserta(remainingPlays(1)).
-	assertNext(1, Player):- opponent(OPlayer, Player), asserta(nextPlayer(OPlayer)), asserta(remainingPlays(2)).
+	assertNext(2, Player):- asserta(nextPlayer(Player)), asserta(remainingPlays(2)).
+	assertNext(1, Player):- opponent(OPlayer, Player), asserta(nextPlayer(Player)), asserta(remainingPlays(1)).
 
 assertBoard([]).
 assertBoard([[X,Y,State]|T]):-
@@ -375,7 +386,7 @@ undoPlay:-
 	stateNumber(N),
 	N1 is N-1,!,
 	restoreState(N1),!,
-	printBoard,
+
 	retract(stateNumber(N)),
 	assert(stateNumber(N1)).
 
@@ -402,7 +413,7 @@ doRemotePlay(X,Y,Xf,Yf,Player):-
 			assert(remainingPlays(2));
 			assert(remainingPlays(1))
 
-		).
+		),saveState,savePlay(X,Y,Xf,Yf,Player).
 
 
 placeRemotePiece(silverPlayer, X, Y):-

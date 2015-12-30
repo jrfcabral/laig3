@@ -160,7 +160,6 @@ parse_input(replay(_), nack).
 parse_input(dobotmove(Player, Difficulty), [Pred1, Pred2]):-
 	retractall(captured),
 	codePlayer(Player1 , Player),
-	saveState,
 	retractall(difficulty(_,_)),
 	retractall(playerGolden(_)),
 	retractall(playerSilver(_)),
@@ -168,20 +167,14 @@ parse_input(dobotmove(Player, Difficulty), [Pred1, Pred2]):-
 	Player1 = goldenPlayer ->
 		asserta(playerGolden(bot)),
 		asserta(difficulty(goldenPlayer, Difficulty)),
-		write('nao fodencio 1'),
-		takeTurn(goldenPlayer, silverPlayer, [Pred1, Pred2]),
-		write('nao fodencio 2'),
+		takeTurn(goldenPlayer, silverPlayer, [Pred1, Pred2]),!,
 		retract(nextPlayer(Player1)),
-		write('nao fodencio 3'),
 		asserta(nextPlayer(silverPlayer));
 	Player1 = silverPlayer ->
 		asserta(playerSilver(bot)),
 		asserta(difficulty(silverPlayer, Difficulty)),
-		write('nao fodencio 1'),
-		takeTurn(silverPlayer, goldenPlayer, [Pred1, Pred2]),!,write('took turn'),
-		write('nao fodencio 2'),
+		takeTurn(silverPlayer, goldenPlayer, [Pred1, Pred2]),!,
 		retract(nextPlayer(Player1)),
-		write('nao fodencio 3'),
 		asserta(nextPlayer(goldenPlayer)).
 
 

@@ -96,6 +96,7 @@ StateMachine.prototype.nextAnimationerino = function(){
 
 StateMachine.prototype.replay = function(){
     this.currentlyReplaying = 1;
+    this.moveAnimationEnabled = false;
     this.oldState = this.states.REPLAYING;
     this.doReplay(this.currentlyReplaying);
 }
