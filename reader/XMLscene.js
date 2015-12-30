@@ -80,10 +80,10 @@ XMLscene.prototype.init = function (application) {
 	this.camHelper = new CameraHelper(this, this.camera);
 
 	this.RotateLeft = function(){
-		this.camHelper.animatePointTransition(Math.PI/2, 1000);
+		this.camHelper.animatePointTransition(Math.PI/4, 1000);
 	}
 	this.RotateRight = function(){
-		this.camHelper.animatePointTransition(-Math.PI/2, 1000);
+		this.camHelper.animatePointTransition(-Math.PI/4, 1000);
 	}
 
 	this.undo = function(){
