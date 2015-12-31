@@ -18,10 +18,7 @@ selecionar a opção "consult" do sub-menu "files" e escolher o ficheiro "server
 "server(8082)." na consola do SISCtus.
 
 Será também necessário ter um servidor HTTP a providenciar acesso aos ficheiros necessários. Este servidor deverá ter como root o diretório
-providenciado (laig3). Para aceder ao jogo é necessário navegar até ao diretório reader, e para visualizar as cenas, é necessário passar como argumento
-o ficheiro "laig3Scenes.lsx". Pode-se, portanto, utilizar uma string deste género:
-
-"http://localhost:8000/reader/?file=laig3Scenes.lsx"
+providenciado (laig3). Para aceder ao jogo é necessário navegar até ao diretório reader.
 
 É importante que o servidor esteja a correr antes do acesso à página, ou alternativamente, será necessário fazer refresh à pagina em questão.
 
@@ -62,4 +59,4 @@ Na secção Scenes existem três botões que permitem transitar entre cenas. Ist
 
 3 - HUD
 A HUD apresenta (por ordem de cima para baixo), um contador de vitórias para cada jogador, um contador de peças em campo para cada jogador e
-um indicador do jogador cujo turno está correntemente a decorrer, seguido de um contador dos segundos que o mesmo tem para fazer a jogada. 
+um indicador do jogador cujo turno está correntemente a decorrer, seguido de um contador dos segundos que o mesmo tem para fazer a jogada.
