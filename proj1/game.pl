@@ -348,6 +348,30 @@ restoreState(N,ChosenPlayer,Numb):-
 	remainingPlays(N4),
 	write(N4), write(' plays remaining'),nl.
 
+	restoreState(N):-
+		boardState(Cs, Player, Action,Plays, N),
+		retractall(nextPlayer(_)),
+		retract(nextAction(_)),
+		retract(remainingPlays(_)),
+		retractall(silverPieces(_)),
+		retractall(goldenPieces(_)),
+		findall([X,Y], member([X,Y,silverPiece],Cs), LP),
+		findall([X1,Y1], member([X1,Y1,goldenPiece],Cs), LG),
+		length(LP, SilverPieces),
+		length(LG, GoldenPieces),
+		assert(silverPieces(SilverPieces)),
+		assert(goldenPieces(GoldenPieces)),
+		(Action == place ->
+			asserta(nextPlayer(Player)),
+			asserta(remainingPlays(2));
+			(Action == play ->
+			assertNext(Plays, Player))),
+		retractall(position(_,_,_)),
+		assert(nextAction(Action)),
+		assertBoard(Cs),
+		remainingPlays(N4),
+		write(N4), write(' plays remaining'),nl.
+
 	testeReplay:- parse_input(teste, ack),
 		parse_input(domove(5,4,5,3,goldenPlayer), _),
 		parse_input(domove(6,4,6,3,goldenPlayer), _),
@@ -422,9 +446,15 @@ undoPlay(Player):-
 	stateNumber(N),
 	N1 is N-1,!,
 	restoreState(N1,Player,Numb),!,
-
 	retract(stateNumber(N)),
 	assert(stateNumber(Numb)).
+
+undoPlay:-
+	stateNumber(N),
+	N1 is N-1,!,
+	restoreState(N1),!,
+	retract(stateNumber(N)),
+	assert(stateNumber(N1)).
 
 
 
