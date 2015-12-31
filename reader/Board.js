@@ -126,7 +126,7 @@ Board.prototype.display = function(){
                     var delta = Date.now() - this.scene.stateMachine.animationStart;
                     var progress = delta/this.scene.AnimationSpeeds;
                     var animation = this.scene.stateMachine.enteringAnimation;
-                    console.log(progress);
+                    //console.log(progress);
                     if(this.scene.stateMachine.enteringAnimation.player == 0){
                         this.scene.pushMatrix();
                         this.scene.translate(
