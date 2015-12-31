@@ -36,7 +36,7 @@ MyInterface.prototype.init = function(application) {
 	this.gameOpts.add(this.scene, 'HUD');
 	this.gameOpts.add(this.scene, 'GoldenPlayer', {'Human': 0, 'Random': 'random', 'Greedy':'greedy'});
 	this.gameOpts.add(this.scene, 'SilverPlayer', {'Human': 0, 'Random': 'random', 'Greedy':'greedy'});
-	this.gameOpts.add(this.scene.board, 'AnimationSpeeds', 500, 3000);
+	this.gameOpts.add(this.scene, 'AnimationSpeeds', 500, 3000);
 
 	this.camControls = this.gameOpts.addFolder("Camera Controls");
 	this.camControls.add(this.scene, 'RotateLeft');

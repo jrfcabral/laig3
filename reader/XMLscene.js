@@ -44,7 +44,7 @@ XMLscene.prototype.init = function (application) {
 	this.HUD = true;
 
 	this.camHeight = -10;
-
+	this.AnimationSpeeds = 2000;
 	this.connection = new SicstusConnection(8082, this);
 
 	this.board = new Board(this, this.graph);

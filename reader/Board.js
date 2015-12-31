@@ -14,7 +14,7 @@ function Board(scene, graph){
        this.whiteMat.setSpecular(1, 1, 1, 1);
        this.boardStack = [];
        this.playStack = [];
-       this.AnimationSpeeds = 2000;
+       
 }
 Board.prototype.makeBoard = function(width, height){
        var board = [];
@@ -124,7 +124,7 @@ Board.prototype.display = function(){
             this.scene.stateMachine.enteringAnimationEnabled){
                 
                     var delta = Date.now() - this.scene.stateMachine.animationStart;
-                    var progress = delta/this.AnimationSpeeds;
+                    var progress = delta/this.scene.AnimationSpeeds;
                     var animation = this.scene.stateMachine.enteringAnimation;
                     console.log(progress);
                     if(this.scene.stateMachine.enteringAnimation.player == 0){
@@ -164,7 +164,7 @@ Board.prototype.display = function(){
             if (this.scene.stateMachine.currentState == 2  && this.scene.stateMachine.currentAnimation.xi == j 
                 && this.scene.stateMachine.currentAnimation.yi == i && this.scene.stateMachine.moveAnimationEnabled){
                     var delta = Date.now() - this.scene.stateMachine.animationStart;
-                    var progress = (100*delta)/this.AnimationSpeeds;
+                    var progress = (100*delta)/this.scene.AnimationSpeeds;
                     var animation = this.scene.stateMachine.currentAnimation;
                     this.scene.pushMatrix();
                     this.scene.translate(animation.xi+(animation.xf-animation.xi)*(progress/100),
