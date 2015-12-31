@@ -79,6 +79,9 @@ StateMachine.prototype.handlePick = function(picked){
 }
 
 StateMachine.prototype.undoPlay = function(){
+    if(this.currentState > 3){
+        return;
+    }
     this.moveAnimationEnabled = false;
     if (this.scene.GoldenPlayer == 0 && this.scene.SilverPlayer == 0)
         this.connection.makeRequest("undo", this.synchronize.bind(this));
