@@ -80,6 +80,10 @@ StateMachine.prototype.handlePick = function(picked){
 
 StateMachine.prototype.undoPlay = function(){
     this.connection.makeRequest("undo("+this.currentPlayer+")", this.synchronize.bind(this));
+    this.scene.shouldDisplayWin = false;
+    if(this.currentState == this.states.OVER){
+        this.currentState = this.states.PLAYING;
+    }
 
 }
 
