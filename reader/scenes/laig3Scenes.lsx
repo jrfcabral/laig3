@@ -527,7 +527,7 @@
         <NODE id="lampHeadArm" >
             <MATERIAL id="null" />
             <TEXTURE id="null" />
-            <TRANSLATION x="0" y="9.5" z="26" />
+            <TRANSLATION x="0" y="9.5" z="33" />
             <ROTATION axis="x" angle="180" />
             <SCALE sx="0.1" sy="0.1" sz="2" />
             <DESCENDANTS>
@@ -538,7 +538,7 @@
         <NODE id="lampHeadHead">
             <MATERIAL id="null" />
             <TEXTURE id="null" />
-             <TRANSLATION x="0" y="9.5" z="22" />
+             <TRANSLATION x="0" y="9.5" z="29" />
              <DESCENDANTS>
                 <DESCENDANT id="cylinder4" />
             </DESCENDANTS>
@@ -548,7 +548,7 @@
         <NODE id="lampArm" >
             <MATERIAL id="null" />
             <TEXTURE id="null" />
-            <TRANSLATION x="0" y="-2" z="26" />
+            <TRANSLATION x="0" y="-2" z="33" />
             <ROTATION axis="x" angle="-90" />
             <SCALE sx="0.1" sy="0.1" sz="14" />
             <DESCENDANTS>
@@ -569,7 +569,7 @@
             <MATERIAL id="null" />
             <TEXTURE id="null" />
             <TRANSLATION x="0" y="0" z="1" />
-            <SCALE sx="0.1" sy="0.1" sz="25" />
+            <SCALE sx="0.1" sy="0.1" sz="31" />
             <DESCENDANTS>
                 <DESCENDANT id="cylinder1" />
             </DESCENDANTS>
