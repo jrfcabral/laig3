@@ -92,6 +92,7 @@ StateMachine.prototype.undoPlay = function(){
 }
 
 StateMachine.prototype.nextAnimationerino = function(){
+    this.color--;
     //console.log(this.nextAnimation);
     if(this.nextAnimation.xi !== -1){
         //console.log("setting the next thing");
