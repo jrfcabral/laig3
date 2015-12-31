@@ -164,6 +164,7 @@ parse_input(replay(_), nack).
 
 parse_input(dobotmove(Player, Difficulty), [Pred1, Pred2]):-
 	retractall(captured),
+	retractall(moved(_)),
 	codePlayer(Player1 , Player),
 	retractall(difficulty(_,_)),
 	retractall(playerGolden(_)),
