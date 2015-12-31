@@ -44,7 +44,7 @@ XMLscene.prototype.init = function (application) {
 	this.HUD = true;
 
 	this.camHeight = -10;
-	this.AnimationSpeeds = 2000;
+	this.AnimationSpeeds = 2000; 
 	this.connection = new SicstusConnection(8082, this);
 
 	this.board = new Board(this, this.graph);
@@ -212,7 +212,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 		else{
 
 		}
-		this.lights[i].setVisible(true);
+		this.lights[i].setVisible(false);
 
 		this.interface.group.add(this.lightslist, 'light'+i);
 		this.interface.setActiveCamera(this.leCamera);
