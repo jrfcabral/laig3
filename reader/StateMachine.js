@@ -235,8 +235,6 @@ StateMachine.prototype.updateState = function(data){
 
     if (this.currentState != this.states.ANIMATING)
     this.currentState = response[1]; 
-    else
-        console.log("no");
 
     //console.log("State is now " + this.currentState);
 

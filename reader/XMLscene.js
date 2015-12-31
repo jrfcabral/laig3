@@ -161,11 +161,8 @@ XMLscene.prototype.logPicking = function ()
 				{
 					var customId = this.pickResults[i][1];
 					this.stateMachine.handlePick(customId);
-					console.log('id is ' + customId);
 					var x = Math.floor(customId/1000);
    					var y = Math.floor(customId % 1000)-1;
-   					console.log('x: ' + x);
-   					console.log('y: ' + y);
 				}
 			}
 			this.pickResults.splice(0,this.pickResults.length);
