@@ -40,18 +40,18 @@ CameraHelper.prototype.animatePointTransition = function(angle, time){ //angle i
         this.animInfo = 0;
         return;
     }
-    console.log('tou aqui');
+    
 
     var percentage = (Date.now() - this.animInfo[0])/this.animInfo[1];
 
     var expectedAngle = this.animInfo[2]*percentage;
 
     var angleToOrbit = expectedAngle - this.animInfo[3];
-    console.log();
+    
 
     this.camera.orbit(CGFcameraAxisID.Y, angleToOrbit);
     this.animInfo[3] = expectedAngle;
-    console.log(this.animInfo[3]);
+    //console.log(this.animInfo[3]);
     return;
 
 }

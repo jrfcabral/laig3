@@ -31,11 +31,11 @@ function StateMachine(connection, scene){
 }
 
 StateMachine.prototype.handlePick = function(picked){
-   console.log(picked);
+   //console.log(picked);
    var x = Math.floor(picked/1000);
    var y = Math.floor(picked % 1000)-1;
    this.playerName = this.playersName[this.currentPlayer];
-   console.log("State is " + this.currentState);
+   //console.log("State is " + this.currentState);
     switch(this.currentState)
     {
         case this.states.PLACING:
@@ -51,7 +51,7 @@ StateMachine.prototype.handlePick = function(picked){
                 this.lastpicked.y = y;
                 this.scene.board.board[y][x].selected = true;
                 this.picking = 1;
-                console.log(this.lastpicked);2
+                //console.log(this.lastpicked);2
             }
             else if (this.picking === 1){
                 this.picking = 0;
@@ -88,9 +88,9 @@ StateMachine.prototype.undoPlay = function(){
 }
 
 StateMachine.prototype.nextAnimationerino = function(){
-    console.log(this.nextAnimation);
+    //console.log(this.nextAnimation);
     if(this.nextAnimation.xi !== -1){
-        console.log("setting the next thing");
+        //console.log("setting the next thing");
         this.startMoveAnimation(this.nextAnimation.xi, this.nextAnimation.yi, this.nextAnimation.xf, this.nextAnimation.yf, this.color);
         this.nextAnimation = {xi:-1,yi:-1,xf:-1,yf:-1};
     }
@@ -110,7 +110,7 @@ StateMachine.prototype.animateReplay = function(data){
         this.currentState = this.states.PLAYING;
         return;
     }
-    console.log(data.target.response);
+    //console.log(data.target.response);
     this.currentState = this.states.ANIMATING;
     var play = JSON.parse(data.target.response);
     if (play[2] !== -1)
@@ -226,14 +226,14 @@ StateMachine.prototype.updateState = function(data){
 
     this.updateInfo();
     
-    console.log("State is " + this.currentState);
+   //console.log("State is " + this.currentState);
 
     if (this.currentState != this.states.ANIMATING)
     this.currentState = response[1]; 
     else
         console.log("no");
 
-    console.log("State is now " + this.currentState);
+    //console.log("State is now " + this.currentState);
 
     if (this.currentState == this.states.PLACING){
          if ((this.scene.GoldenPlayer == "random" || this.scene.GoldenPlayer == "greedy") && this.currentPlayer == 0){
@@ -245,10 +245,10 @@ StateMachine.prototype.updateState = function(data){
         }
     }
 
-    console.log(this.currentState);
-    console.log(this.oldState);
+    //console.log(this.currentState);
+    //console.log(this.oldState);
     if (this.currentState == this.states.PLAYING ){
-        console.log("PASSEI AQUI");
+        
         if ((this.scene.GoldenPlayer == "random" || this.scene.GoldenPlayer == "greedy") && this.currentPlayer == 0){
             this.connection.makeRequest("dobotmove("+this.currentPlayer+","+this.scene.GoldenPlayer+")", this.movePieceBot.bind(this));
             this.connection.makeRequest("whoWon", this.checkFinished.bind(this));
@@ -265,7 +265,7 @@ StateMachine.prototype.updateState = function(data){
 }
 
 StateMachine.prototype.checkFinished = function(data){
-    console.log("entrei");
+    
     var winner = JSON.parse(data.target.response);
     if(winner != 2){
         this.currentState = this.states.OVER;

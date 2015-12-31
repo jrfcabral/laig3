@@ -183,11 +183,6 @@
             <amplif_factor s="1" t="1" />
         </TEXTURE>
 
-        <TEXTURE id="paperLamp" >
-            <file path="textures/paperLamp.jpg" />
-            <amplif_factor s="1" t="1" />
-        </TEXTURE>
-
         <TEXTURE id="window">
             <file path="textures/window.jpg" />
             <amplif_factor s="1" t="1" />

@@ -20,7 +20,7 @@ Board.prototype.makeBoard = function(width, height){
        for(var i = 0; i < height; i++){
            var boardLine = [];
            for(var j = 0; j < width; j++){
-                console.log((j*1000)+i+1);
+                //console.log((j*1000)+i+1);
                 var boardPart = new BoardPart(this.scene, (j*1000)+i+1);
                 boardLine.push(boardPart);
            }
@@ -35,7 +35,7 @@ Board.prototype.getCleanBoard = function(){
     [0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0]];
 }
 Board.prototype.updateBoard = function(newBoard){
-    console.log(JSON.parse(newBoard.target.response));
+    //console.log(JSON.parse(newBoard.target.response));
     this.boardTxt = JSON.parse(newBoard.target.response);
 }
 
@@ -81,7 +81,7 @@ Board.prototype.countPieces = function(){
 
 Board.prototype.saveBoard = function(player){
     this.boardStack.push([this.boardTxt, player]);
-    console.log(this.boardStack);
+    //console.log(this.boardStack);
 }
 
 Board.prototype.getPieceNumber = function(number){
@@ -121,7 +121,7 @@ Board.prototype.display = function(){
     //pieces entering the field
       if ( this.scene.stateMachine.currentState == 2 &&
             this.scene.stateMachine.enteringAnimationEnabled){
-                console.log("entrei");
+                
                     var delta = Date.now() - this.scene.stateMachine.animationStart;
                     var progress = delta/2000;
                     var animation = this.scene.stateMachine.enteringAnimation;

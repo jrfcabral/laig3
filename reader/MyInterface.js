@@ -84,5 +84,5 @@ MyInterface.prototype.processKeyboard = function(event) {
 		
 
 	};
-	console.log(event.keyCode);
+	//console.log(event.keyCode);
 };
