@@ -187,13 +187,6 @@ Board.prototype.display = function(){
 
             if(this.scene.stateMachine.currentState == 2 && this.scene.stateMachine.nextAnimation.xf == j && this.scene.stateMachine.nextAnimation.yf ==i)
                 continue;
-
-            if(this.scene.stateMachine.currentState == 2 &&this.scene.stateMachine.nextAnimation.xi == i && this.scene.stateMachine.nextAnimation.yi == j){
-                if (this.scene.pickMode == false){
-                    console.log("cona");
-                    this.piece.display(this.scene.stateMachine.color);
-                }
-            }
                           
             if(this.scene.stateMachine.currentState == 2 && this.scene.stateMachine.enteringAnimationEnabled && this.scene.stateMachine.enteringAnimation.x ==j&&
             this.scene.stateMachine.enteringAnimation.y == i){
