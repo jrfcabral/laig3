@@ -192,7 +192,6 @@ StateMachine.prototype.startMoveAnimation = function(x,y,xf,yf,color){
 StateMachine.prototype.movePieceBot = function(data){
     if (data.target.response !== "ack"){
         var placed = JSON.parse(data.target.response);
-        console.log("chamado");
         this.connection.makeRequest("boardstate", this.scene.board.updateBoard.bind(this.scene.board));   
         this.oldState = this.states.PLAYING;
         this.startMoveAnimation(placed[0][0],placed[0][1],placed[0][2],placed[0][3],placed[0][4]);
@@ -202,8 +201,6 @@ StateMachine.prototype.movePieceBot = function(data){
         this.nextAnimation.yf = placed[1][3];
        // window.setTimeout(500, this.startMoveAnimation(placed[1][0],placed[1][1],placed[1][2],placed[1][3],placed[1][4]));
     }
-    else
-        console.log("falheu");
     
     this.connection.makeRequest("getnextaction", this.updateState.bind(this));
 }
