@@ -275,15 +275,15 @@ calculateDistances(Xi, Yi, Xf, Yf, DX, DY):-
 	emptyCellsBetween(X,Y,Xf,Y):-Xf1 is Xf-1, findall(Z, position(Xf,Y,Z), [emptyCell]), emptyCellsBetween(X,Y,Xf1,Y).
 
 doPlay(X,Y,Xf,Yf,Player):- validMove(X,Y,Xf,Yf,Player),
-	owner(Player,Piece),  retract(position(X,Y,Piece)),asserta(position(Xf,Yf,Piece)), asserta(moved(Xf,Yf)).
+	owner(Player,Piece),  retract(position(X,Y,Piece)),asserta(position(Xf,Yf,Piece)), asserta(moved(Xf,Yf)), (position(Xf,Yf,flagship), assert(moved(flagship));true).
 
 doPlay(X,Y,Xf,Yf,Player):- validCapture(X,Y,Xf,Yf,Player),
-	owner(Player,Piece),   retract(position(X,Y,Piece)),opponent(Player, Opponent), owner(Opponent,OpponentPiece), retract(position(Xf,Yf,OpponentPiece)), asserta(position(Xf,Yf,Piece)),asserta(captured), asserta(moved(Xf,Yf)).
+	owner(Player,Piece),   retract(position(X,Y,Piece)),opponent(Player, Opponent), owner(Opponent,OpponentPiece), retract(position(Xf,Yf,OpponentPiece)), asserta(position(Xf,Yf,Piece)),asserta(captured), asserta(moved(Xf,Yf)),(position(Xf,Yf,flagship), assert(moved(flagship));true).
 
 validPlay(X,Y,Xf,Yf,Player):- (validMove(X,Y,Xf,Yf,Player);validCapture(X,Y,Xf,Yf,Player)),\+moved(X,Y).
 
 validCapture(X,Y,Xf,Yf,Player):-
- owner(Player, Piece),
+ owner(Player, Piece),remainingPlays(2),
  position(X,Y,Piece),
  opponent(Player, Opponent),
  owner(Opponent,OpponentPiece),
@@ -294,7 +294,7 @@ validCapture(X,Y,Xf,Yf,Player):-
 validMove(X,Y,Xf,Yf, Player):- %movimento normal
 owner(Player, Piece),
 position(X,Y,Piece),
-position(Xf,Yf, emptyCell),
+position(Xf,Yf, emptyCell),\+moved(X,Y),
 findall(Z, position(Xf,Yf,Z), [emptyCell]),
 emptySpace(X,Y,Xf,Yf).
 
@@ -472,8 +472,9 @@ doRemotePlay(X,Y,Xf,Yf,Player):-
 		assert(remainingPlays(2));
 		retract(remainingPlays(N)),
 		N1 is N-1,
-		N1 == 0 ->
+		(N1 == 0;(Player == goldenPlayer,moved(flagship))) ->
 			retract(nextPlayer(_)),
+			retractall(moved(_)),
 			opponent(Player,Opponent),
 			assert(nextPlayer(Opponent)),
 			assert(remainingPlays(2));

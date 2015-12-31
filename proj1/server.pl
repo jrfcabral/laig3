@@ -138,7 +138,8 @@ parse_input(setpiece(X,Y,Player), Response):-
 parse_input(domove(X,Y,Xf,Yf,Player), Response):-
 	retractall(captured),
 	doRemotePlay(X,Y,Xf,Yf,Player) ->
-		Response = ack;
+		Response = ack,
+		(nextPlayer(PlayerN),opponent(Player, PlayerN),retractall(moved(_,_));true);
 		Response = nack.
 
 parse_input(boardstate, Board):-
@@ -167,7 +168,7 @@ parse_input(dobotmove(Player, Difficulty), [Pred1, Pred2]):-
 	retractall(difficulty(_,_)),
 	retractall(playerGolden(_)),
 	retractall(playerSilver(_)),
-	retractall(moved(_,_)),
+	retractall(moved(X,Y)),
 	Player1 = goldenPlayer ->
 		asserta(playerGolden(bot)),
 		asserta(difficulty(goldenPlayer, Difficulty)),
