@@ -119,7 +119,7 @@ takeTurn(goldenPlayer, silverPlayer, [[Xi1,Yi1,Xf1,Yf1, 0], [Xi2,Yi2,Xf2,Yf2, 0]
 playerGolden(bot), difficulty(goldenPlayer, random), write('vou começar'), randomPlay(goldenPlayer, Pred1),write('achei'), Pred =.. Pred1, Pred,Pred1 = [_,Xi1,Yi1,Xf1,Yf1,_],
 ((\+moved(flagship),\+captured,saveState(goldenPlayer, 1), savePlay(Xi1,Yi1,Xf1,Yf1,goldenPlayer), randomMove(goldenPlayer, Pred2), PredD =.. Pred2, PredD,write('segunda jogada feita'),Pred2 = [_,Xi2,Yi2,Xf2,Yf2,_],saveState(silverPlayer,2), savePlay(Xi2,Yi2,Xf2,Yf2,goldenPlayer));((moved(flagship);captured),  [Xi2,Yi2,Xf2,Yf2, 0] = [-1,-1,-1,-1,0],saveState(silverPlayer, 2), savePlay(Xi1,Yi1,Xf1,Yf1,silverPlayer))), !.
 
-takeTurn(goldenPlayer, silverPlayer, [[Xi1,Yi1,Xf1,Yf1, 1], [Xi2,Yi2,Xf2,Yf2, 1]]):-
+takeTurn(goldenPlayer, silverPlayer, [[Xi1,Yi1,Xf1,Yf1, 0], [Xi2,Yi2,Xf2,Yf2, 0]]):-
 	 playerGolden(bot), difficulty(goldenPlayer, greedy),
 	 ((flagshipCanEscape(Xf1, Yf1), position(Xi1, Yi1, flagship), doPlay(Xi1, Yi1, Xf1, Yf1, goldenPlayer));
 	 (validCapture(Xi1,Yi1,Xf1,Yf1, goldenPlayer), doPlay(Xi1,Yi1,Xf1,Yf1, goldenPlayer));
