@@ -371,7 +371,7 @@
                 <DESCENDANT id="wall6" />
                 <DESCENDANT id="wall7" />
                 <DESCENDANT id="wall8" />
-                <!--<DESCENDANT id="sphereLamp" />-->
+              
                 <DESCENDANT id="window" />
             </DESCENDANTS>
         </NODE>
@@ -386,15 +386,7 @@
             </DESCENDANTS>
         </NODE>
 
-        <NODE id="sphereLamp">
-            <MATERIAL id="polishedWood"/>
-            <TEXTURE id="paperLamp" />
-            <TRANSLATION x="0" y="26" z="0" />
-            <SCALE sx="4" sy="4" sz="4" />
-            <DESCENDANTS>
-                <DESCENDANT id="sphere1" />
-            </DESCENDANTS>
-        </NODE>
+        
 
         <NODE id="stump">
             <MATERIAL id="polishedWood" />
