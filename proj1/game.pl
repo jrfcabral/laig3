@@ -326,7 +326,7 @@ restoreState(N,ChosenPlayer,Numb):-
 	codePlayer(OChosenPlayer, ChosenPlayer),
 	boardState(Cs, OChosenPlayer, Action,Plays, Numb),
 	Numb =< N,
-	retract(nextPlayer(_)),
+	retractall(nextPlayer(_)),
 	retract(nextAction(_)),
 	retract(remainingPlays(_)),
 	retractall(silverPieces(_)),
@@ -338,10 +338,10 @@ restoreState(N,ChosenPlayer,Numb):-
 	assert(silverPieces(SilverPieces)),
 	assert(goldenPieces(GoldenPieces)),
 	(Action == place ->
-		assert(nextPlayer(Player)),
+		asserta(nextPlayer(OChosenPlayer)),
 		asserta(remainingPlays(2));
 		(Action == play ->
-		assertNext(Plays, Player))),
+		assertNext(Plays, OChosenPlayer))),
 	retractall(position(_,_,_)),
 	assert(nextAction(Action)),
 	assertBoard(Cs),
@@ -360,7 +360,7 @@ restoreState(N,ChosenPlayer,Numb):-
 
 	restoreState(N):-
 		boardState(Cs, Player, Action,Plays, N),
-		retract(nextPlayer(_)),
+		retractall(nextPlayer(_)),
 		retract(nextAction(_)),
 		retract(remainingPlays(_)),
 		retractall(silverPieces(_)),
@@ -372,7 +372,7 @@ restoreState(N,ChosenPlayer,Numb):-
 		assert(silverPieces(SilverPieces)),
 		assert(goldenPieces(GoldenPieces)),
 		(Action == place ->
-			assert(nextPlayer(Player)),
+			asserta(nextPlayer(Player)),
 			asserta(remainingPlays(2));
 			(Action == play ->
 			assertNext(Plays, Player))),
