@@ -49,7 +49,7 @@ XMLscene.prototype.init = function (application) {
 
 	this.board = new Board(this, this.graph);
 
-	this.connection.makeRequest("reset", function(){console.log("board reset");});
+	this.connection.makeRequest("teste", function(){console.log("board reset");});
 	this.connection.makeRequest("boardstate", this.board.updateBoard.bind(this.board));
 
 	this.stateMachine = new StateMachine(this.connection, this);
